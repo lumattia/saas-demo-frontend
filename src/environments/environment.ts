@@ -1,0 +1,9 @@
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080',
+  auth0: {
+    domain: 'dev-ia6wuqy53uzqku85.us.auth0.com',
+    clientId: 'cI0xiCu0SoyOfkhdUjVfoTnKBsdd6uTx',
+    audience: 'https://mydemo.com',
+  },
+};

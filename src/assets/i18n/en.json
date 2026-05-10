@@ -1,0 +1,18 @@
+{
+  "dresses": {
+    "title": "Dress Management",
+    "list": {
+      "title": "Dress List"
+    },
+    "new": "New Dress",
+    "edit": "Edit Dress"
+  },
+  "inventory": {
+    "title": "Inventory Management",
+    "list": {
+      "title": "Inventory Movements"
+    },
+    "new": "New Movement",
+    "detail": "Movement Detail"
+  }
+}

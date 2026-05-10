@@ -1,0 +1,25 @@
+# Dependency directories
+node_modules/
+
+# Build outputs
+dist/
+tmp/
+out-tsc/
+bazel-out/
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Angular cache
+.angular/
