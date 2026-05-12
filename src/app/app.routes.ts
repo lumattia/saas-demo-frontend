@@ -35,8 +35,8 @@ export const routes: Routes = [
         canActivate: [moduleGuard],
         data: { module: 'INVENTORY' }
       },
-      {
-        path: '',
+           {
+        path: '**',
         redirectTo: 'dresses',
         pathMatch: 'full',
       },

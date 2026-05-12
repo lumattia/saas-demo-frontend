@@ -31,7 +31,7 @@ import { Inventory, InventoryFilter } from '../../../../core/models/inventory.mo
       <tbody>
         @for (item of inventory(); track item.id) {
           <tr>
-            <td>{{ item.dressTitle }}</td>
+            <td>{{ item.dress.sku }}</td>
             <td>{{ item.quantity }}</td>
             <td>
               <a [routerLink]="['/inventory', item.id]">Detalle</a>
@@ -71,7 +71,8 @@ export class InventoryListPageComponent implements OnInit {
 
   loadInventory() {
     this.inventoryService.getAll(this.filter, this.sort(), this.order()).subscribe(data => {
-      this.inventory.set(data);
+      console.log(data);
+      this.inventory.set(data.content);
     });
   }
 

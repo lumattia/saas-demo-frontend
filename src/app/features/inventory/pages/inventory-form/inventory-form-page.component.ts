@@ -7,6 +7,7 @@ import { InventoryService } from '../../../../core/services/inventory.service';
 import { DressService } from '../../../../core/services/dress.service';
 import { Inventory } from '../../../../core/models/inventory.model';
 import { Dress } from '../../../../core/models/dress.model';
+import { IdName } from '../../../../core/interfaces/idName';
 
 @Component({
   selector: 'app-inventory-form-page',
@@ -22,7 +23,7 @@ import { Dress } from '../../../../core/models/dress.model';
           <select name="dressId" [(ngModel)]="item.dressId" required [disabled]="!!id">
             <option value="">Seleccionar vestido</option>
             @for (dress of dresses(); track dress.id) {
-              <option [value]="dress.id">{{ dress.title }} ({{ dress.sku }})</option>
+              <option [value]="dress.id">{{ dress.name }}</option>
             }
           </select>
         </div>
@@ -59,10 +60,10 @@ export class InventoryFormPageComponent implements OnInit {
 
   id: number | null = null;
   item: Partial<Inventory> = { dressId: 0, quantity: 0 };
-  dresses = signal<Dress[]>([]);
+  dresses = signal<IdName[]>([]);
 
   ngOnInit() {
-    this.dressService.getAll().subscribe(data => this.dresses.set(data));
+    this.dressService.list().subscribe(data => this.dresses.set(data));
 
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam && idParam !== 'new') {

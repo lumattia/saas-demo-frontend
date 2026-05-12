@@ -80,14 +80,16 @@ export class DressListPageComponent implements OnInit {
   filter: DressFilter = { title: '', sku: '', color: '' };
   sort = signal<string>('id');
   order = signal<'asc' | 'desc'>('asc');
+  pageNumber = signal<number>(1);
+  pageSize = signal<number>(10);
 
   ngOnInit() {
     this.loadDresses();
   }
 
   loadDresses() {
-    this.dressService.getAll(this.filter, this.sort(), this.order()).subscribe(data => {
-      this.dresses.set(data);
+    this.dressService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
+      this.dresses.set(data.content);
     });
   }
 

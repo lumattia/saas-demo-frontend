@@ -20,5 +20,6 @@ export interface User {
   username: string;
   role: UserRole;
   tenant: Tenant;
+  auth0Sub?: string;
   allowedTenants?: Tenant[];
 }

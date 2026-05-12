@@ -2,7 +2,7 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../models/tenant.model';
 import { environment } from '../../../environments/environment';
-import { tap, switchMap, of, from } from 'rxjs';
+import { tap, switchMap, of } from 'rxjs';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 
 @Injectable({
@@ -31,41 +31,58 @@ export class AuthService {
   isAtLeastAdmin = computed(() => this.isSuperAdmin() || this.isAdmin());
 
   init() {
+    this.userSignal.set(JSON.parse(localStorage.getItem('user') || 'null'));
     return this.auth0.isAuthenticated$.pipe(
       switchMap(isAuth => {
         if (isAuth) {
           return this.auth0.getAccessTokenSilently().pipe(
             switchMap(token => {
+              localStorage.setItem('access_token', token);
               const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
               return this.http.get<User>(`${environment.apiUrl}/users/me`, { headers });
             })
           );
         } else {
-          // Si no está autenticado con Auth0, no hay sesión (el admin lo manejaremos por login normal si fuera necesario, 
-          // pero aquí mantenemos la coherencia con Auth0)
           return of(null);
         }
       }),
-      tap(user => this.userSignal.set(user))
+      tap(user => {
+        let localUser = localStorage.getItem('user');
+        if (localUser != JSON.stringify(user))
+        {
+          this.userSignal.set(user);
+          localStorage.setItem('user', JSON.stringify(user));
+          window.location.reload();
+        }
+      })
     );
   }
-
   createDemoAccount() {
     return this.http.post<any>(`${environment.apiUrl}/users/demo`, {}).pipe(
       tap(res => {
-        alert(`¡Cuenta de Demo creada en Auth0!\n\nEmail: ${res.email}\nPassword: ${res.password}\n\nUsa estas credenciales en la pantalla de login que aparecerá a continuación.`);
-        this.login();
+        this.auth0.loginWithPopup({
+          authorizationParams: {
+            login_hint: res.email,
+          }
+        }).subscribe(() => {
+          this.init();
+        });
+        return res;
       })
     );
   }
 
   login() {
-    localStorage.removeItem('demo_user');
+    this.deleteLocalStorage();
     this.auth0.loginWithRedirect();
   }
 
   logout() {
-    localStorage.removeItem('demo_user');
+    this.deleteLocalStorage();
     this.auth0.logout({ logoutParams: { returnTo: window.location.origin } });
+  }
+  deleteLocalStorage() {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user');
   }
 }

@@ -48,7 +48,7 @@ import { ThemeService } from '../../../core/services/theme.service';
                 }
               </button>
               <div class="ml-4 flex items-center">
-                @if (auth.user()?.passwordHash === 'auth0-user') {
+                @if (auth.user()?.auth0Sub) {
                   <button (click)="auth.logout()" class="mr-4 text-sm text-red-600 hover:text-red-800">Logout</button>
                 } @else {
                   <button (click)="auth.createDemoAccount().subscribe()" class="mr-4 text-sm text-green-600 hover:text-green-800">Crear Mi Demo (24h)</button>

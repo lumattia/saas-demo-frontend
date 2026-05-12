@@ -6,7 +6,6 @@ export const moduleGuard: CanActivateFn = (route) => {
   const auth = inject(AuthService);
   const router = inject(Router);
   const moduleName = route.data['module'] as string;
-
   if (auth.hasModule(moduleName)) {
     return true;
   }

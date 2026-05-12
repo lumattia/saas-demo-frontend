@@ -11,7 +11,6 @@ import { AuthService } from '../../../../core/services/auth.service';
       <div class="login-card">
         <h1>Warehouse Demo</h1>
         <p>Bienvenido a la demo del sistema de gestión de almacén.</p>
-        
         <div class="actions">
           <button (click)="auth.login()" class="btn btn-primary">
             Iniciar Sesión con Auth0
@@ -21,14 +20,15 @@ import { AuthService } from '../../../../core/services/auth.service';
             <span>O</span>
           </div>
           
-          <button (click)="auth.createDemoAccount().subscribe()" class="btn btn-secondary">
-            Crear Mi Demo (24 horas)
+          <button (click)="createDemo()" class="btn btn-secondary" [disabled]="loading">
+            {{ loading ? 'Creando...' : 'Crear Mi Demo (24 horas)' }}
           </button>
         </div>
         
         <p class="footer-text">
           Al crear una demo, se generará una cuenta real temporal en Auth0 y un entorno privado para ti.
         </p>
+          <p>Contraseña de la Demo: {{ password }}</p>
       </div>
     </div>
   `,
@@ -83,4 +83,20 @@ import { AuthService } from '../../../../core/services/auth.service';
 })
 export class LoginPageComponent {
   readonly auth = inject(AuthService);
+  loading = false;
+  password='';
+  createDemo() {
+    this.loading = true;
+    this.auth.createDemoAccount().subscribe({
+      next: (res) => {
+        this.loading = false,
+        this.password=res.password;
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error('Error al crear demo:', err);
+        alert('Hubo un error al conectar con el servidor. Por favor, asegúrate de que el backend esté corriendo en http://localhost:8080');
+      }
+    });
+  }
 }

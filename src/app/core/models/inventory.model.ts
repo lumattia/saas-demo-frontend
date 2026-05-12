@@ -1,8 +1,11 @@
+import { Dress } from "./dress.model";
+
 export interface Inventory {
   id: number;
   dressId: number;
-  dressTitle?: string;
+  dress: Dress;
   quantity: number;
+  instant: string;
 }
 
 export interface InventoryFilter {
