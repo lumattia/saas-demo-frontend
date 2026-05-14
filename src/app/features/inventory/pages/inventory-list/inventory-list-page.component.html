@@ -1,0 +1,28 @@
+<main class="inventory-list-container">
+  <div class="page-header">
+    <h1>{{ 'inventory.list.title' | translate }}</h1>
+    <a routerLink="/inventory/new" class="btn btn-primary">
+      {{ 'inventory.list.add' | translate }}
+    </a>
+  </div>
+
+  <app-pro-table
+    [columns]="columns"
+    [data]="inventory()"
+    [sortOptions]="sortOptions"
+    [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
+    (sortChange)="onSortChange($event)"
+    (paginationChange)="onPaginationChange($event)"
+  >
+    <div filters>
+      <div class="filter-row">
+        <app-text-input
+          labelKey="inventory.list.filter.title"
+          placeholderKey="inventory.list.filter.titlePlaceholder"
+          [value]="filter.dressTitle || ''"
+          (valueChange)="filter.dressTitle = $event; onFilterChange()"
+        />
+      </div>
+    </div>
+  </app-pro-table>
+</main>

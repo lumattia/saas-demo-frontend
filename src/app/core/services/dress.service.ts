@@ -3,8 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Dress, DressFilter } from '../models/dress.model';
 import { environment } from '../../../environments/environment';
-import { PageResponse } from '../interfaces/pageResponse.interface';
-import { IdName } from '../interfaces/idName';
+import { PageResponse } from '../models/common.models';
+import { IdName } from '../models/common.models';
 
 @Injectable({
   providedIn: 'root'

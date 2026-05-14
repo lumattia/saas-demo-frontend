@@ -1,0 +1,125 @@
+<div class="pro-table-container">
+  <!-- Header with Filters Toggle and Sorting -->
+  <div class="pro-table-header">
+    <button (click)="toggleFilters()" class="toggle-filters-btn">
+      {{ filtersCollapsed ? ('shared.table.showFilters' | translate) : ('shared.table.hideFilters' | translate) }}
+    </button>
+
+    <div class="sorting-section">
+      <label class="sorting-label">{{ 'shared.table.sortBy' | translate }}:</label>
+      <select (change)="onSortChange($any($event.target).value)" class="sort-select">
+        <option value="">{{ 'shared.table.noSort' | translate }}</option>
+        <option *ngFor="let option of sortOptions" [value]="option.id" [selected]="currentSort.field === option.id">
+          {{ option.name | translate }}
+        </option>
+      </select>
+      <button (click)="onSortChange(currentSort.field)" class="sort-direction-btn">
+        {{ currentSort.direction === 'asc' ? '↑' : '↓' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Collapsible Filters Zone -->
+  <div class="filters-zone" [class.collapsed]="filtersCollapsed">
+    <ng-content select="[filters]"></ng-content>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table class="pro-table">
+      <thead>
+        <tr>
+          <th *ngFor="let column of columns" (click)="onSortChange(column.key)" class="sortable-header">
+            {{ column.labelKey | translate }}
+            <span *ngIf="currentSort.field === column.key" class="sort-indicator">
+              {{ currentSort.direction === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data">
+          <td *ngFor="let column of columns">
+            @if (column.isColor && row[column.key]) {
+              <div class="color-cell">
+                <span class="color-circle" [style.background-color]="row[column.key]"></span>
+                <span class="color-value">{{ row[column.key] }}</span>
+              </div>
+            } @else {
+              {{ row[column.key] }}
+            }
+          </td>
+        </tr>
+        <tr *ngIf="data.length === 0">
+          <td [attr.colspan]="columns.length" class="no-data">
+            {{ 'shared.table.noData' | translate }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-section">
+    <div class="pagination-info">
+      <span>{{ 'shared.table.showing' | translate }}: </span>
+      <input
+        type="number"
+        [value]="pagination.pageSize"
+        (change)="onPageSizeChange($event)"
+        class="pagination-input"
+        min="1"
+        max="100"
+      />
+      <span>{{ 'shared.table.perPage' | translate }}</span>
+      <span class="page-info">
+        {{ 'shared.table.page' | translate }}:
+        <input
+          type="number"
+          [value]="pagination.pageNumber"
+          (change)="onPageNumberChange($event)"
+          class="pagination-input"
+          min="1"
+          [max]="totalPages"
+        />
+        / {{ totalPages }}
+      </span>
+      <span class="total-items">({{ pagination.totalItems }} {{ 'shared.table.total' | translate }})</span>
+    </div>
+
+    <div class="pagination-controls">
+      <button
+        (click)="goToFirstPage()"
+        [disabled]="!canGoFirst"
+        class="pagination-btn"
+        [class.disabled]="!canGoFirst"
+      >
+        {{ 'shared.table.first' | translate }}
+      </button>
+      <button
+        (click)="goToPreviousPage()"
+        [disabled]="!canGoPrevious"
+        class="pagination-btn"
+        [class.disabled]="!canGoPrevious"
+      >
+        {{ 'shared.table.previous' | translate }}
+      </button>
+      <button
+        (click)="goToNextPage()"
+        [disabled]="!canGoNext"
+        class="pagination-btn"
+        [class.disabled]="!canGoNext"
+      >
+        {{ 'shared.table.next' | translate }}
+      </button>
+      <button
+        (click)="goToLastPage()"
+        [disabled]="!canGoLast"
+        class="pagination-btn"
+        [class.disabled]="!canGoLast"
+      >
+        {{ 'shared.table.last' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

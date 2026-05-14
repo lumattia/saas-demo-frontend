@@ -1,0 +1,58 @@
+<main class="dress-form-container">
+  <h1>{{ (id ? 'dresses.edit' : 'dresses.new') | translate }}</h1>
+
+  <form (ngSubmit)="save()" class="dress-form">
+    <app-text-input
+      labelKey="dresses.form.title"
+      placeholderKey="dresses.form.titlePlaceholder"
+      [value]="dress.title || ''"
+      [required]="true"
+      (valueChange)="dress.title = $event"
+    />
+
+    <app-text-input
+      labelKey="dresses.form.sku"
+      placeholderKey="dresses.form.skuPlaceholder"
+      [value]="dress.sku || ''"
+      [required]="true"
+      (valueChange)="dress.sku = $event"
+    />
+
+    <app-text-input
+      labelKey="dresses.form.size"
+      placeholderKey="dresses.form.sizePlaceholder"
+      [value]="dress.size || ''"
+      (valueChange)="dress.size = $event"
+    />
+
+    <app-color-input
+      labelKey="dresses.form.color"
+      [color]="dress.color || '#000000'"
+      (colorChange)="dress.color = $event"
+    />
+
+    <app-number-input
+      labelKey="dresses.form.price"
+      placeholderKey="dresses.form.pricePlaceholder"
+      [value]="dress.price || 0"
+      [decimalPlaces]="2"
+      unit="€"
+      [min]="0"
+      (valueChange)="dress.price = $event"
+    />
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary">
+        {{ 'dresses.form.save' | translate }}
+      </button>
+      @if (id) {
+        <button type="button" class="btn btn-danger" (click)="delete()">
+          {{ 'dresses.form.delete' | translate }}
+        </button>
+      }
+      <button type="button" class="btn" (click)="exit()">
+        {{ 'dresses.form.cancel' | translate }}
+      </button>
+    </div>
+  </form>
+</main>

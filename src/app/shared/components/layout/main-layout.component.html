@@ -1,0 +1,82 @@
+<div [class.dark]="theme.mode() === 'dark'" class="layout-container">
+  <!-- Sidenav -->
+  <aside class="sidenav" [class.collapsed]="sidenavCollapsed()">
+    <div class="sidenav-header">
+      <div class="logo">
+        <span class="logo-icon">📦</span>
+        <span class="logo-text" *ngIf="!sidenavCollapsed()">Warehouse</span>
+      </div>
+      <button class="sidenav-toggle" (click)="toggleSidenav()">
+        <span class="toggle-icon">{{ sidenavCollapsed() ? '→' : '←' }}</span>
+      </button>
+    </div>
+
+    <nav class="sidenav-nav">
+      @if (auth.hasModule('DRESS')) {
+        <a routerLink="/dresses" routerLinkActive="active" class="nav-item">
+          <span class="nav-icon">👗</span>
+          <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.dresses' | translate }}</span>
+        </a>
+      }
+      @if (auth.hasModule('INVENTORY')) {
+        <a routerLink="/inventory" routerLinkActive="active" class="nav-item">
+          <span class="nav-icon">📊</span>
+          <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.inventory' | translate }}</span>
+        </a>
+      }
+      @if (auth.isAtLeastAdmin()) {
+        <a routerLink="/admin/tenants" routerLinkActive="active" class="nav-item">
+          <span class="nav-icon">🏢</span>
+          <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.tenants' | translate }}</span>
+        </a>
+      }
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <h1 class="page-title">{{ pageTitle() | translate }}</h1>
+      </div>
+      <div class="header-right">
+        <button class="icon-btn theme-toggle" (click)="theme.toggle()" [title]="'nav.toggleTheme' | translate">
+          @if (theme.mode() === 'light') {
+            <span>🌙</span>
+          } @else {
+            <span>☀️</span>
+          }
+        </button>
+        <div class="language-selector">
+          <select class="lang-select" (change)="changeLanguage($any($event.target).value)" [value]="currentLang()">
+            @for (lang of availableLanguages; track lang.code) {
+              <option [value]="lang.code">{{ lang.flag }} {{ lang.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="user-info">
+          <span class="user-name">{{ auth.user()?.username }}</span>
+          <span class="tenant-name">({{ auth.user()?.tenant?.name }})</span>
+        </div>
+        @if (auth.user()?.auth0Sub) {
+          <button class="btn btn-logout" (click)="auth.logout()">
+            {{ 'nav.logout' | translate }}
+          </button>
+        } @else {
+          <button class="btn btn-demo" (click)="auth.createDemoAccount().subscribe()">
+            {{ 'nav.createDemo' | translate }}
+          </button>
+          <button class="btn btn-login" (click)="auth.login()">
+            {{ 'nav.login' | translate }}
+          </button>
+        }
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

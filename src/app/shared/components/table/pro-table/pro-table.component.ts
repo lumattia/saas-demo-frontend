@@ -1,0 +1,98 @@
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
+
+@Component({
+  selector: 'app-pro-table',
+  standalone: true,
+  imports: [CommonModule, TranslateModule],
+  templateUrl: './pro-table.component.html',
+  styleUrls: ['./pro-table.component.css'],
+})
+export class ProTableComponent {
+  @Input() columns: { key: string; labelKey: string; isColor?: boolean }[] = [];
+  @Input() data: any[] = [];
+  @Input() sortOptions: IdName[] = [];
+  @Input() pagination: PaginationState = { pageSize: 10, pageNumber: 1, totalItems: 0 };
+  @Input() filtersCollapsed = true;
+
+  @Output() sortChange = new EventEmitter<SortState>();
+  @Output() paginationChange = new EventEmitter<PaginationState>();
+  @Output() filtersToggle = new EventEmitter<boolean>();
+
+  currentSort: SortState = { field: '', direction: 'asc' };
+
+  onSortChange(field: string): void {
+    if (this.currentSort.field === field) {
+      this.currentSort.direction = this.currentSort.direction === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.currentSort.field = field;
+      this.currentSort.direction = 'asc';
+    }
+    this.sortChange.emit(this.currentSort);
+  }
+
+  onPageSizeChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const newPageSize = parseInt(input.value, 10);
+    if (newPageSize > 0 && newPageSize <= 100) {
+      this.paginationChange.emit({ ...this.pagination, pageSize: newPageSize, pageNumber: 1 });
+    }
+  }
+
+  onPageNumberChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const newPageNumber = parseInt(input.value, 10);
+    const maxPage = Math.ceil(this.pagination.totalItems / this.pagination.pageSize);
+    if (newPageNumber > 0 && newPageNumber <= maxPage) {
+      this.paginationChange.emit({ ...this.pagination, pageNumber: newPageNumber });
+    }
+  }
+
+  goToFirstPage(): void {
+    this.paginationChange.emit({ ...this.pagination, pageNumber: 1 });
+  }
+
+  goToPreviousPage(): void {
+    if (this.pagination.pageNumber > 1) {
+      this.paginationChange.emit({ ...this.pagination, pageNumber: this.pagination.pageNumber - 1 });
+    }
+  }
+
+  goToNextPage(): void {
+    const maxPage = Math.ceil(this.pagination.totalItems / this.pagination.pageSize);
+    if (this.pagination.pageNumber < maxPage) {
+      this.paginationChange.emit({ ...this.pagination, pageNumber: this.pagination.pageNumber + 1 });
+    }
+  }
+
+  goToLastPage(): void {
+    const maxPage = Math.ceil(this.pagination.totalItems / this.pagination.pageSize);
+    this.paginationChange.emit({ ...this.pagination, pageNumber: maxPage });
+  }
+
+  toggleFilters(): void {
+    this.filtersToggle.emit(!this.filtersCollapsed);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.pagination.totalItems / this.pagination.pageSize);
+  }
+
+  get canGoPrevious(): boolean {
+    return this.pagination.pageNumber > 1;
+  }
+
+  get canGoNext(): boolean {
+    return this.pagination.pageNumber < this.totalPages;
+  }
+
+  get canGoFirst(): boolean {
+    return this.pagination.pageNumber > 1;
+  }
+
+  get canGoLast(): boolean {
+    return this.pagination.pageNumber < this.totalPages;
+  }
+}

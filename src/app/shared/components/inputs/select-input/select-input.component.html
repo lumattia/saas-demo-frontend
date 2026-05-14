@@ -1,0 +1,23 @@
+<div class="select-input-wrapper">
+  <label *ngIf="labelKey" class="select-input-label">
+    {{ labelKey | translate }}
+    <span *ngIf="required" class="required-mark">*</span>
+  </label>
+  <select
+    [value]="value"
+    [disabled]="disabled"
+    (change)="onValueChange($event)"
+    class="select-input-field"
+    [class.error]="errorKey"
+  >
+    <option value="" *ngIf="placeholderKey">
+      {{ placeholderKey | translate }}
+    </option>
+    <option *ngFor="let option of options" [value]="option.id">
+      {{ option.name | translate }}
+    </option>
+  </select>
+  <span *ngIf="errorKey" class="select-input-error">
+    {{ errorKey | translate }}
+  </span>
+</div>

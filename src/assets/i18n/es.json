@@ -2,17 +2,116 @@
   "dresses": {
     "title": "Gestión de Vestidos",
     "list": {
-      "title": "Listado de Vestidos"
+      "title": "Listado de Vestidos",
+      "add": "Añadir Vestido",
+      "columns": {
+        "title": "Título",
+        "sku": "SKU",
+        "size": "Talla",
+        "color": "Color",
+        "stock": "Stock",
+        "price": "Precio"
+      },
+      "filter": {
+        "title": "Título",
+        "titlePlaceholder": "Filtrar por título",
+        "sku": "SKU",
+        "skuPlaceholder": "Filtrar por SKU",
+        "size": "Talla",
+        "sizePlaceholder": "Filtrar por talla"
+      },
+      "sort": {
+        "title": "Título",
+        "sku": "SKU",
+        "size": "Talla",
+        "stock": "Stock",
+        "price": "Precio"
+      }
     },
     "new": "Nuevo Vestido",
-    "edit": "Editar Vestido"
+    "edit": "Editar Vestido",
+    "form": {
+      "title": "Título",
+      "titlePlaceholder": "Introduce el título del vestido",
+      "sku": "SKU",
+      "skuPlaceholder": "Introduce el SKU",
+      "size": "Talla",
+      "sizePlaceholder": "Introduce la talla",
+      "color": "Color",
+      "price": "Precio",
+      "pricePlaceholder": "Introduce el precio",
+      "save": "Guardar",
+      "delete": "Eliminar",
+      "cancel": "Cancelar"
+    }
   },
   "inventory": {
     "title": "Gestión de Inventario",
     "list": {
-      "title": "Movimientos de Inventario"
+      "title": "Movimientos de Inventario",
+      "add": "Añadir Movimiento",
+      "columns": {
+        "sku": "SKU",
+        "title": "Título",
+        "size": "Talla",
+        "color": "Color",
+        "quantity": "Cantidad",
+        "date": "Fecha"
+      },
+      "filter": {
+        "title": "Título",
+        "titlePlaceholder": "Filtrar por título del vestido"
+      },
+      "sort": {
+        "sku": "SKU",
+        "quantity": "Cantidad",
+        "date": "Fecha"
+      }
     },
     "new": "Nuevo Movimiento",
-    "detail": "Detalle de Movimiento"
+    "edit": "Editar Movimiento",
+    "form": {
+      "dress": "Vestido",
+      "dressPlaceholder": "Seleccionar vestido",
+      "quantity": "Cantidad",
+      "quantityPlaceholder": "Introduce la cantidad",
+      "save": "Guardar",
+      "delete": "Eliminar",
+      "cancel": "Cancelar"
+    }
+  },
+  "nav": {
+    "home": "Inicio",
+    "dresses": "Vestidos",
+    "inventory": "Inventario",
+    "tenants": "Tenants",
+    "toggleTheme": "Cambiar tema",
+    "logout": "Cerrar sesión",
+    "createDemo": "Crear Demo (24h)",
+    "login": "Iniciar sesión"
+  },
+  "shared": {
+    "imageInput": {
+      "label": "Imagen"
+    },
+    "colorInput": {
+      "label": "Color",
+      "invalid": "Formato hexadecimal inválido (ej: #000000 o #FFF)"
+    },
+    "table": {
+      "showFilters": "Mostrar Filtros",
+      "hideFilters": "Ocultar Filtros",
+      "sortBy": "Ordenar por",
+      "noSort": "Sin ordenamiento",
+      "noData": "No hay datos disponibles",
+      "showing": "Mostrando",
+      "perPage": "por página",
+      "page": "Página",
+      "total": "total",
+      "first": "Primera",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "last": "Última"
+    }
   }
 }

@@ -1,0 +1,40 @@
+<main class="dress-list-container">
+  <div class="page-header">
+    <h1>{{ 'dresses.list.title' | translate }}</h1>
+    <a routerLink="/dresses/new" class="btn btn-primary">
+      {{ 'dresses.list.add' | translate }}
+    </a>
+  </div>
+
+  <app-pro-table
+    [columns]="columns"
+    [data]="dresses()"
+    [sortOptions]="sortOptions"
+    [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
+    (sortChange)="onSortChange($event)"
+    (paginationChange)="onPaginationChange($event)"
+  >
+    <div filters>
+      <div class="filter-row">
+        <app-text-input
+          labelKey="dresses.list.filter.title"
+          placeholderKey="dresses.list.filter.titlePlaceholder"
+          [value]="filter.title || ''"
+          (valueChange)="filter.title = $event; onFilterChange()"
+        />
+        <app-text-input
+          labelKey="dresses.list.filter.sku"
+          placeholderKey="dresses.list.filter.skuPlaceholder"
+          [value]="filter.sku || ''"
+          (valueChange)="filter.sku = $event; onFilterChange()"
+        />
+        <app-text-input
+          labelKey="dresses.list.filter.size"
+          placeholderKey="dresses.list.filter.sizePlaceholder"
+          [value]="filter.size || ''"
+          (valueChange)="filter.size = $event; onFilterChange()"
+        />
+      </div>
+    </div>
+  </app-pro-table>
+</main>

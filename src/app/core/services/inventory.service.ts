@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Inventory, InventoryFilter } from '../models/inventory.model';
 import { environment } from '../../../environments/environment';
-import { PageResponse } from '../interfaces/pageResponse.interface';
+import { PageResponse } from '../models/common.models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,15 @@ export class InventoryService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/inventory`;
 
-  getAll(filter?: InventoryFilter, sort?: string, order?: string): Observable<PageResponse<Inventory>> {
+  getAll(filter?: InventoryFilter, pageNumber?: number, pageSize?: number, sort?: string, order?: string): Observable<PageResponse<Inventory>> {
     let params = new HttpParams();
     if (filter) {
       Object.entries(filter).forEach(([key, value]) => {
         if (value) params = params.set(key, value);
       });
     }
+    if (pageNumber) params = params.set('page', pageNumber.toString());
+    if (pageSize) params = params.set('size', pageSize.toString());
     if (sort) params = params.set('sort', sort);
     if (order) params = params.set('order', order);
 

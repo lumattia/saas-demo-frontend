@@ -1,0 +1,117 @@
+{
+  "dresses": {
+    "title": "连衣裙管理",
+    "list": {
+      "title": "连衣裙列表",
+      "add": "添加连衣裙",
+      "columns": {
+        "title": "标题",
+        "sku": "SKU",
+        "size": "尺码",
+        "color": "颜色",
+        "stock": "库存",
+        "price": "价格"
+      },
+      "filter": {
+        "title": "标题",
+        "titlePlaceholder": "按标题筛选",
+        "sku": "SKU",
+        "skuPlaceholder": "按SKU筛选",
+        "size": "尺码",
+        "sizePlaceholder": "按尺码筛选"
+      },
+      "sort": {
+        "title": "标题",
+        "sku": "SKU",
+        "size": "尺码",
+        "stock": "库存",
+        "price": "价格"
+      }
+    },
+    "new": "新建连衣裙",
+    "edit": "编辑连衣裙",
+    "form": {
+      "title": "标题",
+      "titlePlaceholder": "输入连衣裙标题",
+      "sku": "SKU",
+      "skuPlaceholder": "输入SKU",
+      "size": "尺码",
+      "sizePlaceholder": "输入尺码",
+      "color": "颜色",
+      "price": "价格",
+      "pricePlaceholder": "输入价格",
+      "save": "保存",
+      "delete": "删除",
+      "cancel": "取消"
+    }
+  },
+  "inventory": {
+    "title": "库存管理",
+    "list": {
+      "title": "库存变动",
+      "add": "添加变动",
+      "columns": {
+        "sku": "SKU",
+        "title": "标题",
+        "size": "尺码",
+        "color": "颜色",
+        "quantity": "数量",
+        "date": "日期"
+      },
+      "filter": {
+        "title": "标题",
+        "titlePlaceholder": "按连衣裙标题筛选"
+      },
+      "sort": {
+        "sku": "SKU",
+        "quantity": "数量",
+        "date": "日期"
+      }
+    },
+    "new": "新建变动",
+    "edit": "编辑变动",
+    "form": {
+      "dress": "连衣裙",
+      "dressPlaceholder": "选择连衣裙",
+      "quantity": "数量",
+      "quantityPlaceholder": "输入数量",
+      "save": "保存",
+      "delete": "删除",
+      "cancel": "取消"
+    }
+  },
+  "nav": {
+    "home": "首页",
+    "dresses": "连衣裙",
+    "inventory": "库存",
+    "tenants": "租户",
+    "toggleTheme": "切换主题",
+    "logout": "退出登录",
+    "createDemo": "创建演示(24小时)",
+    "login": "登录"
+  },
+  "shared": {
+    "imageInput": {
+      "label": "图片"
+    },
+    "colorInput": {
+      "label": "颜色",
+      "invalid": "无效的十六进制颜色格式（例如：#000000 或 #FFF）"
+    },
+    "table": {
+      "showFilters": "显示筛选",
+      "hideFilters": "隐藏筛选",
+      "sortBy": "排序方式",
+      "noSort": "不排序",
+      "noData": "无可用数据",
+      "showing": "显示",
+      "perPage": "每页",
+      "page": "页",
+      "total": "总计",
+      "first": "第一页",
+      "previous": "上一页",
+      "next": "下一页",
+      "last": "最后一页"
+    }
+  }
+}

@@ -12,5 +12,4 @@ export interface DressFilter {
   title?: string;
   sku?: string;
   size?: string;
-  color?: string;
 }

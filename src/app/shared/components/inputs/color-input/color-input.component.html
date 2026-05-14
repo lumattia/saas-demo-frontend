@@ -1,0 +1,26 @@
+<div class="color-input-wrapper">
+  <label *ngIf="labelKey" class="color-input-label">
+    {{ labelKey | translate }}
+  </label>
+  <div class="color-input-container">
+    <input
+      type="color"
+      [value]="color"
+      (input)="onColorChange($event)"
+      class="color-input-field"
+      [class.invalid]="!isValid"
+    />
+    <input
+      type="text"
+      [value]="color"
+      (input)="onColorChange($event)"
+      class="color-text-field"
+      [class.invalid]="!isValid"
+      maxlength="7"
+      placeholder="#000000"
+    />
+  </div>
+  <span *ngIf="!isValid && errorKey" class="color-input-error">
+    {{ errorKey | translate }}
+  </span>
+</div>

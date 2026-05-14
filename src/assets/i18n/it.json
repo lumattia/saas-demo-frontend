@@ -1,0 +1,117 @@
+{
+  "dresses": {
+    "title": "Gestione Abiti",
+    "list": {
+      "title": "Elenco Abiti",
+      "add": "Aggiungi Abito",
+      "columns": {
+        "title": "Titolo",
+        "sku": "SKU",
+        "size": "Taglia",
+        "color": "Colore",
+        "stock": "Magazzino",
+        "price": "Prezzo"
+      },
+      "filter": {
+        "title": "Titolo",
+        "titlePlaceholder": "Filtra per titolo",
+        "sku": "SKU",
+        "skuPlaceholder": "Filtra per SKU",
+        "size": "Taglia",
+        "sizePlaceholder": "Filtra per taglia"
+      },
+      "sort": {
+        "title": "Titolo",
+        "sku": "SKU",
+        "size": "Taglia",
+        "stock": "Magazzino",
+        "price": "Prezzo"
+      }
+    },
+    "new": "Nuovo Abito",
+    "edit": "Modifica Abito",
+    "form": {
+      "title": "Titolo",
+      "titlePlaceholder": "Inserisci titolo abito",
+      "sku": "SKU",
+      "skuPlaceholder": "Inserisci SKU",
+      "size": "Taglia",
+      "sizePlaceholder": "Inserisci taglia",
+      "color": "Colore",
+      "price": "Prezzo",
+      "pricePlaceholder": "Inserisci prezzo",
+      "save": "Salva",
+      "delete": "Elimina",
+      "cancel": "Annulla"
+    }
+  },
+  "inventory": {
+    "title": "Gestione Inventario",
+    "list": {
+      "title": "Movimenti Inventario",
+      "add": "Aggiungi Movimento",
+      "columns": {
+        "sku": "SKU",
+        "title": "Titolo",
+        "size": "Taglia",
+        "color": "Colore",
+        "quantity": "Quantità",
+        "date": "Data"
+      },
+      "filter": {
+        "title": "Titolo",
+        "titlePlaceholder": "Filtra per titolo abito"
+      },
+      "sort": {
+        "sku": "SKU",
+        "quantity": "Quantità",
+        "date": "Data"
+      }
+    },
+    "new": "Nuovo Movimento",
+    "edit": "Modifica Movimento",
+    "form": {
+      "dress": "Abito",
+      "dressPlaceholder": "Seleziona abito",
+      "quantity": "Quantità",
+      "quantityPlaceholder": "Inserisci quantità",
+      "save": "Salva",
+      "delete": "Elimina",
+      "cancel": "Annulla"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "dresses": "Abiti",
+    "inventory": "Inventario",
+    "tenants": "Tenant",
+    "toggleTheme": "Cambia tema",
+    "logout": "Logout",
+    "createDemo": "Crea Demo (24h)",
+    "login": "Accedi"
+  },
+  "shared": {
+    "imageInput": {
+      "label": "Immagine"
+    },
+    "colorInput": {
+      "label": "Colore",
+      "invalid": "Formato esadecimale non valido (es: #000000 o #FFF)"
+    },
+    "table": {
+      "showFilters": "Mostra Filtri",
+      "hideFilters": "Nascondi Filtri",
+      "sortBy": "Ordina per",
+      "noSort": "Nessun ordinamento",
+      "noData": "Nessun dato disponibile",
+      "showing": "Mostrando",
+      "perPage": "per pagina",
+      "page": "Pagina",
+      "total": "totale",
+      "first": "Prima",
+      "previous": "Precedente",
+      "next": "Successiva",
+      "last": "Ultima"
+    }
+  }
+}

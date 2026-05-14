@@ -1,0 +1,26 @@
+<div class="text-input-wrapper">
+  @if (labelKey) {
+  <label class="text-input-label">
+    {{ labelKey | translate }}
+    @if (required) {
+      <span class="required-mark">*</span>
+    }
+  </label>
+}
+  <input
+    [type]="type"
+    [value]="value"
+    [placeholder]="placeholderKey ? (placeholderKey | translate) : ''"
+    [required]="required"
+    [disabled]="disabled"
+    [maxLength]="maxLength"
+    (input)="onValueChange($event)"
+    class="text-input-field"
+    [class.error]="errorKey"
+  />
+  @if (errorKey) {
+    <span class="text-input-error">
+      {{ errorKey | translate }}
+    </span>
+  }
+</div>

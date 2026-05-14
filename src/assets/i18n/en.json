@@ -2,17 +2,116 @@
   "dresses": {
     "title": "Dress Management",
     "list": {
-      "title": "Dress List"
+      "title": "Dress List",
+      "add": "Add Dress",
+      "columns": {
+        "title": "Title",
+        "sku": "SKU",
+        "size": "Size",
+        "color": "Color",
+        "stock": "Stock",
+        "price": "Price"
+      },
+      "filter": {
+        "title": "Title",
+        "titlePlaceholder": "Filter by title",
+        "sku": "SKU",
+        "skuPlaceholder": "Filter by SKU",
+        "size": "Size",
+        "sizePlaceholder": "Filter by size"
+      },
+      "sort": {
+        "title": "Title",
+        "sku": "SKU",
+        "size": "Size",
+        "stock": "Stock",
+        "price": "Price"
+      }
     },
     "new": "New Dress",
-    "edit": "Edit Dress"
+    "edit": "Edit Dress",
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "Enter dress title",
+      "sku": "SKU",
+      "skuPlaceholder": "Enter SKU",
+      "size": "Size",
+      "sizePlaceholder": "Enter size",
+      "color": "Color",
+      "price": "Price",
+      "pricePlaceholder": "Enter price",
+      "save": "Save",
+      "delete": "Delete",
+      "cancel": "Cancel"
+    }
   },
   "inventory": {
     "title": "Inventory Management",
     "list": {
-      "title": "Inventory Movements"
+      "title": "Inventory Movements",
+      "add": "Add Movement",
+      "columns": {
+        "sku": "SKU",
+        "title": "Title",
+        "size": "Size",
+        "color": "Color",
+        "quantity": "Quantity",
+        "date": "Date"
+      },
+      "filter": {
+        "title": "Title",
+        "titlePlaceholder": "Filter by dress title"
+      },
+      "sort": {
+        "sku": "SKU",
+        "quantity": "Quantity",
+        "date": "Date"
+      }
     },
     "new": "New Movement",
-    "detail": "Movement Detail"
+    "edit": "Edit Movement",
+    "form": {
+      "dress": "Dress",
+      "dressPlaceholder": "Select dress",
+      "quantity": "Quantity",
+      "quantityPlaceholder": "Enter quantity",
+      "save": "Save",
+      "delete": "Delete",
+      "cancel": "Cancel"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "dresses": "Dresses",
+    "inventory": "Inventory",
+    "tenants": "Tenants",
+    "toggleTheme": "Toggle theme",
+    "logout": "Logout",
+    "createDemo": "Create Demo (24h)",
+    "login": "Login"
+  },
+  "shared": {
+    "imageInput": {
+      "label": "Image"
+    },
+    "colorInput": {
+      "label": "Color",
+      "invalid": "Invalid hex color format (e.g., #000000 or #FFF)"
+    },
+    "table": {
+      "showFilters": "Show Filters",
+      "hideFilters": "Hide Filters",
+      "sortBy": "Sort by",
+      "noSort": "No sorting",
+      "noData": "No data available",
+      "showing": "Showing",
+      "perPage": "per page",
+      "page": "Page",
+      "total": "total",
+      "first": "First",
+      "previous": "Previous",
+      "next": "Next",
+      "last": "Last"
+    }
   }
 }

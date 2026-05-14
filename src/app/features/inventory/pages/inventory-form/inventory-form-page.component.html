@@ -1,0 +1,39 @@
+<main class="inventory-form-container">
+  <h1>{{ (id ? 'inventory.edit' : 'inventory.new') | translate }}</h1>
+
+  <form (ngSubmit)="save()" class="inventory-form">
+    <app-select-input
+      labelKey="inventory.form.dress"
+      placeholderKey="inventory.form.dressPlaceholder"
+      [options]="dresses"
+      [(value)]="item.dressId!"
+      [required]="true"
+      [disabled]="!!id"
+      (valueChange)="item.dressId = +$event"
+    />
+
+    <app-number-input
+      labelKey="inventory.form.quantity"
+      placeholderKey="inventory.form.quantityPlaceholder"
+      [(value)]="item.quantity!"
+      [decimalPlaces]="0"
+      [required]="true"
+      [min]="1"
+      (valueChange)="item.quantity = $event"
+    />
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary">
+        {{ 'inventory.form.save' | translate }}
+      </button>
+      @if (id) {
+        <button type="button" class="btn btn-danger" (click)="delete()">
+          {{ 'inventory.form.delete' | translate }}
+        </button>
+      }
+      <button type="button" class="btn" (click)="exit()">
+        {{ 'inventory.form.cancel' | translate }}
+      </button>
+    </div>
+  </form>
+</main>
