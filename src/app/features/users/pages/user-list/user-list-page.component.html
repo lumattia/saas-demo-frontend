@@ -1,0 +1,28 @@
+<main class="user-list-container">
+  <div class="page-header">
+    <h1>{{ 'users.list.title' | translate }}</h1>
+    <a routerLink="/users/new" class="btn btn-primary">
+      {{ 'users.list.add' | translate }}
+    </a>
+  </div>
+
+  <app-pro-table
+    [columns]="columns"
+    [data]="users()"
+    [sortOptions]="sortOptions"
+    [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
+    (sortChange)="onSortChange($event)"
+    (paginationChange)="onPaginationChange($event)"
+  >
+    <div filters>
+      <div class="filter-row">
+        <app-text-input
+          labelKey="users.list.filter.username"
+          placeholderKey="users.list.filter.usernamePlaceholder"
+          [value]="filter.username || ''"
+          (valueChange)="filter.username = $event; onFilterChange()"
+        />
+      </div>
+    </div>
+  </app-pro-table>
+</main>

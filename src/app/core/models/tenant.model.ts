@@ -3,23 +3,26 @@ export enum ModuleType {
   INVENTORY = 'INVENTORY'
 }
 
-export enum UserRole {
-  SUPERADMIN = 'SUPERADMIN',
-  ADMIN = 'ADMIN',
-  USER = 'USER'
+export interface Tenant {
+  id: string;
+  name: string;
+  createdAt: string;
+  expiresAt: string;
+  modules: ModuleType[];
 }
 
-export interface Tenant {
-  id: number;
+export interface TenantFilter {
+  name?: string;
+  module?: ModuleType;
+}
+
+export interface TenantCreateRequest {
   name: string;
   modules: ModuleType[];
 }
 
-export interface User {
-  id: number;
-  username: string;
-  role: UserRole;
-  tenant: Tenant;
-  auth0Sub?: string;
-  allowedTenants?: Tenant[];
+export interface TenantUpdateRequest {
+  id: string;
+  name: string;
+  modules: ModuleType[];
 }

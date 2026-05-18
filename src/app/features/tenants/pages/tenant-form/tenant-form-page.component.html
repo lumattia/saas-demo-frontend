@@ -1,0 +1,44 @@
+<main class="tenant-form-container">
+  <h1>{{ (id ? 'tenants.edit' : 'tenants.new') | translate }}</h1>
+
+  <form (ngSubmit)="save()" class="tenant-form">
+    <app-text-input
+      labelKey="tenants.form.name"
+      placeholderKey="tenants.form.namePlaceholder"
+      [value]="tenant.name || ''"
+      [required]="true"
+      (valueChange)="tenant.name = $event"
+    />
+
+    <div class="modules-section">
+      <label>{{ 'tenants.form.modules.label' | translate }}</label>
+      <div class="modules-list">
+        @for (module of moduleOptions; track module.id) {
+          <label class="module-checkbox">
+            <input
+              type="checkbox"
+              [value]="module.id"
+              [checked]="(tenant.modules || []).includes(module.id)"
+              (change)="onModuleChange(module.id, $event.target.checked)"
+            />
+            <span>{{ module.name | translate }}</span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary">
+        {{ 'tenants.form.save' | translate }}
+      </button>
+      @if (id) {
+        <button type="button" class="btn btn-danger" (click)="delete()">
+          {{ 'tenants.form.delete' | translate }}
+        </button>
+      }
+      <button type="button" class="btn" (click)="exit()">
+        {{ 'tenants.form.cancel' | translate }}
+      </button>
+    </div>
+  </form>
+</main>

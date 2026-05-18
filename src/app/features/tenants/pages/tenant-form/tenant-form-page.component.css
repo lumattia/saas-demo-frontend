@@ -1,0 +1,86 @@
+.tenant-form-container {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.tenant-form-container h1 {
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.tenant-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modules-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modules-section label {
+  font-weight: 600;
+  color: #333;
+}
+
+.modules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.module-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.module-checkbox input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn:hover {
+  background-color: #5a6268;
+}

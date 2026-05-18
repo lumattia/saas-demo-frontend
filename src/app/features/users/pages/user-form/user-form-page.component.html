@@ -1,0 +1,34 @@
+<main class="user-form-container">
+  <h1>{{ (id ? 'users.edit' : 'users.new') | translate }}</h1>
+
+  <form (ngSubmit)="save()" class="user-form">
+    <app-text-input
+      labelKey="users.form.username"
+      placeholderKey="users.form.usernamePlaceholder"
+      [value]="user.username || ''"
+      [required]="true"
+      (valueChange)="user.username = $event"
+    />
+
+    <app-select-input
+      labelKey="users.form.role"
+      [options]="roleOptions"
+      [value]="user.role || 'USER'"
+      (valueChange)="user.role = $event"
+    />
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary">
+        {{ 'users.form.save' | translate }}
+      </button>
+      @if (id) {
+        <button type="button" class="btn btn-danger" (click)="delete()">
+          {{ 'users.form.delete' | translate }}
+        </button>
+      }
+      <button type="button" class="btn" (click)="exit()">
+        {{ 'users.form.cancel' | translate }}
+      </button>
+    </div>
+  </form>
+</main>

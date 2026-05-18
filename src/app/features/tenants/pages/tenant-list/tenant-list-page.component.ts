@@ -1,0 +1,69 @@
+import { Component, inject, signal, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { TenantService } from '../../../../core/services/tenant.service';
+import { Tenant } from '../../../../core/models/tenant.model';
+import { ProTableComponent } from '../../../../shared/components/table/pro-table/pro-table.component';
+import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
+
+@Component({
+  selector: 'app-tenant-list-page',
+  standalone: true,
+  imports: [CommonModule, RouterLink, TranslateModule, ProTableComponent],
+  templateUrl: './tenant-list-page.component.html',
+  styleUrls: ['./tenant-list-page.component.css'],
+})
+export class TenantListPageComponent implements OnInit {
+  private tenantService = inject(TenantService);
+
+  tenants = signal<Tenant[]>([]);
+  sort = signal<string>('id');
+  order = signal<'asc' | 'desc'>('asc');
+  pageNumber = signal<number>(1);
+  pageSize = signal<number>(10);
+  totalItems = signal<number>(0);
+
+  columns = [
+    { key: 'name', labelKey: 'tenants.list.columns.name' },
+    { key: 'createdAt', labelKey: 'tenants.list.columns.createdAt' },
+    { key: 'expiresAt', labelKey: 'tenants.list.columns.expiresAt' },
+    { key: 'modules', labelKey: 'tenants.list.columns.modules' },
+  ];
+
+  sortOptions: IdName[] = [
+    { id: 'name', name: 'tenants.list.sort.name' },
+    { id: 'createdAt', name: 'tenants.list.sort.createdAt' },
+  ];
+
+  ngOnInit() {
+    this.loadTenants();
+  }
+
+  loadTenants() {
+    this.tenantService.getAll(this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
+      this.tenants.set(data.content);
+      this.totalItems.set(data.totalElements);
+    });
+  }
+
+  onSortChange(sortState: SortState) {
+    this.sort.set(sortState.field);
+    this.order.set(sortState.direction);
+    this.loadTenants();
+  }
+
+  onPaginationChange(pagination: PaginationState) {
+    this.pageNumber.set(pagination.pageNumber);
+    this.pageSize.set(pagination.pageSize);
+    this.loadTenants();
+  }
+
+  deleteTenant(id: string) {
+    if (confirm('Are you sure you want to delete this tenant?')) {
+      this.tenantService.delete(id).subscribe(() => {
+        this.loadTenants();
+      });
+    }
+  }
+}
