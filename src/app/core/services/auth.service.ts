@@ -1,6 +1,6 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { User } from '../models/tenant.model';
+import { User } from '../models/user.model';
 import { environment } from '../../../environments/environment';
 import { tap, switchMap, of } from 'rxjs';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';

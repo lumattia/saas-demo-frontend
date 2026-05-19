@@ -29,8 +29,9 @@ export class UserFormPageComponent implements OnInit {
   id: number | null = null;
   user: Partial<UserCreateRequest | UserUpdateRequest> = { username: '', role: 'USER', allowedTenantIds: [] };
   roleOptions = [
-    { id: 'USER', name: 'users.form.role.user' },
-    { id: 'ADMIN', name: 'users.form.role.admin' },
+    { id: 'USER', name: 'users.form.roleOptions.user' },
+    { id: 'ADMIN', name: 'users.form.roleOptions.admin' },
+    { id: 'SUPERADMIN', name: 'users.form.roleOptions.superadmin' },
   ];
 
   ngOnInit() {
@@ -46,6 +47,10 @@ export class UserFormPageComponent implements OnInit {
         };
       });
     }
+  }
+
+  onRoleChange(value: string | number): void {
+    this.user.role = value as 'USER' | 'ADMIN' | 'SUPERADMIN';
   }
 
   save(): void {

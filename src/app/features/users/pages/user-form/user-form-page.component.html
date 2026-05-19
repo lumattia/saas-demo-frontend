@@ -14,7 +14,7 @@
       labelKey="users.form.role"
       [options]="roleOptions"
       [value]="user.role || 'USER'"
-      (valueChange)="user.role = $event"
+      (valueChange)="onRoleChange($event)"
     />
 
     <div class="actions">

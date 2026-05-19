@@ -85,6 +85,11 @@ export class LoginPageComponent {
   readonly auth = inject(AuthService);
   loading = false;
   password='';
+  ngOnInit(){
+    if(this.auth.isAuthenticated()){
+      window.location.href = '/dresses';
+    }
+  }
   createDemo() {
     this.loading = true;
     this.auth.createDemoAccount().subscribe({

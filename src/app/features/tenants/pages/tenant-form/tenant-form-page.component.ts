@@ -78,9 +78,9 @@ export class TenantFormPageComponent implements OnInit {
     this.router.navigate(['/tenants']);
   }
 
-  onModuleChange(module: ModuleType, checked: boolean) {
+  onModuleChange(module: ModuleType, target: EventTarget|null) {
     const modules = this.tenant.modules || [];
-    if (checked) {
+    if (target && (target as HTMLInputElement).checked) {
       modules.push(module);
     } else {
       const index = modules.indexOf(module);

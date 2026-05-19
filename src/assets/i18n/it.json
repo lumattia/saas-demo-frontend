@@ -85,10 +85,37 @@
     "dresses": "Abiti",
     "inventory": "Inventario",
     "tenants": "Tenant",
+    "users": "Utenti",
     "toggleTheme": "Cambia tema",
     "logout": "Logout",
     "createDemo": "Crea Demo (24h)",
     "login": "Accedi"
+  },
+  "users": {
+    "title": "Gestione Utenti",
+    "list": {
+      "title": "Elenco Utenti",
+      "add": "Aggiungi Utente",
+      "columns": {
+        "username": "Utente",
+        "role": "Ruolo"
+      }
+    },
+    "new": "Nuovo Utente",
+    "edit": "Modifica Utente",
+    "form": {
+      "username": "Utente",
+      "usernamePlaceholder": "Inserisci utente",
+      "role": "Ruolo",
+      "roleOptions": {
+        "user": "Utente",
+        "admin": "Admin",
+        "superadmin": "Super Admin"
+      },
+      "save": "Salva",
+      "delete": "Elimina",
+      "cancel": "Annulla"
+    }
   },
   "shared": {
     "imageInput": {

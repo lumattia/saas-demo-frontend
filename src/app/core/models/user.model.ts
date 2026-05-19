@@ -1,7 +1,7 @@
 export interface User {
   id: number;
   username: string;
-  role: 'USER' | 'ADMIN';
+  role: 'USER' | 'ADMIN' | 'SUPERADMIN';
   tenant?: Tenant;
   allowedTenants?: IdName[];
 }
@@ -21,18 +21,18 @@ export interface IdName {
 
 export interface UserFilter {
   username?: string;
-  role?: 'USER' | 'ADMIN';
+  role?: 'USER' | 'ADMIN' | 'SUPERADMIN';
 }
 
 export interface UserCreateRequest {
   username: string;
-  role: 'USER' | 'ADMIN';
+  role: 'USER' | 'ADMIN' | 'SUPERADMIN';
   allowedTenantIds?: string[];
 }
 
 export interface UserUpdateRequest {
   id: number;
   username: string;
-  role: 'USER' | 'ADMIN';
+  role: 'USER' | 'ADMIN' | 'SUPERADMIN';
   allowedTenantIds?: string[];
 }

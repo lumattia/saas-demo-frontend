@@ -1,44 +1,31 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './shared/components/layout/main-layout.component';
-import { DressListPageComponent } from './features/dresses/pages/dress-list/dress-list-page.component';
-import { DressFormPageComponent } from './features/dresses/pages/dress-form/dress-form-page.component';
-import { InventoryListPageComponent } from './features/inventory/pages/inventory-list/inventory-list-page.component';
-import { InventoryFormPageComponent } from './features/inventory/pages/inventory-form/inventory-form-page.component';
-import { moduleGuard } from './core/guards/module.guard';
+import { authGuard } from './core/guards/auth.guard';
+import { authRoutes } from './routes/auth.route';
+import { dressesRoutes } from './routes/dresses.route';
+import { inventoryRoutes } from './routes/inventory.route';
+import { tenantsRoutes } from './routes/tenants.route';
+import { usersRoutes } from './routes/users.route';
 
 export const routes: Routes = [
+  ...authRoutes,
   {
     path: '',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
-        path: 'dresses',
-        component: DressListPageComponent,
-        canActivate: [moduleGuard],
-        data: { module: 'DRESS' }
-      },
-      {
-        path: 'dresses/:id',
-        component: DressFormPageComponent,
-        canActivate: [moduleGuard],
-        data: { module: 'DRESS' }
-      },
-      {
-        path: 'inventory',
-        component: InventoryListPageComponent,
-        canActivate: [moduleGuard],
-        data: { module: 'INVENTORY' }
-      },
-      {
-        path: 'inventory/:id',
-        component: InventoryFormPageComponent,
-        canActivate: [moduleGuard],
-        data: { module: 'INVENTORY' }
-      },
-           {
-        path: '**',
+        path: '',
         redirectTo: 'dresses',
         pathMatch: 'full',
+      },
+      ...dressesRoutes,
+      ...inventoryRoutes,
+      ...tenantsRoutes,
+      ...usersRoutes,
+      {
+        path: '**',
+        redirectTo: 'dresses',
       },
     ],
   },

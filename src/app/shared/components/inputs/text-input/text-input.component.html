@@ -13,7 +13,7 @@
     [placeholder]="placeholderKey ? (placeholderKey | translate) : ''"
     [required]="required"
     [disabled]="disabled"
-    [maxLength]="maxLength"
+    [maxLength]="maxLength ?? 20"
     (input)="onValueChange($event)"
     class="text-input-field"
     [class.error]="errorKey"

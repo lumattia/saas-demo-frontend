@@ -19,8 +19,8 @@ export class InventoryService {
         if (value) params = params.set(key, value);
       });
     }
-    if (pageNumber) params = params.set('page', pageNumber.toString());
-    if (pageSize) params = params.set('size', pageSize.toString());
+    if (pageNumber) params = params.set('pageNumber', pageNumber.toString());
+    if (pageSize) params = params.set('pageSize', pageSize.toString());
     if (sort) params = params.set('sort', sort);
     if (order) params = params.set('order', order);
 

@@ -42,6 +42,7 @@ export class DressFormPageComponent implements OnInit {
   }
 
   save(): void {
+    console.log(this.dress)
     if (this.id) {
       this.dressService.update(this.id, this.dress).subscribe(() => {
         this.router.navigate(['/dresses']);

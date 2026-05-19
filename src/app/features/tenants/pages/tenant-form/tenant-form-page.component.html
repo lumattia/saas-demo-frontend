@@ -19,7 +19,7 @@
               type="checkbox"
               [value]="module.id"
               [checked]="(tenant.modules || []).includes(module.id)"
-              (change)="onModuleChange(module.id, $event.target.checked)"
+              (change)="onModuleChange(module.id, $event.target)"
             />
             <span>{{ module.name | translate }}</span>
           </label>

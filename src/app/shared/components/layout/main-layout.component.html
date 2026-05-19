@@ -25,7 +25,7 @@
         </a>
       }
       @if (auth.isAtLeastAdmin()) {
-        <a routerLink="/admin/tenants" routerLinkActive="active" class="nav-item">
+        <a routerLink="/tenants" routerLinkActive="active" class="nav-item">
           <span class="nav-icon">🏢</span>
           <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.tenants' | translate }}</span>
         </a>
@@ -59,7 +59,7 @@
           <span class="user-name">{{ auth.user()?.username }}</span>
           <span class="tenant-name">({{ auth.user()?.tenant?.name }})</span>
         </div>
-        @if (auth.user()?.auth0Sub) {
+        @if (auth.user()) {
           <button class="btn btn-logout" (click)="auth.logout()">
             {{ 'nav.logout' | translate }}
           </button>

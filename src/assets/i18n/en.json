@@ -85,10 +85,37 @@
     "dresses": "Dresses",
     "inventory": "Inventory",
     "tenants": "Tenants",
+    "users": "Users",
     "toggleTheme": "Toggle theme",
     "logout": "Logout",
     "createDemo": "Create Demo (24h)",
     "login": "Login"
+  },
+  "users": {
+    "title": "User Management",
+    "list": {
+      "title": "User List",
+      "add": "Add User",
+      "columns": {
+        "username": "Username",
+        "role": "Role"
+      }
+    },
+    "new": "New User",
+    "edit": "Edit User",
+    "form": {
+      "username": "Username",
+      "usernamePlaceholder": "Enter username",
+      "role": "Role",
+      "roleOptions": {
+        "user": "User",
+        "admin": "Admin",
+        "superadmin": "Super Admin"
+      },
+      "save": "Save",
+      "delete": "Delete",
+      "cancel": "Cancel"
+    }
   },
   "shared": {
     "imageInput": {
