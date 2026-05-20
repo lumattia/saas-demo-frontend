@@ -41,13 +41,13 @@
       <tbody>
         <tr *ngFor="let row of data" (click)="onRowClick(row)" [class.clickable]="rowClickable">
           <td *ngFor="let column of columns">
-            @if (column.isColor && row[column.key]) {
+            @if (column.isColor && getNestedValue(row, column.key)) {
               <div class="color-cell">
-                <span class="color-circle" [style.background-color]="row[column.key]"></span>
-                <span class="color-value">{{ row[column.key] }}</span>
+                <span class="color-circle" [style.background-color]="getNestedValue(row, column.key)"></span>
+                <span class="color-value">{{ getNestedValue(row, column.key) }}</span>
               </div>
             } @else {
-              {{ row[column.key] }}
+              {{ getNestedValue(row, column.key) }}
             }
           </td>
           <td *ngIf="showActions" class="actions-cell">

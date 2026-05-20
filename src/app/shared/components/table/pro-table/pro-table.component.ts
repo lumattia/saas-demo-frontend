@@ -115,4 +115,8 @@ export class ProTableComponent {
   get canGoLast(): boolean {
     return this.pagination.pageNumber < this.totalPages;
   }
+
+  getNestedValue(row: any, key: string): any {
+    return key.split('.').reduce((obj, prop) => obj?.[prop], row);
+  }
 }
