@@ -35,10 +35,11 @@
               {{ currentSort.direction === 'asc' ? '↑' : '↓' }}
             </span>
           </th>
+          <th *ngIf="showActions" class="actions-header">{{ 'shared.table.actions' | translate }}</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of data">
+        <tr *ngFor="let row of data" (click)="onRowClick(row)" [class.clickable]="rowClickable">
           <td *ngFor="let column of columns">
             @if (column.isColor && row[column.key]) {
               <div class="color-cell">
@@ -49,9 +50,17 @@
               {{ row[column.key] }}
             }
           </td>
+          <td *ngIf="showActions" class="actions-cell">
+            <button (click)="onEditClick(row, $event)" class="action-btn edit-btn" title="{{ 'shared.table.edit' | translate }}">
+              ✏️
+            </button>
+            <button (click)="onDeleteClick(row, $event)" class="action-btn delete-btn" title="{{ 'shared.table.delete' | translate }}">
+              🗑️
+            </button>
+          </td>
         </tr>
         <tr *ngIf="data.length === 0">
-          <td [attr.colspan]="columns.length" class="no-data">
+          <td [attr.colspan]="showActions ? columns.length + 1 : columns.length" class="no-data">
             {{ 'shared.table.noData' | translate }}
           </td>
         </tr>

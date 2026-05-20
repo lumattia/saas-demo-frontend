@@ -1,6 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TenantService } from '../../../../core/services/tenant.service';
 import { Tenant } from '../../../../core/models/tenant.model';
@@ -16,6 +16,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 })
 export class TenantListPageComponent implements OnInit {
   private tenantService = inject(TenantService);
+  private router = inject(Router);
 
   tenants = signal<Tenant[]>([]);
   sort = signal<string>('id');
@@ -65,5 +66,13 @@ export class TenantListPageComponent implements OnInit {
         this.loadTenants();
       });
     }
+  }
+
+  onRowClick(tenant: Tenant): void {
+    this.router.navigate(['/tenants', tenant.id]);
+  }
+
+  onEditClick(tenant: Tenant): void {
+    this.router.navigate(['/tenants', tenant.id]);
   }
 }

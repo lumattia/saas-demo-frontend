@@ -4,7 +4,7 @@ import { HttpInterceptorFn } from "@angular/common/http";
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('access_token');
 
-  // Clonamos la petición para añadir el header si el token existe
+  // Clone the request to add the header if the token exists
   if (token) {
     const authReq = req.clone({
       setHeaders: {

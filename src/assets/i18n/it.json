@@ -91,6 +91,38 @@
     "createDemo": "Crea Demo (24h)",
     "login": "Accedi"
   },
+  "tenants": {
+    "title": "Gestione Tenant",
+    "list": {
+      "title": "Elenco Tenant",
+      "add": "Aggiungi Tenant",
+      "columns": {
+        "name": "Nome",
+        "createdAt": "Creato il",
+        "expiresAt": "Scade il",
+        "modules": "Moduli"
+      },
+      "sort": {
+        "name": "Nome",
+        "createdAt": "Creato il"
+      }
+    },
+    "new": "Nuovo Tenant",
+    "edit": "Modifica Tenant",
+    "form": {
+      "name": "Nome",
+      "namePlaceholder": "Inserisci nome tenant",
+      "modules": {
+        "label": "Moduli",
+        "DRESS": "Abiti",
+        "INVENTORY": "Inventario",
+        "USER": "Utenti"
+      },
+      "save": "Salva",
+      "delete": "Elimina",
+      "cancel": "Annulla"
+    }
+  },
   "users": {
     "title": "Gestione Utenti",
     "list": {
@@ -138,7 +170,10 @@
       "first": "Prima",
       "previous": "Precedente",
       "next": "Successiva",
-      "last": "Ultima"
+      "last": "Ultima",
+      "actions": "Azioni",
+      "edit": "Modifica",
+      "delete": "Elimina"
     }
   }
 }

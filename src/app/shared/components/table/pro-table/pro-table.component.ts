@@ -16,10 +16,14 @@ export class ProTableComponent {
   @Input() sortOptions: IdName[] = [];
   @Input() pagination: PaginationState = { pageSize: 10, pageNumber: 1, totalItems: 0 };
   @Input() filtersCollapsed = true;
+  @Input() showActions = true;
+  @Input() rowClickable = true;
 
   @Output() sortChange = new EventEmitter<SortState>();
   @Output() paginationChange = new EventEmitter<PaginationState>();
-  @Output() filtersToggle = new EventEmitter<boolean>();
+  @Output() rowClick = new EventEmitter<any>();
+  @Output() editClick = new EventEmitter<any>();
+  @Output() deleteClick = new EventEmitter<any>();
 
   currentSort: SortState = { field: '', direction: 'asc' };
 
@@ -73,7 +77,23 @@ export class ProTableComponent {
   }
 
   toggleFilters(): void {
-    this.filtersToggle.emit(!this.filtersCollapsed);
+    this.filtersCollapsed = !this.filtersCollapsed;
+  }
+
+  onRowClick(row: any): void {
+    if (this.rowClickable) {
+      this.rowClick.emit(row);
+    }
+  }
+
+  onEditClick(row: any, event: Event): void {
+    event.stopPropagation();
+    this.editClick.emit(row);
+  }
+
+  onDeleteClick(row: any, event: Event): void {
+    event.stopPropagation();
+    this.deleteClick.emit(row);
   }
 
   get totalPages(): number {

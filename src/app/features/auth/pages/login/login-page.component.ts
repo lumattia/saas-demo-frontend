@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
@@ -83,11 +84,26 @@ import { AuthService } from '../../../../core/services/auth.service';
 })
 export class LoginPageComponent {
   readonly auth = inject(AuthService);
+  private router = inject(Router);
   loading = false;
   password='';
+
   ngOnInit(){
     if(this.auth.isAuthenticated()){
-      window.location.href = '/dresses';
+      const availableModules = this.auth.modules();
+      if (availableModules.length > 0) {
+        const firstModule = availableModules[0];
+        const moduleRouteMap: { [key: string]: string } = {
+          'DRESS': '/dresses',
+          'INVENTORY': '/inventory',
+          'TENANT': '/tenants',
+          'USER': '/users'
+        };
+        const route = moduleRouteMap[firstModule] || '/dresses';
+        this.router.navigate([route]);
+      } else {
+        this.router.navigate(['/dresses']);
+      }
     }
   }
   createDemo() {
@@ -99,8 +115,8 @@ export class LoginPageComponent {
       },
       error: (err) => {
         this.loading = false;
-        console.error('Error al crear demo:', err);
-        alert('Hubo un error al conectar con el servidor. Por favor, asegúrate de que el backend esté corriendo en http://localhost:8080');
+        console.error('Error creating demo:', err);
+        alert('There was an error connecting to the server. Please make sure the backend is running at http://localhost:8080');
       }
     });
   }

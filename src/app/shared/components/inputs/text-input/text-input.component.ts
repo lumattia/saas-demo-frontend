@@ -21,7 +21,6 @@ export class TextInputComponent {
   @Output() valueChange = new EventEmitter<string>();
 
   onValueChange(event: Event): void {
-    console.log("A")
     const input = event.target as HTMLInputElement;
     this.valueChange.emit(input.value);
   }

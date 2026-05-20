@@ -127,6 +127,51 @@
   background: var(--bg-alt);
 }
 
+.pro-table tbody tr.clickable {
+  cursor: pointer;
+}
+
+.pro-table tbody tr.clickable:hover {
+  background: var(--primary-light);
+}
+
+.actions-header {
+  text-align: center;
+  width: 100px;
+}
+
+.actions-cell {
+  text-align: center;
+  padding: var(--spacing-sm) !important;
+}
+
+.action-btn {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  margin: 0 var(--spacing-xs);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.action-btn:hover {
+  background: var(--bg-alt);
+  transform: scale(1.1);
+}
+
+.edit-btn:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+}
+
+.delete-btn:hover {
+  background: var(--danger-light);
+  border-color: var(--danger);
+}
+
 .pro-table tbody tr:last-child td {
   border-bottom: none;
 }

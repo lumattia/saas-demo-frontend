@@ -1,6 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { InventoryService } from '../../../../core/services/inventory.service';
 import { Inventory, InventoryFilter } from '../../../../core/models/inventory.model';
@@ -17,6 +17,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 })
 export class InventoryListPageComponent implements OnInit {
   private inventoryService = inject(InventoryService);
+  private router = inject(Router);
   
   inventory = signal<Inventory[]>([]);
   filter: InventoryFilter = { dressTitle: '' };
@@ -75,5 +76,13 @@ export class InventoryListPageComponent implements OnInit {
         this.loadInventory();
       });
     }
+  }
+
+  onRowClick(item: Inventory): void {
+    this.router.navigate(['/inventory', item.id]);
+  }
+
+  onEditClick(item: Inventory): void {
+    this.router.navigate(['/inventory', item.id]);
   }
 }

@@ -13,6 +13,9 @@
     [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
     (sortChange)="onSortChange($event)"
     (paginationChange)="onPaginationChange($event)"
+    (rowClick)="onRowClick($event)"
+    (editClick)="onEditClick($event)"
+    (deleteClick)="deleteDress($event.id)"
   >
     <div filters>
       <div class="filter-row">

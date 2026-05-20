@@ -1,6 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { DressService } from '../../../../core/services/dress.service';
 import { Dress, DressFilter } from '../../../../core/models/dress.model';
@@ -17,6 +17,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 })
 export class DressListPageComponent implements OnInit {
   private dressService = inject(DressService);
+  private router = inject(Router);
 
   dresses = signal<Dress[]>([]);
   filter: DressFilter = { title: '', sku: '', size: '' };
@@ -77,5 +78,13 @@ export class DressListPageComponent implements OnInit {
         this.loadDresses();
       });
     }
+  }
+
+  onRowClick(dress: Dress): void {
+    this.router.navigate(['/dresses', dress.id]);
+  }
+
+  onEditClick(dress: Dress): void {
+    this.router.navigate(['/dresses', dress.id]);
   }
 }

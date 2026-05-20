@@ -23,6 +23,7 @@ export class AuthService {
   });
 
   hasModule(moduleName: string): boolean {
+    if (!moduleName) return true;
     return this.modules().some(m => m === moduleName.toUpperCase());
   }
 

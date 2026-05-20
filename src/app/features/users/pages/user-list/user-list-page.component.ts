@@ -1,6 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserService } from '../../../../core/services/user.service';
 import { User, UserFilter } from '../../../../core/models/user.model';
@@ -17,6 +17,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 })
 export class UserListPageComponent implements OnInit {
   private userService = inject(UserService);
+  private router = inject(Router);
 
   users = signal<User[]>([]);
   filter: UserFilter = { username: '', role: undefined };
@@ -71,5 +72,13 @@ export class UserListPageComponent implements OnInit {
         this.loadUsers();
       });
     }
+  }
+
+  onRowClick(user: User): void {
+    this.router.navigate(['/users', user.id]);
+  }
+
+  onEditClick(user: User): void {
+    this.router.navigate(['/users', user.id]);
   }
 }
