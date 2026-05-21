@@ -57,9 +57,9 @@
     }
   },
   "inventory": {
-    "title": "Inventory Management",
+    "title": "Dress Movement Management",
     "list": {
-      "title": "Inventory Movements",
+      "title": "Dress Movements",
       "add": "Add Movement",
       "columns": {
         "sku": "SKU",
@@ -105,7 +105,7 @@
   "nav": {
     "home": "Home",
     "dresses": "Dresses",
-    "inventory": "Inventory",
+    "inventory": "Dress Movements",
     "tenants": "Tenants",
     "users": "Users",
     "toggleTheme": "Toggle theme",

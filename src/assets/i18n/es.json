@@ -57,9 +57,9 @@
     }
   },
   "inventory": {
-    "title": "Gestión de Inventario",
+    "title": "Gestión de Movimientos de Vestidos",
     "list": {
-      "title": "Movimientos de Inventario",
+      "title": "Movimientos de Vestidos",
       "add": "Añadir Movimiento",
       "columns": {
         "sku": "SKU",
@@ -105,7 +105,7 @@
   "nav": {
     "home": "Inicio",
     "dresses": "Vestidos",
-    "inventory": "Inventario",
+    "inventory": "Movimientos de Vestidos",
     "tenants": "Tenants",
     "users": "Usuarios",
     "toggleTheme": "Cambiar tema",

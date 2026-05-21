@@ -57,9 +57,9 @@
     }
   },
   "inventory": {
-    "title": "库存管理",
+    "title": "连衣裙变动管理",
     "list": {
-      "title": "库存变动",
+      "title": "连衣裙变动",
       "add": "添加变动",
       "columns": {
         "sku": "SKU",
@@ -105,7 +105,7 @@
   "nav": {
     "home": "首页",
     "dresses": "连衣裙",
-    "inventory": "库存",
+    "inventory": "连衣裙变动",
     "tenants": "租户",
     "users": "用户",
     "toggleTheme": "切换主题",

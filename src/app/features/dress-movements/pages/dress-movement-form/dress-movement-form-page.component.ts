@@ -3,22 +3,22 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { InventoryService } from '../../../../core/services/inventory.service';
+import { DressMovementService } from '../../../../core/services/dress-movement.service';
 import { DressService } from '../../../../core/services/dress.service';
-import { Inventory } from '../../../../core/models/inventory.model';
+import { DressMovement } from '../../../../core/models/dress-movement.model';
 import { IdName } from '../../../../core/models/common.models';
 import { SelectInputComponent } from '../../../../shared/components/inputs/select-input/select-input.component';
 import { NumberInputComponent } from '../../../../shared/components/inputs/number-input/number-input.component';
 
 @Component({
-  selector: 'app-inventory-form-page',
+  selector: 'app-dress-movement-form-page',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, TranslateModule, SelectInputComponent, NumberInputComponent],
-  templateUrl: './inventory-form-page.component.html',
-  styleUrls: ['./inventory-form-page.component.css'],
+  templateUrl: './dress-movement-form-page.component.html',
+  styleUrls: ['./dress-movement-form-page.component.css'],
 })
-export class InventoryFormPageComponent implements OnInit {
-  private inventoryService = inject(InventoryService);
+export class DressMovementFormPageComponent implements OnInit {
+  private dressMovementService = inject(DressMovementService);
   private dressService = inject(DressService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -44,7 +44,7 @@ export class InventoryFormPageComponent implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam && idParam !== 'new') {
       this.id = +idParam;
-      this.inventoryService.getById(this.id).subscribe(data => {
+      this.dressMovementService.getById(this.id).subscribe((data: DressMovement) => {
         this.inventoryForm.patchValue({
           dressId: data.dress.id.toString(),
           quantity: data.quantity.toString()
@@ -55,31 +55,31 @@ export class InventoryFormPageComponent implements OnInit {
 
   save(): void {
     const formValue = this.inventoryForm.value;
-    const item: Partial<Inventory> = {
+    const item: Partial<DressMovement> = {
       dressId: formValue.dressId ? Number(formValue.dressId) : 0,
       quantity: formValue.quantity ? Number(formValue.quantity) : 0
     };
     if (this.id) {
-      this.inventoryService.update(this.id, item).subscribe(() => {
-        this.router.navigate(['/inventory']);
+      this.dressMovementService.update(this.id, item).subscribe(() => {
+        this.router.navigate(['/dress-movements']);
       });
     } else {
-      this.inventoryService.create(item).subscribe(() => {
-        this.router.navigate(['/inventory']);
+      this.dressMovementService.create(item).subscribe(() => {
+        this.router.navigate(['/dress-movements']);
       });
     }
   }
 
   delete(): void {
     if (this.id && confirm('Are you sure you want to delete this record?')) {
-      this.inventoryService.delete(this.id).subscribe(() => {
-        this.router.navigate(['/inventory']);
+      this.dressMovementService.delete(this.id).subscribe(() => {
+        this.router.navigate(['/dress-movements']);
       });
     }
   }
 
   exit(): void {
-    this.router.navigate(['/inventory']);
+    this.router.navigate(['/dress-movements']);
   }
 
   canDeactivate(): boolean {

@@ -3,25 +3,25 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { InventoryService } from '../../../../core/services/inventory.service';
-import { Inventory, InventoryFilter } from '../../../../core/models/inventory.model';
+import { DressMovementService } from '../../../../core/services/dress-movement.service';
+import { DressMovement, DressMovementFilter } from '../../../../core/models/dress-movement.model';
 import { ProTableComponent } from '../../../../shared/components/table/pro-table/pro-table.component';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
 
 @Component({
-  selector: 'app-inventory-list-page',
+  selector: 'app-dress-movement-list-page',
   standalone: true,
   imports: [CommonModule, RouterLink, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent],
-  templateUrl: './inventory-list-page.component.html',
-  styleUrls: ['./inventory-list-page.component.css'],
+  templateUrl: './dress-movement-list-page.component.html',
+  styleUrls: ['./dress-movement-list-page.component.css'],
 })
-export class InventoryListPageComponent implements OnInit {
-  private inventoryService = inject(InventoryService);
+export class DressMovementListPageComponent implements OnInit {
+  private dressMovementService = inject(DressMovementService);
   private router = inject(Router);
-  
-  inventory = signal<Inventory[]>([]);
-  filter: InventoryFilter = { dressTitle: '', sku: '', color: '', size: '', minQuantity: undefined, maxQuantity: undefined };
+
+  inventory = signal<DressMovement[]>([]);
+  filter: DressMovementFilter = { dressTitle: '', sku: '', color: '', size: '', minQuantity: undefined, maxQuantity: undefined };
   filterForm = new FormGroup({
     dressTitle: new FormControl(''),
     sku: new FormControl(''),
@@ -64,9 +64,9 @@ export class InventoryListPageComponent implements OnInit {
     { key: 'dress.sku', labelKey: 'inventory.list.columns.sku' },
     { key: 'dress.title', labelKey: 'inventory.list.columns.title' },
     { key: 'dress.size', labelKey: 'inventory.list.columns.size' },
-    { key: 'dress.color', labelKey: 'inventory.list.columns.color', isColor: true },
+    { key: 'dress.color', labelKey: 'inventory.list.columns.color', type: 'color' },
     { key: 'quantity', labelKey: 'inventory.list.columns.quantity' },
-    { key: 'instant', labelKey: 'inventory.list.columns.date' },
+    { key: 'instant', labelKey: 'inventory.list.columns.date', type: 'date' },
   ];
 
   sortOptions: IdName[] = [
@@ -86,7 +86,7 @@ export class InventoryListPageComponent implements OnInit {
     this.filter.size = this.filterForm.value.size || '';
     this.filter.minQuantity = this.filterForm.value.minQuantity ? Number(this.filterForm.value.minQuantity) : undefined;
     this.filter.maxQuantity = this.filterForm.value.maxQuantity ? Number(this.filterForm.value.maxQuantity) : undefined;
-    this.inventoryService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
+    this.dressMovementService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
       this.inventory.set(data.content);
       this.totalItems.set(data.totalElements);
       this.pageNumber.set(data.number);
@@ -112,17 +112,17 @@ export class InventoryListPageComponent implements OnInit {
 
   deleteItem(id: number) {
     if (confirm('Are you sure you want to delete this record?')) {
-      this.inventoryService.delete(id).subscribe(() => {
+      this.dressMovementService.delete(id).subscribe(() => {
         this.loadInventory();
       });
     }
   }
 
-  onRowClick(item: Inventory): void {
-    this.router.navigate(['/inventory', item.id]);
+  onRowClick(item: DressMovement): void {
+    this.router.navigate(['/dress-movements', item.id]);
   }
 
-  onEditClick(item: Inventory): void {
-    this.router.navigate(['/inventory', item.id]);
+  onEditClick(item: DressMovement): void {
+    this.router.navigate(['/dress-movements', item.id]);
   }
 }

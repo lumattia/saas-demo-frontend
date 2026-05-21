@@ -42,11 +42,13 @@
       <tbody>
         <tr *ngFor="let row of data" (click)="onRowClick(row)" [class.clickable]="rowClickable">
           <td *ngFor="let column of columns">
-            @if (column.isColor && getNestedValue(row, column.key)) {
+            @if (column.type === 'color' && getNestedValue(row, column.key)) {
               <div class="color-cell">
                 <span class="color-circle" [style.background-color]="getNestedValue(row, column.key)"></span>
                 <span class="color-value">{{ getNestedValue(row, column.key) }}</span>
               </div>
+            } @else if (column.type === 'date') {
+              {{ transformValue(getNestedValue(row, column.key), column) }}
             } @else {
               {{ getNestedValue(row, column.key) }}
             }

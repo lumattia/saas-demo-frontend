@@ -27,8 +27,8 @@ export class TenantListPageComponent implements OnInit {
 
   columns = [
     { key: 'name', labelKey: 'tenants.list.columns.name' },
-    { key: 'createdAt', labelKey: 'tenants.list.columns.createdAt' },
-    { key: 'expiresAt', labelKey: 'tenants.list.columns.expiresAt' },
+    { key: 'createdAt', labelKey: 'tenants.list.columns.createdAt', type: 'date' },
+    { key: 'expiresAt', labelKey: 'tenants.list.columns.expiresAt', type: 'date' },
     { key: 'modules', labelKey: 'tenants.list.columns.modules' },
   ];
 

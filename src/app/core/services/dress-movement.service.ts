@@ -1,18 +1,18 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Inventory, InventoryFilter } from '../models/inventory.model';
+import { DressMovement, DressMovementFilter } from '../models/dress-movement.model';
 import { environment } from '../../../environments/environment';
 import { PageResponse } from '../models/common.models';
 
 @Injectable({
   providedIn: 'root'
 })
-export class InventoryService {
+export class DressMovementService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/inventory`;
+  private apiUrl = `${environment.apiUrl}/dress-movements`;
 
-  getAll(filter?: InventoryFilter, pageNumber?: number, pageSize?: number, sort?: string, order?: string): Observable<PageResponse<Inventory>> {
+  getAll(filter?: DressMovementFilter, pageNumber?: number, pageSize?: number, sort?: string, order?: string): Observable<PageResponse<DressMovement>> {
     let params = new HttpParams();
     if (filter) {
       // Map frontend filter names to backend filter names
@@ -28,19 +28,19 @@ export class InventoryService {
     if (sort) params = params.set('sort', sort);
     if (order) params = params.set('order', order);
 
-    return this.http.get<PageResponse<Inventory>>(this.apiUrl+'/page', { params });
+    return this.http.get<PageResponse<DressMovement>>(this.apiUrl+'/page', { params });
   }
 
-  getById(id: number): Observable<Inventory> {
-    return this.http.get<Inventory>(`${this.apiUrl}/${id}`);
+  getById(id: number): Observable<DressMovement> {
+    return this.http.get<DressMovement>(`${this.apiUrl}/${id}`);
   }
 
-  create(inventory: Partial<Inventory>): Observable<Inventory> {
-    return this.http.post<Inventory>(this.apiUrl+'/create', inventory);
+  create(dressMovement: Partial<DressMovement>): Observable<DressMovement> {
+    return this.http.post<DressMovement>(this.apiUrl+'/create', dressMovement);
   }
 
-  update(id: number, inventory: Partial<Inventory>): Observable<Inventory> {
-    return this.http.put<Inventory>(this.apiUrl+'/update/'+id, inventory);
+  update(id: number, dressMovement: Partial<DressMovement>): Observable<DressMovement> {
+    return this.http.put<DressMovement>(this.apiUrl+'/update/'+id, dressMovement);
   }
 
   delete(id: number): Observable<void> {

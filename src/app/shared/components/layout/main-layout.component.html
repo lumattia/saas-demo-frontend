@@ -19,7 +19,7 @@
         </a>
       }
       @if (auth.hasModule('INVENTORY')) {
-        <a routerLink="/inventory" routerLinkActive="active" class="nav-item">
+        <a routerLink="/dress-movements" routerLinkActive="active" class="nav-item">
           <span class="nav-icon">📊</span>
           <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.inventory' | translate }}</span>
         </a>

@@ -3,6 +3,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
+import { DateTimePipe } from '../../../pipes/date-time.pipe';
+
+export interface TableColumn {
+  key: string;
+  labelKey: string;
+  type?: string; // 'color' | 'date'
+  pipe?: string | null;
+}
 
 @Component({
   selector: 'app-pro-table',
@@ -12,7 +20,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
   styleUrls: ['./pro-table.component.css'],
 })
 export class ProTableComponent {
-  @Input() columns: { key: string; labelKey: string; isColor?: boolean }[] = [];
+  @Input() columns: TableColumn[] = [];
   @Input() data: any[] = [];
   @Input() sortOptions: IdName[] = [];
   @Input() pagination: PaginationState = { pageSize: 10, pageNumber: 1, totalItems: 0 };
@@ -30,6 +38,7 @@ export class ProTableComponent {
   @Output() filterApply = new EventEmitter<void>();
 
   currentSort: SortState = { field: '', direction: 'asc' };
+  private dateTimePipe = new DateTimePipe();
 
   onSortChange(field: string): void {
     if (this.currentSort.field === field) {
@@ -130,5 +139,13 @@ export class ProTableComponent {
 
   getNestedValue(row: any, key: string): any {
     return key.split('.').reduce((obj, prop) => obj?.[prop], row);
+  }
+
+  transformValue(value: any, column: any): any {
+    if (column.type === 'date') {
+      const format = column.pipe || 'date';
+      return this.dateTimePipe.transform(value, format as 'date' | 'datetime' | 'time');
+    }
+    return value;
   }
 }
