@@ -1,17 +1,20 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { DressService } from '../../../../core/services/dress.service';
 import { Dress, DressFilter } from '../../../../core/models/dress.model';
 import { ProTableComponent } from '../../../../shared/components/table/pro-table/pro-table.component';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
+import { ColorInputComponent } from '../../../../shared/components/inputs/color-input/color-input.component';
+import { NumberInputComponent } from '../../../../shared/components/inputs/number-input/number-input.component';
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
 
 @Component({
   selector: 'app-dress-list-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslateModule, ProTableComponent, TextInputComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent, ColorInputComponent, NumberInputComponent],
   templateUrl: './dress-list-page.component.html',
   styleUrls: ['./dress-list-page.component.css'],
 })
@@ -20,10 +23,52 @@ export class DressListPageComponent implements OnInit {
   private router = inject(Router);
 
   dresses = signal<Dress[]>([]);
-  filter: DressFilter = { title: '', sku: '', size: '' };
+  filter: DressFilter = { title: '', sku: '', size: '', color: '', minStock: undefined, maxStock: undefined, minPrice: undefined, maxPrice: undefined };
+  filterForm = new FormGroup({
+    title: new FormControl(''),
+    sku: new FormControl(''),
+    size: new FormControl(''),
+    color: new FormControl(''),
+    minStock: new FormControl(''),
+    maxStock: new FormControl(''),
+    minPrice: new FormControl(''),
+    maxPrice: new FormControl('')
+  });
   sort = signal<string>('id');
+
+  get titleControl(): FormControl {
+    return this.filterForm.controls['title'] as FormControl;
+  }
+
+  get skuControl(): FormControl {
+    return this.filterForm.controls['sku'] as FormControl;
+  }
+
+  get sizeControl(): FormControl {
+    return this.filterForm.controls['size'] as FormControl;
+  }
+
+  get colorControl(): FormControl {
+    return this.filterForm.controls['color'] as FormControl;
+  }
+
+  get minStockControl(): FormControl {
+    return this.filterForm.controls['minStock'] as FormControl;
+  }
+
+  get maxStockControl(): FormControl {
+    return this.filterForm.controls['maxStock'] as FormControl;
+  }
+
+  get minPriceControl(): FormControl {
+    return this.filterForm.controls['minPrice'] as FormControl;
+  }
+
+  get maxPriceControl(): FormControl {
+    return this.filterForm.controls['maxPrice'] as FormControl;
+  }
   order = signal<'asc' | 'desc'>('asc');
-  pageNumber = signal<number>(1);
+  pageNumber = signal<number>(0);
   pageSize = signal<number>(10);
   totalItems = signal<number>(0);
 
@@ -49,9 +94,18 @@ export class DressListPageComponent implements OnInit {
   }
 
   loadDresses() {
+    this.filter.title = this.filterForm.value.title || '';
+    this.filter.sku = this.filterForm.value.sku || '';
+    this.filter.size = this.filterForm.value.size || '';
+    this.filter.color = this.filterForm.value.color || '';
+    this.filter.minStock = this.filterForm.value.minStock ? Number(this.filterForm.value.minStock) : undefined;
+    this.filter.maxStock = this.filterForm.value.maxStock ? Number(this.filterForm.value.maxStock) : undefined;
+    this.filter.minPrice = this.filterForm.value.minPrice ? Number(this.filterForm.value.minPrice) : undefined;
+    this.filter.maxPrice = this.filterForm.value.maxPrice ? Number(this.filterForm.value.maxPrice) : undefined;
     this.dressService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
       this.dresses.set(data.content);
       this.totalItems.set(data.totalElements);
+      this.pageNumber.set(data.number);
     });
   }
 

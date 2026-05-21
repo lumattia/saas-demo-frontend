@@ -78,6 +78,19 @@
   display: none;
 }
 
+.apply-filter-btn {
+  margin-top: var(--spacing-md);
+}
+
+.apply-filter-btn.filters-dirty {
+  background: var(--warning);
+  color: white;
+}
+
+.apply-filter-btn.filters-dirty:hover {
+  background: #e6a700;
+}
+
 .table-wrapper {
   overflow-x: auto;
   border: 1px solid var(--border);

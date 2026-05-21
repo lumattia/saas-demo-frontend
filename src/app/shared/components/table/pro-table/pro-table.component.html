@@ -22,6 +22,7 @@
   <!-- Collapsible Filters Zone -->
   <div class="filters-zone" [class.collapsed]="filtersCollapsed">
     <ng-content select="[filters]"></ng-content>
+    <button (click)="onFilterApply()" class="btn btn-primary apply-filter-btn">{{ 'shared.table.applyFilters' | translate }}</button>
   </div>
 
   <!-- Table -->
@@ -85,7 +86,7 @@
         {{ 'shared.table.page' | translate }}:
         <input
           type="number"
-          [value]="pagination.pageNumber"
+          [value]="pagination.pageNumber + 1"
           (change)="onPageNumberChange($event)"
           class="pagination-input"
           min="1"

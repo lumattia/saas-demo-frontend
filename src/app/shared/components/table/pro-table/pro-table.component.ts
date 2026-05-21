@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
 
@@ -18,12 +19,15 @@ export class ProTableComponent {
   @Input() filtersCollapsed = true;
   @Input() showActions = true;
   @Input() rowClickable = true;
+  @Input() showDirtyIndicator = false;
+  @Input() filterForm?: FormGroup;
 
   @Output() sortChange = new EventEmitter<SortState>();
   @Output() paginationChange = new EventEmitter<PaginationState>();
   @Output() rowClick = new EventEmitter<any>();
   @Output() editClick = new EventEmitter<any>();
   @Output() deleteClick = new EventEmitter<any>();
+  @Output() filterApply = new EventEmitter<void>();
 
   currentSort: SortState = { field: '', direction: 'asc' };
 
@@ -50,34 +54,42 @@ export class ProTableComponent {
     const newPageNumber = parseInt(input.value, 10);
     const maxPage = Math.ceil(this.pagination.totalItems / this.pagination.pageSize);
     if (newPageNumber > 0 && newPageNumber <= maxPage) {
-      this.paginationChange.emit({ ...this.pagination, pageNumber: newPageNumber });
+      this.paginationChange.emit({ ...this.pagination, pageNumber: newPageNumber - 1 });
     }
   }
 
   goToFirstPage(): void {
-    this.paginationChange.emit({ ...this.pagination, pageNumber: 1 });
+    this.paginationChange.emit({ ...this.pagination, pageNumber: 0 });
   }
 
   goToPreviousPage(): void {
-    if (this.pagination.pageNumber > 1) {
+    if (this.pagination.pageNumber > 0) {
       this.paginationChange.emit({ ...this.pagination, pageNumber: this.pagination.pageNumber - 1 });
     }
   }
 
   goToNextPage(): void {
     const maxPage = Math.ceil(this.pagination.totalItems / this.pagination.pageSize);
-    if (this.pagination.pageNumber < maxPage) {
+    if (this.pagination.pageNumber < maxPage - 1) {
       this.paginationChange.emit({ ...this.pagination, pageNumber: this.pagination.pageNumber + 1 });
     }
   }
 
   goToLastPage(): void {
     const maxPage = Math.ceil(this.pagination.totalItems / this.pagination.pageSize);
-    this.paginationChange.emit({ ...this.pagination, pageNumber: maxPage });
+    this.paginationChange.emit({ ...this.pagination, pageNumber: maxPage - 1 });
   }
 
   toggleFilters(): void {
     this.filtersCollapsed = !this.filtersCollapsed;
+  }
+
+  onFilterApply(): void {
+    // Reset dirty state on form
+    if (this.filterForm) {
+      this.filterForm.markAsPristine();
+    }
+    this.filterApply.emit();
   }
 
   onRowClick(row: any): void {
@@ -101,19 +113,19 @@ export class ProTableComponent {
   }
 
   get canGoPrevious(): boolean {
-    return this.pagination.pageNumber > 1;
+    return this.pagination.pageNumber > 0;
   }
 
   get canGoNext(): boolean {
-    return this.pagination.pageNumber < this.totalPages;
+    return this.pagination.pageNumber < this.totalPages - 1;
   }
 
   get canGoFirst(): boolean {
-    return this.pagination.pageNumber > 1;
+    return this.pagination.pageNumber > 0;
   }
 
   get canGoLast(): boolean {
-    return this.pagination.pageNumber < this.totalPages;
+    return this.pagination.pageNumber < this.totalPages - 1;
   }
 
   getNestedValue(row: any, key: string): any {

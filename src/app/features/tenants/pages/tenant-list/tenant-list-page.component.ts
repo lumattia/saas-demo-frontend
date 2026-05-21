@@ -21,7 +21,7 @@ export class TenantListPageComponent implements OnInit {
   tenants = signal<Tenant[]>([]);
   sort = signal<string>('id');
   order = signal<'asc' | 'desc'>('asc');
-  pageNumber = signal<number>(1);
+  pageNumber = signal<number>(0);
   pageSize = signal<number>(10);
   totalItems = signal<number>(0);
 
@@ -45,6 +45,7 @@ export class TenantListPageComponent implements OnInit {
     this.tenantService.getAll(this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
       this.tenants.set(data.content);
       this.totalItems.set(data.totalElements);
+      this.pageNumber.set(data.number);
     });
   }
 

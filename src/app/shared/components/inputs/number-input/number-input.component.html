@@ -1,25 +1,33 @@
 <div class="number-input-wrapper">
-  <label *ngIf="labelKey" class="number-input-label">
+  @if (labelKey) {
+  <label class="number-input-label">
     {{ labelKey | translate }}
-    <span *ngIf="required" class="required-mark">*</span>
+    @if (required) {
+      <span class="required-mark">*</span>
+    }
   </label>
+}
   <div class="number-input-container">
     <input
       type="number"
-      [value]="displayValue"
+      [formControl]="control"
       [placeholder]="placeholderKey ? (placeholderKey | translate) : ''"
       [required]="required"
       [disabled]="disabled"
-      [min]="min"
-      [max]="max"
+      [attr.min]="min"
+      [attr.max]="max"
       [step]="step"
-      (input)="onValueChange($event)"
       class="number-input-field"
       [class.error]="errorKey"
+      [class.dirty]="isDirty"
     />
-    <span *ngIf="unit" class="number-input-unit">{{ unit }}</span>
+    @if (unit) {
+      <span class="number-input-unit">{{ unit }}</span>
+    }
   </div>
-  <span *ngIf="errorKey" class="number-input-error">
-    {{ errorKey | translate }}
-  </span>
+  @if (errorKey) {
+    <span class="number-input-error">
+      {{ errorKey | translate }}
+    </span>
+  }
 </div>

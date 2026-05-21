@@ -18,7 +18,18 @@
         "sku": "SKU",
         "skuPlaceholder": "Filtra per SKU",
         "size": "Taglia",
-        "sizePlaceholder": "Filtra per taglia"
+        "sizePlaceholder": "Filtra per taglia",
+        "color": "Colore",
+        "colorPlaceholder": "Filtra per colore",
+        "minStock": "Magazzino Min",
+        "minStockPlaceholder": "Magazzino minimo",
+        "maxStock": "Magazzino Max",
+        "maxStockPlaceholder": "Magazzino massimo",
+        "minPrice": "Prezzo Min",
+        "minPricePlaceholder": "Prezzo minimo",
+        "maxPrice": "Prezzo Max",
+        "maxPricePlaceholder": "Prezzo massimo",
+        "apply": "Applica Filtri"
       },
       "sort": {
         "title": "Titolo",
@@ -60,7 +71,18 @@
       },
       "filter": {
         "title": "Titolo",
-        "titlePlaceholder": "Filtra per titolo abito"
+        "titlePlaceholder": "Filtra per titolo abito",
+        "sku": "SKU",
+        "skuPlaceholder": "Filtra per SKU",
+        "size": "Taglia",
+        "sizePlaceholder": "Filtra per taglia",
+        "color": "Colore",
+        "colorPlaceholder": "Filtra per colore",
+        "minQuantity": "Quantità Min",
+        "minQuantityPlaceholder": "Quantità minima",
+        "maxQuantity": "Quantità Max",
+        "maxQuantityPlaceholder": "Quantità massima",
+        "apply": "Applica Filtri"
       },
       "sort": {
         "sku": "SKU",
@@ -131,6 +153,11 @@
       "columns": {
         "username": "Utente",
         "role": "Ruolo"
+      },
+      "filter": {
+        "username": "Nome utente",
+        "usernamePlaceholder": "Filtra per nome utente",
+        "apply": "Applica Filtri"
       }
     },
     "new": "Nuovo Utente",
@@ -161,19 +188,20 @@
       "showFilters": "Mostra Filtri",
       "hideFilters": "Nascondi Filtri",
       "sortBy": "Ordina per",
-      "noSort": "Nessun ordinamento",
+      "noSort": "Nessun Ordinamento",
       "noData": "Nessun dato disponibile",
       "showing": "Mostrando",
       "perPage": "per pagina",
       "page": "Pagina",
-      "total": "totale",
-      "first": "Prima",
+      "first": "Primo",
       "previous": "Precedente",
-      "next": "Successiva",
-      "last": "Ultima",
+      "next": "Successivo",
+      "last": "Ultimo",
+      "total": "totale",
       "actions": "Azioni",
       "edit": "Modifica",
-      "delete": "Elimina"
+      "delete": "Elimina",
+      "applyFilters": "Applica Filtri"
     }
   }
 }

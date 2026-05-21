@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { IdName } from '../../../../core/models/common.models';
 
@@ -8,22 +8,21 @@ import { IdName } from '../../../../core/models/common.models';
 @Component({
   selector: 'app-select-input',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './select-input.component.html',
   styleUrls: ['./select-input.component.css'],
 })
 export class SelectInputComponent {
   @Input() labelKey = '';
   @Input() placeholderKey = '';
-  @Input() value:string|number = '';
+  @Input() control: FormControl = new FormControl('');
   @Input() options: IdName[] = [];
   @Input() required = false;
   @Input() disabled = false;
   @Input() errorKey = '';
-  @Output() valueChange = new EventEmitter<string|number>();
+  @Input() showDirtyIndicator = false;
 
-  onValueChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.valueChange.emit(select.value);
+  get isDirty(): boolean {
+    return this.showDirtyIndicator && this.control.dirty;
   }
 }

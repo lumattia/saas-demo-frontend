@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserService } from '../../../../core/services/user.service';
@@ -13,7 +13,7 @@ import { SelectInputComponent } from '../../../../shared/components/inputs/selec
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     TranslateModule,
     TextInputComponent,
     SelectInputComponent,
@@ -27,48 +27,56 @@ export class UserFormPageComponent implements OnInit {
   private router = inject(Router);
 
   id: number | null = null;
-  user: Partial<UserCreateRequest | UserUpdateRequest> = { username: '', role: 'USER', allowedTenantIds: [] };
+  userForm = new FormGroup({
+    username: new FormControl(''),
+    role: new FormControl('USER')
+  });
+  allowedTenantIds: string[] = [];
   roleOptions = [
     { id: 'USER', name: 'users.form.roleOptions.user' },
     { id: 'ADMIN', name: 'users.form.roleOptions.admin' },
     { id: 'SUPERADMIN', name: 'users.form.roleOptions.superadmin' },
   ];
 
+  get usernameControl(): FormControl {
+    return this.userForm.controls['username'] as FormControl;
+  }
+
+  get roleControl(): FormControl {
+    return this.userForm.controls['role'] as FormControl;
+  }
+
   ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam && idParam !== 'new') {
       this.id = +idParam;
       this.userService.getById(this.id).subscribe(data => {
-        this.user = {
-          id: data.id,
+        this.userForm.patchValue({
           username: data.username,
-          role: data.role,
-          allowedTenantIds: data.allowedTenants?.map(t => t.id) || [],
-        };
+          role: data.role
+        });
+        this.allowedTenantIds = data.allowedTenants?.map(t => t.id.toString()) || [];
       });
     }
   }
 
-  onRoleChange(value: string | number): void {
-    this.user.role = value as 'USER' | 'ADMIN' | 'SUPERADMIN';
-  }
-
   save(): void {
+    const formValue = this.userForm.value;
     if (this.id) {
       const updateRequest: UserUpdateRequest = {
         id: this.id,
-        username: this.user.username || '',
-        role: this.user.role || 'USER',
-        allowedTenantIds: this.user.allowedTenantIds,
+        username: formValue.username || '',
+        role: (formValue.role || 'USER') as 'USER' | 'ADMIN' | 'SUPERADMIN',
+        allowedTenantIds: this.allowedTenantIds,
       };
       this.userService.update(this.id, updateRequest).subscribe(() => {
         this.router.navigate(['/users']);
       });
     } else {
       const createRequest: UserCreateRequest = {
-        username: this.user.username || '',
-        role: this.user.role || 'USER',
-        allowedTenantIds: this.user.allowedTenantIds,
+        username: formValue.username || '',
+        role: (formValue.role || 'USER') as 'USER' | 'ADMIN' | 'SUPERADMIN',
+        allowedTenantIds: this.allowedTenantIds,
       };
       this.userService.create(createRequest).subscribe(() => {
         this.router.navigate(['/users']);
@@ -86,5 +94,9 @@ export class UserFormPageComponent implements OnInit {
 
   exit(): void {
     this.router.navigate(['/users']);
+  }
+
+  canDeactivate(): boolean {
+    return !this.userForm.dirty;
   }
 }

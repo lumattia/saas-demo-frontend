@@ -11,19 +11,22 @@
     [data]="users()"
     [sortOptions]="sortOptions"
     [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
+    [showDirtyIndicator]="true"
+    [filterForm]="filterForm"
     (sortChange)="onSortChange($event)"
     (paginationChange)="onPaginationChange($event)"
     (rowClick)="onRowClick($event)"
     (editClick)="onEditClick($event)"
     (deleteClick)="deleteUser($event.id)"
+    (filterApply)="onFilterChange()"
   >
     <div filters>
       <div class="filter-row">
         <app-text-input
           labelKey="users.list.filter.username"
           placeholderKey="users.list.filter.usernamePlaceholder"
-          [value]="filter.username || ''"
-          (valueChange)="filter.username = $event; onFilterChange()"
+          [control]="usernameControl"
+          [showDirtyIndicator]="true"
         />
       </div>
     </div>

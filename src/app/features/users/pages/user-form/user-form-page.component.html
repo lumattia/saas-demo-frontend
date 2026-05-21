@@ -5,16 +5,14 @@
     <app-text-input
       labelKey="users.form.username"
       placeholderKey="users.form.usernamePlaceholder"
-      [value]="user.username || ''"
+      [control]="usernameControl"
       [required]="true"
-      (valueChange)="user.username = $event"
     />
 
     <app-select-input
       labelKey="users.form.role"
       [options]="roleOptions"
-      [value]="user.role || 'USER'"
-      (valueChange)="onRoleChange($event)"
+      [control]="roleControl"
     />
 
     <div class="actions">

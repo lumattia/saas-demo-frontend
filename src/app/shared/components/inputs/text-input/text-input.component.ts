@@ -1,27 +1,26 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-text-input',
   standalone: true,
-  imports: [FormsModule, TranslateModule],
+  imports: [ReactiveFormsModule, TranslateModule],
   templateUrl: './text-input.component.html',
   styleUrls: ['./text-input.component.css'],
 })
 export class TextInputComponent {
   @Input() labelKey = '';
   @Input() placeholderKey = '';
-  @Input() value = '';
+  @Input() control: FormControl = new FormControl('');
   @Input() type = 'text';
   @Input() required = false;
   @Input() disabled = false;
   @Input() maxLength?: number;
   @Input() errorKey = '';
-  @Output() valueChange = new EventEmitter<string>();
+  @Input() showDirtyIndicator = false;
 
-  onValueChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.valueChange.emit(input.value);
+  get isDirty(): boolean {
+    return this.showDirtyIndicator && this.control.dirty;
   }
 }

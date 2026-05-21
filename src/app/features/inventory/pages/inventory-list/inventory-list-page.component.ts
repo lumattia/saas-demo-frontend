@@ -1,6 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { InventoryService } from '../../../../core/services/inventory.service';
 import { Inventory, InventoryFilter } from '../../../../core/models/inventory.model';
@@ -11,7 +12,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 @Component({
   selector: 'app-inventory-list-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslateModule, ProTableComponent, TextInputComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent],
   templateUrl: './inventory-list-page.component.html',
   styleUrls: ['./inventory-list-page.component.css'],
 })
@@ -20,10 +21,42 @@ export class InventoryListPageComponent implements OnInit {
   private router = inject(Router);
   
   inventory = signal<Inventory[]>([]);
-  filter: InventoryFilter = { dressTitle: '' };
+  filter: InventoryFilter = { dressTitle: '', sku: '', color: '', size: '', minQuantity: undefined, maxQuantity: undefined };
+  filterForm = new FormGroup({
+    dressTitle: new FormControl(''),
+    sku: new FormControl(''),
+    color: new FormControl(''),
+    size: new FormControl(''),
+    minQuantity: new FormControl(''),
+    maxQuantity: new FormControl('')
+  });
   sort = signal<string>('id');
+
+  get dressTitleControl(): FormControl {
+    return this.filterForm.controls['dressTitle'] as FormControl;
+  }
+
+  get skuControl(): FormControl {
+    return this.filterForm.controls['sku'] as FormControl;
+  }
+
+  get colorControl(): FormControl {
+    return this.filterForm.controls['color'] as FormControl;
+  }
+
+  get sizeControl(): FormControl {
+    return this.filterForm.controls['size'] as FormControl;
+  }
+
+  get minQuantityControl(): FormControl {
+    return this.filterForm.controls['minQuantity'] as FormControl;
+  }
+
+  get maxQuantityControl(): FormControl {
+    return this.filterForm.controls['maxQuantity'] as FormControl;
+  }
   order = signal<'asc' | 'desc'>('asc');
-  pageNumber = signal<number>(1);
+  pageNumber = signal<number>(0);
   pageSize = signal<number>(10);
   totalItems = signal<number>(0);
 
@@ -47,9 +80,16 @@ export class InventoryListPageComponent implements OnInit {
   }
 
   loadInventory() {
+    this.filter.dressTitle = this.filterForm.value.dressTitle || '';
+    this.filter.sku = this.filterForm.value.sku || '';
+    this.filter.color = this.filterForm.value.color || '';
+    this.filter.size = this.filterForm.value.size || '';
+    this.filter.minQuantity = this.filterForm.value.minQuantity ? Number(this.filterForm.value.minQuantity) : undefined;
+    this.filter.maxQuantity = this.filterForm.value.maxQuantity ? Number(this.filterForm.value.maxQuantity) : undefined;
     this.inventoryService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
       this.inventory.set(data.content);
       this.totalItems.set(data.totalElements);
+      this.pageNumber.set(data.number);
     });
   }
 

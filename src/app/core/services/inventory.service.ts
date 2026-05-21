@@ -15,9 +15,13 @@ export class InventoryService {
   getAll(filter?: InventoryFilter, pageNumber?: number, pageSize?: number, sort?: string, order?: string): Observable<PageResponse<Inventory>> {
     let params = new HttpParams();
     if (filter) {
-      Object.entries(filter).forEach(([key, value]) => {
-        if (value) params = params.set(key, value);
-      });
+      // Map frontend filter names to backend filter names
+      if (filter.dressTitle) params = params.set('title', filter.dressTitle);
+      if (filter.sku) params = params.set('sku', filter.sku);
+      if (filter.color) params = params.set('color', filter.color);
+      if (filter.size) params = params.set('size', filter.size);
+      if (filter.minQuantity !== undefined) params = params.set('minQuantity', filter.minQuantity.toString());
+      if (filter.maxQuantity !== undefined) params = params.set('maxQuantity', filter.maxQuantity.toString());
     }
     if (pageNumber) params = params.set('pageNumber', pageNumber.toString());
     if (pageSize) params = params.set('pageSize', pageSize.toString());

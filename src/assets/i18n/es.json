@@ -18,7 +18,18 @@
         "sku": "SKU",
         "skuPlaceholder": "Filtrar por SKU",
         "size": "Talla",
-        "sizePlaceholder": "Filtrar por talla"
+        "sizePlaceholder": "Filtrar por talla",
+        "color": "Color",
+        "colorPlaceholder": "Filtrar por color",
+        "minStock": "Stock Mín",
+        "minStockPlaceholder": "Stock mínimo",
+        "maxStock": "Stock Máx",
+        "maxStockPlaceholder": "Stock máximo",
+        "minPrice": "Precio Mín",
+        "minPricePlaceholder": "Precio mínimo",
+        "maxPrice": "Precio Máx",
+        "maxPricePlaceholder": "Precio máximo",
+        "apply": "Aplicar Filtros"
       },
       "sort": {
         "title": "Título",
@@ -60,7 +71,18 @@
       },
       "filter": {
         "title": "Título",
-        "titlePlaceholder": "Filtrar por título del vestido"
+        "titlePlaceholder": "Filtrar por título del vestido",
+        "sku": "SKU",
+        "skuPlaceholder": "Filtrar por SKU",
+        "size": "Talla",
+        "sizePlaceholder": "Filtrar por talla",
+        "color": "Color",
+        "colorPlaceholder": "Filtrar por color",
+        "minQuantity": "Cantidad Mín",
+        "minQuantityPlaceholder": "Cantidad mínima",
+        "maxQuantity": "Cantidad Máx",
+        "maxQuantityPlaceholder": "Cantidad máxima",
+        "apply": "Aplicar Filtros"
       },
       "sort": {
         "sku": "SKU",
@@ -131,6 +153,11 @@
       "columns": {
         "username": "Usuario",
         "role": "Rol"
+      },
+      "filter": {
+        "username": "Nombre de usuario",
+        "usernamePlaceholder": "Filtrar por nombre de usuario",
+        "apply": "Aplicar Filtros"
       }
     },
     "new": "Nuevo Usuario",
@@ -173,7 +200,8 @@
       "last": "Última",
       "actions": "Acciones",
       "edit": "Editar",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "applyFilters": "Aplicar Filtros"
     }
   }
 }

@@ -9,14 +9,14 @@
 }
   <input
     [type]="type"
-    [value]="value"
+    [formControl]="control"
     [placeholder]="placeholderKey ? (placeholderKey | translate) : ''"
     [required]="required"
     [disabled]="disabled"
     [maxLength]="maxLength ?? 20"
-    (input)="onValueChange($event)"
     class="text-input-field"
     [class.error]="errorKey"
+    [class.dirty]="isDirty"
   />
   @if (errorKey) {
     <span class="text-input-error">

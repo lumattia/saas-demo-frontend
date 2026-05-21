@@ -1,26 +1,30 @@
 <div class="color-input-wrapper">
-  <label *ngIf="labelKey" class="color-input-label">
+  @if (labelKey) {
+  <label class="color-input-label">
     {{ labelKey | translate }}
   </label>
+}
   <div class="color-input-container">
     <input
       type="color"
-      [value]="color"
-      (input)="onColorChange($event)"
+      [formControl]="control"
       class="color-input-field"
       [class.invalid]="!isValid"
+      [class.dirty]="isDirty"
     />
     <input
       type="text"
-      [value]="color"
-      (input)="onColorChange($event)"
+      [formControl]="control"
       class="color-text-field"
       [class.invalid]="!isValid"
+      [class.dirty]="isDirty"
       maxlength="7"
       placeholder="#000000"
     />
   </div>
-  <span *ngIf="!isValid && errorKey" class="color-input-error">
-    {{ errorKey | translate }}
-  </span>
+  @if (!isValid && errorKey) {
+    <span class="color-input-error">
+      {{ errorKey | translate }}
+    </span>
+  }
 </div>

@@ -1,19 +1,19 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-number-input',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './number-input.component.html',
   styleUrls: ['./number-input.component.css'],
 })
 export class NumberInputComponent {
   @Input() labelKey = '';
   @Input() placeholderKey = '';
-  @Input() value = 0;
+  @Input() control: FormControl = new FormControl(0);
   @Input() decimalPlaces = 0;
   @Input() unit = '';
   @Input() required = false;
@@ -21,31 +21,20 @@ export class NumberInputComponent {
   @Input() min?: number;
   @Input() max?: number;
   @Input() errorKey = '';
-  @Output() valueChange = new EventEmitter<number>();
+  @Input() showDirtyIndicator = false;
 
   get step(): string {
     return this.decimalPlaces > 0 ? `0.${'0'.repeat(this.decimalPlaces - 1)}1` : '1';
   }
 
   get displayValue(): string {
+    const value = this.control.value || 0;
     return this.decimalPlaces > 0 
-      ? this.value.toFixed(this.decimalPlaces) 
-      : this.value.toString();
+      ? value.toFixed(this.decimalPlaces) 
+      : value.toString();
   }
 
-  onValueChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const rawValue = parseFloat(input.value);
-    
-    if (isNaN(rawValue)) {
-      this.valueChange.emit(0);
-      return;
-    }
-
-    const roundedValue = this.decimalPlaces > 0
-      ? parseFloat(rawValue.toFixed(this.decimalPlaces))
-      : Math.round(rawValue);
-
-    this.valueChange.emit(roundedValue);
+  get isDirty(): boolean {
+    return this.showDirtyIndicator && this.control.dirty;
   }
 }

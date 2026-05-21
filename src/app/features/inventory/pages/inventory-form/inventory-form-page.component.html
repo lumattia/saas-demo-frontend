@@ -6,20 +6,18 @@
       labelKey="inventory.form.dress"
       placeholderKey="inventory.form.dressPlaceholder"
       [options]="dresses"
-      [(value)]="item.dressId!"
+      [control]="dressIdControl"
       [required]="true"
       [disabled]="!!id"
-      (valueChange)="item.dressId = +$event"
     />
 
     <app-number-input
       labelKey="inventory.form.quantity"
       placeholderKey="inventory.form.quantityPlaceholder"
-      [(value)]="item.quantity!"
+      [control]="quantityControl"
       [decimalPlaces]="0"
       [required]="true"
       [min]="1"
-      (valueChange)="item.quantity = $event"
     />
 
     <div class="actions">

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TenantService } from '../../../../core/services/tenant.service';
@@ -12,7 +12,7 @@ import { TextInputComponent } from '../../../../shared/components/inputs/text-in
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     TranslateModule,
     TextInputComponent,
   ],
@@ -25,40 +25,47 @@ export class TenantFormPageComponent implements OnInit {
   private router = inject(Router);
 
   id: string | null = null;
-  tenant: Partial<TenantCreateRequest | TenantUpdateRequest> = { name: '', modules: [] };
+  tenantForm = new FormGroup({
+    name: new FormControl('')
+  });
+  modules: ModuleType[] = [];
   moduleOptions = [
     { id: ModuleType.DRESS, name: 'tenants.form.modules.dress' },
     { id: ModuleType.INVENTORY, name: 'tenants.form.modules.inventory' },
   ];
+
+  get nameControl(): FormControl {
+    return this.tenantForm.controls['name'] as FormControl;
+  }
 
   ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam && idParam !== 'new') {
       this.id = idParam;
       this.tenantService.getById(this.id).subscribe(data => {
-        this.tenant = {
-          id: data.id,
-          name: data.name,
-          modules: data.modules || [],
-        };
+        this.tenantForm.patchValue({
+          name: data.name
+        });
+        this.modules = data.modules || [];
       });
     }
   }
 
   save(): void {
+    const formValue = this.tenantForm.value;
     if (this.id) {
       const updateRequest: TenantUpdateRequest = {
         id: this.id,
-        name: this.tenant.name || '',
-        modules: this.tenant.modules || [],
+        name: formValue.name || '',
+        modules: this.modules || [],
       };
       this.tenantService.update(this.id, updateRequest).subscribe(() => {
         this.router.navigate(['/tenants']);
       });
     } else {
       const createRequest: TenantCreateRequest = {
-        name: this.tenant.name || '',
-        modules: this.tenant.modules || [],
+        name: formValue.name || '',
+        modules: this.modules || [],
       };
       this.tenantService.create(createRequest).subscribe(() => {
         this.router.navigate(['/tenants']);
@@ -79,15 +86,17 @@ export class TenantFormPageComponent implements OnInit {
   }
 
   onModuleChange(module: ModuleType, target: EventTarget|null) {
-    const modules = this.tenant.modules || [];
     if (target && (target as HTMLInputElement).checked) {
-      modules.push(module);
+      this.modules.push(module);
     } else {
-      const index = modules.indexOf(module);
+      const index = this.modules.indexOf(module);
       if (index > -1) {
-        modules.splice(index, 1);
+        this.modules.splice(index, 1);
       }
     }
-    this.tenant.modules = modules;
+  }
+
+  canDeactivate(): boolean {
+    return !this.tenantForm.dirty && this.modules.length === 0;
   }
 }

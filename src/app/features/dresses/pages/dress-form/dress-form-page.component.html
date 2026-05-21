@@ -5,40 +5,35 @@
     <app-text-input
       labelKey="dresses.form.title"
       placeholderKey="dresses.form.titlePlaceholder"
-      [value]="dress.title || ''"
+      [control]="titleControl"
       [required]="true"
-      (valueChange)="dress.title = $event"
     />
 
     <app-text-input
       labelKey="dresses.form.sku"
       placeholderKey="dresses.form.skuPlaceholder"
-      [value]="dress.sku || ''"
+      [control]="skuControl"
       [required]="true"
-      (valueChange)="dress.sku = $event"
     />
 
     <app-text-input
       labelKey="dresses.form.size"
       placeholderKey="dresses.form.sizePlaceholder"
-      [value]="dress.size || ''"
-      (valueChange)="dress.size = $event"
+      [control]="sizeControl"
     />
 
     <app-color-input
       labelKey="dresses.form.color"
-      [color]="dress.color || '#000000'"
-      (colorChange)="dress.color = $event"
+      [control]="colorControl"
     />
 
     <app-number-input
       labelKey="dresses.form.price"
       placeholderKey="dresses.form.pricePlaceholder"
-      [value]="dress.price || 0"
+      [control]="priceControl"
       [decimalPlaces]="2"
       unit="€"
       [min]="0.01"
-      (valueChange)="dress.price = $event"
     />
 
     <div class="actions">

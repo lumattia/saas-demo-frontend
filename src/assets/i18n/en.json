@@ -18,7 +18,18 @@
         "sku": "SKU",
         "skuPlaceholder": "Filter by SKU",
         "size": "Size",
-        "sizePlaceholder": "Filter by size"
+        "sizePlaceholder": "Filter by size",
+        "color": "Color",
+        "colorPlaceholder": "Filter by color",
+        "minStock": "Min Stock",
+        "minStockPlaceholder": "Min stock",
+        "maxStock": "Max Stock",
+        "maxStockPlaceholder": "Max stock",
+        "minPrice": "Min Price",
+        "minPricePlaceholder": "Min price",
+        "maxPrice": "Max Price",
+        "maxPricePlaceholder": "Max price",
+        "apply": "Apply Filters"
       },
       "sort": {
         "title": "Title",
@@ -60,7 +71,18 @@
       },
       "filter": {
         "title": "Title",
-        "titlePlaceholder": "Filter by dress title"
+        "titlePlaceholder": "Filter by dress title",
+        "sku": "SKU",
+        "skuPlaceholder": "Filter by SKU",
+        "size": "Size",
+        "sizePlaceholder": "Filter by size",
+        "color": "Color",
+        "colorPlaceholder": "Filter by color",
+        "minQuantity": "Min Quantity",
+        "minQuantityPlaceholder": "Min quantity",
+        "maxQuantity": "Max Quantity",
+        "maxQuantityPlaceholder": "Max quantity",
+        "apply": "Apply Filters"
       },
       "sort": {
         "sku": "SKU",
@@ -131,6 +153,11 @@
       "columns": {
         "username": "Username",
         "role": "Role"
+      },
+      "filter": {
+        "username": "Username",
+        "usernamePlaceholder": "Filter by username",
+        "apply": "Apply Filters"
       }
     },
     "new": "New User",
@@ -161,7 +188,7 @@
       "showFilters": "Show Filters",
       "hideFilters": "Hide Filters",
       "sortBy": "Sort by",
-      "noSort": "No sorting",
+      "noSort": "No Sort",
       "noData": "No data available",
       "showing": "Showing",
       "perPage": "per page",
@@ -173,7 +200,8 @@
       "last": "Last",
       "actions": "Actions",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "applyFilters": "Apply Filters"
     }
   }
 }

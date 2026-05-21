@@ -1,6 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserService } from '../../../../core/services/user.service';
 import { User, UserFilter } from '../../../../core/models/user.model';
@@ -11,7 +12,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 @Component({
   selector: 'app-user-list-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslateModule, ProTableComponent, TextInputComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent],
   templateUrl: './user-list-page.component.html',
   styleUrls: ['./user-list-page.component.css'],
 })
@@ -21,9 +22,16 @@ export class UserListPageComponent implements OnInit {
 
   users = signal<User[]>([]);
   filter: UserFilter = { username: '', role: undefined };
+  filterForm = new FormGroup({
+    username: new FormControl('')
+  });
   sort = signal<string>('id');
+
+  get usernameControl(): FormControl {
+    return this.filterForm.controls['username'] as FormControl;
+  }
   order = signal<'asc' | 'desc'>('asc');
-  pageNumber = signal<number>(1);
+  pageNumber = signal<number>(0);
   pageSize = signal<number>(10);
   totalItems = signal<number>(0);
 
@@ -43,9 +51,11 @@ export class UserListPageComponent implements OnInit {
   }
 
   loadUsers() {
+    this.filter.username = this.filterForm.value.username || '';
     this.userService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
       this.users.set(data.content);
       this.totalItems.set(data.totalElements);
+      this.pageNumber.set(data.number);
     });
   }
 

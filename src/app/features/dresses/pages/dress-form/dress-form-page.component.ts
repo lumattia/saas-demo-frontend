@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { DressService } from '../../../../core/services/dress.service';
@@ -14,7 +14,7 @@ import { NumberInputComponent } from '../../../../shared/components/inputs/numbe
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     TranslateModule,
     TextInputComponent,
     ColorInputComponent,
@@ -29,25 +29,65 @@ export class DressFormPageComponent implements OnInit {
   private router = inject(Router);
 
   id: number | null = null;
-  dress: Partial<Dress> = { title: '', sku: '', size: '', color: '#000000', price: 0 };
+  dressForm = new FormGroup({
+    title: new FormControl(''),
+    sku: new FormControl(''),
+    size: new FormControl(''),
+    color: new FormControl('#000000'),
+    price: new FormControl(0)
+  });
+
+  get titleControl(): FormControl {
+    return this.dressForm.controls['title'] as FormControl;
+  }
+
+  get skuControl(): FormControl {
+    return this.dressForm.controls['sku'] as FormControl;
+  }
+
+  get sizeControl(): FormControl {
+    return this.dressForm.controls['size'] as FormControl;
+  }
+
+  get colorControl(): FormControl {
+    return this.dressForm.controls['color'] as FormControl;
+  }
+
+  get priceControl(): FormControl {
+    return this.dressForm.controls['price'] as FormControl;
+  }
 
   ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam && idParam !== 'new') {
       this.id = +idParam;
       this.dressService.getById(this.id).subscribe(data => {
-        this.dress = data;
+        this.dressForm.patchValue({
+          title: data.title,
+          sku: data.sku,
+          size: data.size,
+          color: data.color,
+          price: data.price
+        });
       });
     }
   }
 
   save(): void {
+    const formValue = this.dressForm.value;
+    const dress: Partial<Dress> = {
+      title: formValue.title || '',
+      sku: formValue.sku || '',
+      size: formValue.size || '',
+      color: formValue.color || '#000000',
+      price: formValue.price || 0
+    };
     if (this.id) {
-      this.dressService.update(this.id, this.dress).subscribe(() => {
+      this.dressService.update(this.id, dress).subscribe(() => {
         this.router.navigate(['/dresses']);
       });
     } else {
-      this.dressService.create(this.dress).subscribe(() => {
+      this.dressService.create(dress).subscribe(() => {
         this.router.navigate(['/dresses']);
       });
     }
@@ -63,5 +103,9 @@ export class DressFormPageComponent implements OnInit {
 
   exit(): void {
     this.router.navigate(['/dresses']);
+  }
+
+  canDeactivate(): boolean {
+    return !this.dressForm.dirty;
   }
 }

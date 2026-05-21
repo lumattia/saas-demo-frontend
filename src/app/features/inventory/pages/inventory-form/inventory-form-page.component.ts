@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { InventoryService } from '../../../../core/services/inventory.service';
@@ -13,7 +13,7 @@ import { NumberInputComponent } from '../../../../shared/components/inputs/numbe
 @Component({
   selector: 'app-inventory-form-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, SelectInputComponent, NumberInputComponent],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule, SelectInputComponent, NumberInputComponent],
   templateUrl: './inventory-form-page.component.html',
   styleUrls: ['./inventory-form-page.component.css'],
 })
@@ -24,8 +24,19 @@ export class InventoryFormPageComponent implements OnInit {
   private router = inject(Router);
 
   id: number | null = null;
-  item: Partial<Inventory> = { dressId: 0, quantity: 0 };
+  inventoryForm = new FormGroup({
+    dressId: new FormControl(''),
+    quantity: new FormControl('')
+  });
   dresses: IdName[] = [];
+
+  get dressIdControl(): FormControl {
+    return this.inventoryForm.controls['dressId'] as FormControl;
+  }
+
+  get quantityControl(): FormControl {
+    return this.inventoryForm.controls['quantity'] as FormControl;
+  }
 
   ngOnInit() {
     this.dressService.list().subscribe(data => this.dresses = data);
@@ -34,18 +45,26 @@ export class InventoryFormPageComponent implements OnInit {
     if (idParam && idParam !== 'new') {
       this.id = +idParam;
       this.inventoryService.getById(this.id).subscribe(data => {
-        this.item = data;
+        this.inventoryForm.patchValue({
+          dressId: data.dressId.toString(),
+          quantity: data.quantity.toString()
+        });
       });
     }
   }
 
   save(): void {
+    const formValue = this.inventoryForm.value;
+    const item: Partial<Inventory> = {
+      dressId: formValue.dressId ? Number(formValue.dressId) : 0,
+      quantity: formValue.quantity ? Number(formValue.quantity) : 0
+    };
     if (this.id) {
-      this.inventoryService.update(this.id, this.item).subscribe(() => {
+      this.inventoryService.update(this.id, item).subscribe(() => {
         this.router.navigate(['/inventory']);
       });
     } else {
-      this.inventoryService.create(this.item).subscribe(() => {
+      this.inventoryService.create(item).subscribe(() => {
         this.router.navigate(['/inventory']);
       });
     }
@@ -61,5 +80,9 @@ export class InventoryFormPageComponent implements OnInit {
 
   exit(): void {
     this.router.navigate(['/inventory']);
+  }
+
+  canDeactivate(): boolean {
+    return !this.inventoryForm.dirty;
   }
 }

@@ -11,31 +11,72 @@
     [data]="dresses()"
     [sortOptions]="sortOptions"
     [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
+    [showDirtyIndicator]="true"
+    [filterForm]="filterForm"
     (sortChange)="onSortChange($event)"
     (paginationChange)="onPaginationChange($event)"
     (rowClick)="onRowClick($event)"
     (editClick)="onEditClick($event)"
     (deleteClick)="deleteDress($event.id)"
+    (filterApply)="onFilterChange()"
   >
     <div filters>
       <div class="filter-row">
         <app-text-input
           labelKey="dresses.list.filter.title"
           placeholderKey="dresses.list.filter.titlePlaceholder"
-          [value]="filter.title || ''"
-          (valueChange)="filter.title = $event; onFilterChange()"
+          [control]="titleControl"
+          [showDirtyIndicator]="true"
         />
         <app-text-input
           labelKey="dresses.list.filter.sku"
           placeholderKey="dresses.list.filter.skuPlaceholder"
-          [value]="filter.sku || ''"
-          (valueChange)="filter.sku = $event; onFilterChange()"
+          [control]="skuControl"
+          [showDirtyIndicator]="true"
         />
         <app-text-input
           labelKey="dresses.list.filter.size"
           placeholderKey="dresses.list.filter.sizePlaceholder"
-          [value]="filter.size || ''"
-          (valueChange)="filter.size = $event; onFilterChange()"
+          [control]="sizeControl"
+          [showDirtyIndicator]="true"
+        />
+        <app-color-input
+          labelKey="dresses.list.filter.color"
+          placeholderKey="dresses.list.filter.colorPlaceholder"
+          [control]="colorControl"
+          [showDirtyIndicator]="true"
+        />
+      </div>
+      <div class="filter-row">
+        <app-number-input
+          labelKey="dresses.list.filter.minStock"
+          placeholderKey="dresses.list.filter.minStockPlaceholder"
+          [control]="minStockControl"
+          [showDirtyIndicator]="true"
+          [min]="0"
+        />
+        <app-number-input
+          labelKey="dresses.list.filter.maxStock"
+          placeholderKey="dresses.list.filter.maxStockPlaceholder"
+          [control]="maxStockControl"
+          [showDirtyIndicator]="true"
+          [min]="0"
+        />
+        <app-number-input
+          labelKey="dresses.list.filter.minPrice"
+          placeholderKey="dresses.list.filter.minPricePlaceholder"
+          [control]="minPriceControl"
+          [showDirtyIndicator]="true"
+          [min]="0"
+          [decimalPlaces]="2"
+        />
+        <app-number-input
+          labelKey="dresses.list.filter.maxPrice"
+          placeholderKey="dresses.list.filter.maxPricePlaceholder"
+          [control]="maxPriceControl"
+          [showDirtyIndicator]="true"
+          [min]="0"
+          [decimalPlaces]="2"
         />
       </div>
     </div>

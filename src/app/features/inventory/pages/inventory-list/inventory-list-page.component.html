@@ -11,19 +11,52 @@
     [data]="inventory()"
     [sortOptions]="sortOptions"
     [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
+    [showDirtyIndicator]="true"
+    [filterForm]="filterForm"
     (sortChange)="onSortChange($event)"
     (paginationChange)="onPaginationChange($event)"
     (rowClick)="onRowClick($event)"
     (editClick)="onEditClick($event)"
     (deleteClick)="deleteItem($event.id)"
+    (filterApply)="onFilterChange()"
   >
     <div filters>
       <div class="filter-row">
         <app-text-input
           labelKey="inventory.list.filter.title"
           placeholderKey="inventory.list.filter.titlePlaceholder"
-          [value]="filter.dressTitle || ''"
-          (valueChange)="filter.dressTitle = $event; onFilterChange()"
+          [control]="dressTitleControl"
+          [showDirtyIndicator]="true"
+        />
+        <app-text-input
+          labelKey="inventory.list.filter.sku"
+          placeholderKey="inventory.list.filter.skuPlaceholder"
+          [control]="skuControl"
+          [showDirtyIndicator]="true"
+        />
+        <app-text-input
+          labelKey="inventory.list.filter.size"
+          placeholderKey="inventory.list.filter.sizePlaceholder"
+          [control]="sizeControl"
+          [showDirtyIndicator]="true"
+        />
+        <app-text-input
+          labelKey="inventory.list.filter.color"
+          placeholderKey="inventory.list.filter.colorPlaceholder"
+          [control]="colorControl"
+          [showDirtyIndicator]="true"
+        />
+        <app-text-input
+          labelKey="inventory.list.filter.minQuantity"
+          placeholderKey="inventory.list.filter.minQuantityPlaceholder"
+          [control]="minQuantityControl"
+          [showDirtyIndicator]="true"
+        />
+        <app-text-input
+          labelKey="inventory.list.filter.maxQuantity"
+          placeholderKey="inventory.list.filter.maxQuantityPlaceholder"
+          [control]="maxQuantityControl"
+          [showDirtyIndicator]="true"
         />
       </div>
     </div>

@@ -41,6 +41,15 @@
   border-color: var(--error);
 }
 
+.color-input-field.dirty {
+  border-color: var(--warning);
+  background: rgba(255, 193, 7, 0.05);
+}
+
+.color-input-field.dirty:focus {
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+}
+
 .color-text-field {
   flex: 1;
   padding: var(--spacing-sm) var(--spacing-md);
@@ -61,6 +70,15 @@
 
 .color-text-field.invalid {
   border-color: var(--error);
+}
+
+.color-text-field.dirty {
+  border-color: var(--warning);
+  background: rgba(255, 193, 7, 0.05);
+}
+
+.color-text-field.dirty:focus {
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
 }
 
 .color-input-error {

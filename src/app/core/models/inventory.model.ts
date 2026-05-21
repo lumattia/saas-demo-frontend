@@ -10,4 +10,9 @@ export interface Inventory {
 
 export interface InventoryFilter {
   dressTitle?: string;
+  sku?: string;
+  color?: string;
+  size?: string;
+  minQuantity?: number;
+  maxQuantity?: number;
 }
