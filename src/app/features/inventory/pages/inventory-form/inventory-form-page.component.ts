@@ -46,7 +46,7 @@ export class InventoryFormPageComponent implements OnInit {
       this.id = +idParam;
       this.inventoryService.getById(this.id).subscribe(data => {
         this.inventoryForm.patchValue({
-          dressId: data.dressId.toString(),
+          dressId: data.dress.id.toString(),
           quantity: data.quantity.toString()
         });
       });
