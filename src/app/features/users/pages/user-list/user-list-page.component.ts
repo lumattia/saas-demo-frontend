@@ -72,7 +72,7 @@ export class UserListPageComponent implements OnInit {
   }
 
   onFilterChange() {
-    this.pageNumber.set(1);
+    this.pageNumber.set(0);
     this.loadUsers();
   }
 
