@@ -41,4 +41,8 @@ export class MainLayoutComponent {
       this.currentLang.set(lang);
     });
   }
+
+  switchTenant(tenantId: string): void {
+    this.auth.switchTenant(tenantId).subscribe();
+  }
 }

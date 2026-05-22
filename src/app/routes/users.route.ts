@@ -4,14 +4,15 @@ import { UserListPageComponent } from '../features/users/pages/user-list/user-li
 import { UserFormPageComponent } from '../features/users/pages/user-form/user-form-page.component';
 import { moduleGuard } from '../core/guards/module.guard';
 import { authGuard } from '../core/guards/auth.guard';
+import { roleGuard } from '../core/guards/role.guard';
 
 export const usersRoutes: Routes = [
   {
     path: 'users',
     component: UsersPageComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
     canActivateChild: [moduleGuard],
-    data: { module: 'USER' },
+    data: { module: 'USER', requiredRole: 'ADMIN' },
     children: [
       { path: '', component: UserListPageComponent },
       { path: 'new', component: UserFormPageComponent },

@@ -4,6 +4,7 @@ import { User } from '../models/user.model';
 import { environment } from '../../../environments/environment';
 import { tap, switchMap, of } from 'rxjs';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,11 @@ export class AuthService {
   private http = inject(HttpClient);
   private auth0 = inject(Auth0Service);
   private userSignal = signal<User | null>(null);
+  private userService = inject(UserService);
 
   user = this.userSignal.asReadonly();
   isAuthenticated = computed(() => !!this.userSignal());
-  
+
   modules = computed(() => {
     const user = this.userSignal();
     if (!user || !user.tenant || !user.tenant.modules) return [];
@@ -28,8 +30,10 @@ export class AuthService {
   }
 
   isSuperAdmin = computed(() => this.userSignal()?.role === 'SUPERADMIN');
+  isReseller = computed(() => this.userSignal()?.role === 'RESELLER');
   isAdmin = computed(() => this.userSignal()?.role === 'ADMIN');
-  isAtLeastAdmin = computed(() => this.isSuperAdmin() || this.isAdmin());
+  isAtLeastAdmin = computed(() => this.isSuperAdmin() || this.isAdmin() || this.isReseller());
+  canSwitchTenant = computed(() => this.isSuperAdmin() || this.isReseller());
 
   init() {
     this.userSignal.set(JSON.parse(localStorage.getItem('user') || 'null'));
@@ -85,5 +89,15 @@ export class AuthService {
   deleteLocalStorage() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
+  }
+
+  switchTenant(tenantId: string) {
+    return this.userService.switchTenant(tenantId).pipe(
+      tap(user => {
+        this.userSignal.set(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        window.location.reload();
+      })
+    );
   }
 }

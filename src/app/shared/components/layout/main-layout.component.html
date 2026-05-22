@@ -64,6 +64,13 @@
         <div class="user-info">
           <span class="user-name">{{ auth.user()?.username }}</span>
           <span class="tenant-name">({{ auth.user()?.tenant?.name }})</span>
+          @if (auth.canSwitchTenant() && auth.user()?.allowedTenants && auth.user()!.allowedTenants!.length > 0) {
+            <select class="tenant-select" (change)="switchTenant($any($event.target).value)" [value]="auth.user()?.tenant?.id">
+              @for (tenant of auth.user()!.allowedTenants!; track tenant.id) {
+                <option [value]="tenant.id">{{ tenant.name }}</option>
+              }
+            </select>
+          }
         </div>
         @if (auth.user()) {
           <button class="btn btn-logout" (click)="auth.logout()">
