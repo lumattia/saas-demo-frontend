@@ -184,6 +184,10 @@
       "label": "Color",
       "invalid": "Invalid hex color format (e.g., #000000 or #FFF)"
     },
+    "selectInput": {
+      "placeholder": "Select an option",
+      "search": "Search..."
+    },
     "table": {
       "showFilters": "Show Filters",
       "hideFilters": "Hide Filters",

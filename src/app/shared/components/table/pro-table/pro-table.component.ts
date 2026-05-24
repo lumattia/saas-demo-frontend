@@ -4,6 +4,8 @@ import { FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
 import { DateTimePipe } from '../../../pipes/date-time.pipe';
+import { SelectInputComponent } from '../../inputs/select-input/select-input.component';
+import { ButtonComponent } from "../../button/button.component";
 
 export interface TableColumn {
   key: string;
@@ -15,7 +17,7 @@ export interface TableColumn {
 @Component({
   selector: 'app-pro-table',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, SelectInputComponent, ButtonComponent],
   templateUrl: './pro-table.component.html',
   styleUrls: ['./pro-table.component.css'],
 })

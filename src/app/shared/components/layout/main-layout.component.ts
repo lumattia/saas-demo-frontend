@@ -4,11 +4,12 @@ import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { ThemeService } from '../../../core/services/theme.service';
+import { SelectInputComponent } from '../inputs/select-input/select-input.component';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, TranslateModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, TranslateModule, SelectInputComponent],
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.css'],
 })
@@ -22,10 +23,10 @@ export class MainLayoutComponent {
   currentLang = signal('es');
 
   availableLanguages = [
-    { code: 'es', name: 'Español', flag: '🇪🇸' },
-    { code: 'en', name: 'English', flag: '🇬🇧' },
-    { code: 'zh', name: '中文', flag: '🇨🇳' },
-    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+    { id: 'es', name: 'Español', flag: '🇪🇸' },
+    { id: 'en', name: 'English', flag: '🇬🇧' },
+    { id: 'zh', name: '中文', flag: '🇨🇳' },
+    { id: 'it', name: 'Italiano', flag: '🇮🇹' },
   ];
 
   ngOnInit() {

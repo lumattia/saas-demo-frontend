@@ -33,7 +33,9 @@
 
 .sorting-section {
   display: flex;
-  align-items: center;
+  align-items: end;
+
+  width: 200px;
   gap: var(--spacing-sm);
 }
 
@@ -51,20 +53,6 @@
   color: var(--text);
   background: var(--bg);
   cursor: pointer;
-}
-
-.sort-direction-btn {
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background: var(--secondary-light);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: background 0.2s ease;
-}
-
-.sort-direction-btn:hover {
-  background: var(--tertiary-light);
 }
 
 .filters-zone {
@@ -113,21 +101,6 @@
   font-weight: 600;
   color: var(--text);
   border-bottom: 2px solid var(--border);
-}
-
-.pro-table th.sortable-header {
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.pro-table th.sortable-header:hover {
-  background: var(--primary);
-  color: white;
-}
-
-.sort-indicator {
-  margin-left: var(--spacing-xs);
-  font-weight: bold;
 }
 
 .pro-table td {

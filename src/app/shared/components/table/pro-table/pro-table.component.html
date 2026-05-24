@@ -6,16 +6,17 @@
     </button>
 
     <div class="sorting-section">
-      <label class="sorting-label">{{ 'shared.table.sortBy' | translate }}:</label>
-      <select (change)="onSortChange($any($event.target).value)" class="sort-select">
-        <option value="">{{ 'shared.table.noSort' | translate }}</option>
-        <option *ngFor="let option of sortOptions" [value]="option.id" [selected]="currentSort.field === option.id">
-          {{ option.name | translate }}
-        </option>
-      </select>
-      <button (click)="onSortChange(currentSort.field)" class="sort-direction-btn">
-        {{ currentSort.direction === 'asc' ? '↑' : '↓' }}
-      </button>
+         <app-select-input 
+         [labelKey]="'shared.table.sortBy' | translate"
+            [value]="currentSort.field"
+            [options]="sortOptions"
+            [showClearButton]="false"
+            [selectFirstByDefault]="true"
+            (valueChange)="onSortChange($event)">
+          </app-select-input>
+          <app-button (click)="onSortChange(currentSort.field)">
+              {{ currentSort.direction === 'asc' ? '↑' : '↓' }}    
+          </app-button>
     </div>
   </div>
 
@@ -30,11 +31,8 @@
     <table class="pro-table">
       <thead>
         <tr>
-          <th *ngFor="let column of columns" (click)="onSortChange(column.key)" class="sortable-header">
+          <th *ngFor="let column of columns">
             {{ column.labelKey | translate }}
-            <span *ngIf="currentSort.field === column.key" class="sort-indicator">
-              {{ currentSort.direction === 'asc' ? '↑' : '↓' }}
-            </span>
           </th>
           <th *ngIf="showActions" class="actions-header">{{ 'shared.table.actions' | translate }}</th>
         </tr>

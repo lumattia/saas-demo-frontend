@@ -30,7 +30,7 @@
           <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.users' | translate }}</span>
         </a>
       }
-      @if (auth.isAtLeastAdmin()) {
+      @if (auth.canSwitchTenant()) {
         <a routerLink="/tenants" routerLinkActive="active" class="nav-item">
           <span class="nav-icon">🏢</span>
           <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.tenants' | translate }}</span>
@@ -47,6 +47,13 @@
         <h1 class="page-title">{{ pageTitle() | translate }}</h1>
       </div>
       <div class="header-right">
+         @if (auth.canSwitchTenant() && auth.user()?.allowedTenants && auth.user()!.allowedTenants!.length > 0) {
+          <app-select-input 
+            [value]="auth.user()?.tenant?.id"
+            [options]="auth.user()!.allowedTenants!"
+            (valueChange)="switchTenant($event)">
+          </app-select-input>
+          }
         <button class="icon-btn theme-toggle" (click)="theme.toggle()" [title]="'nav.toggleTheme' | translate">
           @if (theme.mode() === 'light') {
             <span>🌙</span>
@@ -54,23 +61,15 @@
             <span>☀️</span>
           }
         </button>
-        <div class="language-selector">
-          <select class="lang-select" (change)="changeLanguage($any($event.target).value)" [value]="currentLang()">
-            @for (lang of availableLanguages; track lang.code) {
-              <option [value]="lang.code">{{ lang.flag }} {{ lang.name }}</option>
-            }
-          </select>
-        </div>
+        <app-select-input 
+          [value]="currentLang()"
+          [options]="availableLanguages"
+          (valueChange)="changeLanguage($event)">
+        </app-select-input>
         <div class="user-info">
           <span class="user-name">{{ auth.user()?.username }}</span>
           <span class="tenant-name">({{ auth.user()?.tenant?.name }})</span>
-          @if (auth.canSwitchTenant() && auth.user()?.allowedTenants && auth.user()!.allowedTenants!.length > 0) {
-            <select class="tenant-select" (change)="switchTenant($any($event.target).value)" [value]="auth.user()?.tenant?.id">
-              @for (tenant of auth.user()!.allowedTenants!; track tenant.id) {
-                <option [value]="tenant.id">{{ tenant.name }}</option>
-              }
-            </select>
-          }
+         
         </div>
         @if (auth.user()) {
           <button class="btn btn-logout" (click)="auth.logout()">

@@ -1,6 +1,7 @@
 export interface IdName {
   id: number|string;
   name: string;
+  flag?: string;
 }
 export interface PageResponse<T> {
   content: T[];

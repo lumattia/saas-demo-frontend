@@ -184,6 +184,10 @@
       "label": "Colore",
       "invalid": "Formato esadecimale non valido (es: #000000 o #FFF)"
     },
+    "selectInput": {
+      "placeholder": "Seleziona un'opzione",
+      "search": "Cerca..."
+    },
     "table": {
       "showFilters": "Mostra Filtri",
       "hideFilters": "Nascondi Filtri",

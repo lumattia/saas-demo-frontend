@@ -184,6 +184,10 @@
       "label": "颜色",
       "invalid": "无效的十六进制颜色格式（例如：#000000 或 #FFF）"
     },
+    "selectInput": {
+      "placeholder": "选择一个选项",
+      "search": "搜索..."
+    },
     "table": {
       "showFilters": "显示筛选",
       "hideFilters": "隐藏筛选",
