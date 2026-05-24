@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
 import { DateTimePipe } from '../../../pipes/date-time.pipe';
 import { SelectInputComponent } from '../../inputs/select-input/select-input.component';
@@ -12,6 +12,7 @@ export interface TableColumn {
   labelKey: string;
   type?: string; // 'color' | 'date'
   pipe?: string | null;
+  translation?: string | null;
 }
 
 @Component({
@@ -31,6 +32,9 @@ export class ProTableComponent implements OnInit {
   @Input() rowClickable = true;
   @Input() showDirtyIndicator = false;
   @Input() filterForm?: FormGroup;
+  @Input() titleKey?: string;
+  @Input() addLink?: string;
+  @Input() addLabelKey?: string;
 
   @Output() sortChange = new EventEmitter<SortState>();
   @Output() paginationChange = new EventEmitter<PaginationState>();
@@ -39,6 +43,7 @@ export class ProTableComponent implements OnInit {
   @Output() deleteClick = new EventEmitter<any>();
   @Output() filterApply = new EventEmitter<void>();
 
+  translate: TranslateService=inject(TranslateService)
   currentSort: SortState = { field: '', direction: 'asc' };
   private dateTimePipe = new DateTimePipe();
 
@@ -145,10 +150,21 @@ export class ProTableComponent implements OnInit {
     return this.pagination.pageNumber < this.totalPages - 1;
   }
 
-  getNestedValue(row: any, key: string): any {
-    return key.split('.').reduce((obj, prop) => obj?.[prop], row);
+  getNestedValue(row: any, key: string, translation?: string | null): any {
+  const value = key.split('.').reduce((obj, prop) => obj?.[prop], row);
+  if (translation) {
+    if (Array.isArray(value)) {
+      return value.map(item => {
+        return this.translate.instant(`${translation}.${item}`);
+      });
+    }else{
+      return this.translate.instant(`${translation}.${value}`);
+    }
   }
+  return value
+}
 
+ 
   transformValue(value: any, column: any): any {
     if (column.type === 'date') {
       const format = column.pipe || 'date';

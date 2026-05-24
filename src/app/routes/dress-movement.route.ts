@@ -11,7 +11,7 @@ export const dressMovementRoutes: Routes = [
     component: DressMovementPageComponent,
     canActivate: [authGuard],
     canActivateChild: [moduleGuard],
-    data: { module: 'INVENTORY' },
+    data: { module: 'DRESS_MOVEMENT' },
     children: [
       { path: '', component: DressMovementListPageComponent },
       { path: 'new', component: DressMovementFormPageComponent },

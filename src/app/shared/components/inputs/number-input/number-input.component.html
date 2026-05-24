@@ -2,7 +2,7 @@
   @if (labelKey) {
   <label class="number-input-label">
     {{ labelKey | translate }}
-    @if (required) {
+    @if (!readonly && required) {
       <span class="required-mark">*</span>
     }
   </label>
@@ -14,6 +14,7 @@
       [placeholder]="placeholderKey ? (placeholderKey | translate) : ''"
       [required]="required"
       [attr.disabled]="disabled"
+      [readonly]="readonly"
       [attr.min]="min"
       [attr.max]="max"
       [step]="step"

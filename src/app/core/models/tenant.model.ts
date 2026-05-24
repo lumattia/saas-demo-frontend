@@ -1,6 +1,6 @@
 export enum ModuleType {
   DRESS = 'DRESS',
-  INVENTORY = 'INVENTORY'
+  DRESS_MOVEMENT = 'DRESS_MOVEMENT'
 }
 
 export interface Tenant {

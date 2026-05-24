@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserService } from '../../../../core/services/user.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { User, UserCreateRequest, UserUpdateRequest } from '../../../../core/models/user.model';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import { SelectInputComponent } from '../../../../shared/components/inputs/select-input/select-input.component';
 import { EnumService } from '../../../../core/services/enum.service';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-user-form-page',
@@ -18,6 +20,7 @@ import { EnumService } from '../../../../core/services/enum.service';
     TranslateModule,
     TextInputComponent,
     SelectInputComponent,
+    ButtonComponent,
   ],
   templateUrl: './user-form-page.component.html',
   styleUrls: ['./user-form-page.component.css'],
@@ -25,6 +28,7 @@ import { EnumService } from '../../../../core/services/enum.service';
 export class UserFormPageComponent implements OnInit {
   private userService = inject(UserService);
   private enumService = inject(EnumService);
+  private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -35,11 +39,14 @@ export class UserFormPageComponent implements OnInit {
   });
   allowedTenantIds: string[] = [];
   assignableRoles: string[] = [];
+  isEditMode = false;
+  initialData: any = null;
+  isEditable = true;
 
   get roleOptions() {
     return this.assignableRoles.map(role => ({
       id: role,
-      name: `users.form.roleOptions.${role.toLowerCase()}`
+      name: `users.form.roleOptions.${role}`
     }));
   }
 
@@ -52,19 +59,45 @@ export class UserFormPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.enumService.getAssignableRoles().subscribe(roles => {
-      this.assignableRoles = roles;
-    });
-
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam && idParam !== 'new') {
       this.id = +idParam;
+      this.isEditMode = false;
+      
+      this.route.queryParamMap.subscribe((params: ParamMap) => {
+        const editParam = params.get('edit');
+        if (editParam === 'true') {
+          this.isEditMode = true;
+        }
+      });
+
       this.userService.getById(this.id).subscribe(data => {
+        this.initialData = {
+          username: data.username,
+          role: data.role,
+          allowedTenantIds: data.allowedTenants?.map(t => t.id.toString()) || []
+        };
         this.userForm.patchValue({
           username: data.username,
           role: data.role
         });
         this.allowedTenantIds = data.allowedTenants?.map(t => t.id.toString()) || [];
+        this.isEditable = data.isEditable !== false;
+        
+        this.enumService.getAssignableRoles().subscribe(roles => {
+          this.assignableRoles = roles;
+          
+          // If editing own profile and current role not in assignable roles, add it manually
+          const currentUser = this.authService.user();
+          if (currentUser && this.id === currentUser.id && !roles.includes(currentUser.role)) {
+            this.assignableRoles = [...roles, currentUser.role];
+          }
+        });
+      });
+    } else {
+      this.isEditMode = true;
+      this.enumService.getAssignableRoles().subscribe(roles => {
+        this.assignableRoles = roles;
       });
     }
   }
@@ -93,6 +126,30 @@ export class UserFormPageComponent implements OnInit {
     }
   }
 
+  enableEditMode(): void {
+    this.isEditMode = true;
+  }
+
+  cancelEdit(): void {
+    if (!this.id) {
+      this.router.navigate(['/users']);
+      return;
+    }
+    this.isEditMode = false;
+    if (this.initialData) {
+      this.userForm.patchValue({
+        username: this.initialData.username,
+        role: this.initialData.role
+      });
+      this.allowedTenantIds = this.initialData.allowedTenantIds;
+    }
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { edit: null },
+      queryParamsHandling: 'merge'
+    });
+  }
+
   delete(): void {
     if (this.id && confirm('Are you sure you want to delete this user?')) {
       this.userService.delete(this.id).subscribe(() => {
@@ -106,6 +163,6 @@ export class UserFormPageComponent implements OnInit {
   }
 
   canDeactivate(): boolean {
-    return !this.userForm.dirty;
+    return !this.userForm.dirty || !this.isEditMode;
   }
 }

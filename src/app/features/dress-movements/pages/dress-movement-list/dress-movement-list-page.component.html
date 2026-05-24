@@ -1,18 +1,14 @@
-<main class="inventory-list-container">
-  <div class="page-header">
-    <h1>{{ 'inventory.list.title' | translate }}</h1>
-    <a routerLink="/inventory/new" class="btn btn-primary">
-      {{ 'inventory.list.add' | translate }}
-    </a>
-  </div>
-
+<main class="dress-movements-list-container">
   <app-pro-table
     [columns]="columns"
-    [data]="inventory()"
+    [data]="dressMovement()"
     [sortOptions]="sortOptions"
     [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
     [showDirtyIndicator]="true"
     [filterForm]="filterForm"
+    [titleKey]="'dress-movements.list.title'"
+    [addLink]="'/dress-movements/new'"
+    [addLabelKey]="'dress-movements.list.add'"
     (sortChange)="onSortChange($event)"
     (paginationChange)="onPaginationChange($event)"
     (rowClick)="onRowClick($event)"
@@ -23,38 +19,38 @@
     <div filters>
       <div class="filter-row">
         <app-text-input
-          labelKey="inventory.list.filter.title"
-          placeholderKey="inventory.list.filter.titlePlaceholder"
+          labelKey="dress-movements.list.filter.title"
+          placeholderKey="dress-movements.list.filter.titlePlaceholder"
           [control]="dressTitleControl"
           [showDirtyIndicator]="true"
         />
         <app-text-input
-          labelKey="inventory.list.filter.sku"
-          placeholderKey="inventory.list.filter.skuPlaceholder"
+          labelKey="dress-movements.list.filter.sku"
+          placeholderKey="dress-movements.list.filter.skuPlaceholder"
           [control]="skuControl"
           [showDirtyIndicator]="true"
         />
         <app-text-input
-          labelKey="inventory.list.filter.size"
-          placeholderKey="inventory.list.filter.sizePlaceholder"
+          labelKey="dress-movements.list.filter.size"
+          placeholderKey="dress-movements.list.filter.sizePlaceholder"
           [control]="sizeControl"
           [showDirtyIndicator]="true"
         />
         <app-text-input
-          labelKey="inventory.list.filter.color"
-          placeholderKey="inventory.list.filter.colorPlaceholder"
+          labelKey="dress-movements.list.filter.color"
+          placeholderKey="dress-movements.list.filter.colorPlaceholder"
           [control]="colorControl"
           [showDirtyIndicator]="true"
         />
         <app-text-input
-          labelKey="inventory.list.filter.minQuantity"
-          placeholderKey="inventory.list.filter.minQuantityPlaceholder"
+          labelKey="dress-movements.list.filter.minQuantity"
+          placeholderKey="dress-movements.list.filter.minQuantityPlaceholder"
           [control]="minQuantityControl"
           [showDirtyIndicator]="true"
         />
         <app-text-input
-          labelKey="inventory.list.filter.maxQuantity"
-          placeholderKey="inventory.list.filter.maxQuantityPlaceholder"
+          labelKey="dress-movements.list.filter.maxQuantity"
+          placeholderKey="dress-movements.list.filter.maxQuantityPlaceholder"
           [control]="maxQuantityControl"
           [showDirtyIndicator]="true"
         />

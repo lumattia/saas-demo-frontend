@@ -17,6 +17,7 @@ export class TextInputComponent {
   @Input() type = 'text';
   @Input() required = false;
   @Input() disabled = false;
+  @Input() readonly = false;
   @Input() maxLength?: number;
   @Input() errorKey = '';
   @Input() showDirtyIndicator = false;

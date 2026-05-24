@@ -41,9 +41,43 @@
 }
 
 .select-trigger.disabled {
-  background: var(--bg-alt);
-  color: var(--text-disabled);
-  cursor: not-allowed;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: default;
+  color: var(--text);
+}
+
+.select-trigger.readonly {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: default;
+  color: var(--text);
+}
+
+.select-trigger.readonly .select-arrow {
+  display: none;
+}
+
+.select-trigger.readonly .select-clear-btn {
+  display: none;
+}
+
+.select-trigger.readonly:hover {
+  border-color: transparent;
+}
+
+.select-trigger.disabled .select-arrow {
+  display: none;
+}
+
+.select-trigger.disabled .select-clear-btn {
+  display: none;
+}
+
+.select-trigger.disabled:hover {
+  border-color: transparent;
 }
 
 .select-trigger.error {

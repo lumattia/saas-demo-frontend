@@ -7,6 +7,7 @@
       placeholderKey="dresses.form.titlePlaceholder"
       [control]="titleControl"
       [required]="true"
+      [readonly]="!isEditMode"
     />
 
     <app-text-input
@@ -14,17 +15,20 @@
       placeholderKey="dresses.form.skuPlaceholder"
       [control]="skuControl"
       [required]="true"
+      [readonly]="!isEditMode"
     />
 
     <app-text-input
       labelKey="dresses.form.size"
       placeholderKey="dresses.form.sizePlaceholder"
       [control]="sizeControl"
+      [readonly]="!isEditMode"
     />
 
     <app-color-input
       labelKey="dresses.form.color"
       [control]="colorControl"
+      [readonly]="!isEditMode"
     />
 
     <app-number-input
@@ -34,20 +38,31 @@
       [decimalPlaces]="2"
       unit="€"
       [min]="0.01"
+      [readonly]="!isEditMode"
     />
 
     <div class="actions">
-      <button type="submit" class="btn btn-primary">
-        {{ 'dresses.form.save' | translate }}
-      </button>
-      @if (id) {
-        <button type="button" class="btn btn-danger" (click)="delete()">
-          {{ 'dresses.form.delete' | translate }}
-        </button>
+      @if (!isEditMode && id) {
+        <app-button
+          type="button"
+          variant="primary"
+          (click)="enableEditMode()">
+          {{ 'shared.table.edit' | translate }}
+        </app-button>
       }
-      <button type="button" class="btn" (click)="exit()">
-        {{ 'dresses.form.cancel' | translate }}
-      </button>
+      @if (isEditMode) {
+        <app-button
+          type="submit"
+          variant="primary">
+          {{ 'dresses.form.save' | translate }}
+        </app-button>
+        <app-button
+          type="button"
+          variant="secondary"
+          (click)="cancelEdit()">
+          {{ 'dresses.form.cancel' | translate }}
+        </app-button>
+      }
     </div>
   </form>
 </main>

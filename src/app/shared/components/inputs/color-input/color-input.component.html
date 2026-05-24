@@ -8,6 +8,8 @@
     <input
       type="color"
       [formControl]="internalControl"
+      [attr.disabled]="disabled"
+      [readonly]="readonly"
       class="color-input-field"
       [class.invalid]="!isValid"
       [class.dirty]="isDirty"
@@ -16,6 +18,8 @@
     <input
       type="text"
       [formControl]="internalControl"
+      [attr.disabled]="disabled"
+      [readonly]="readonly"
       class="color-text-field"
       [class.invalid]="!isValid"
       [class.dirty]="isDirty"

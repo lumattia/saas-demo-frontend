@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { DressService } from '../../../../core/services/dress.service';
 import { Dress } from '../../../../core/models/dress.model';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import { ColorInputComponent } from '../../../../shared/components/inputs/color-input/color-input.component';
 import { NumberInputComponent } from '../../../../shared/components/inputs/number-input/number-input.component';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-dress-form-page',
@@ -19,6 +20,7 @@ import { NumberInputComponent } from '../../../../shared/components/inputs/numbe
     TextInputComponent,
     ColorInputComponent,
     NumberInputComponent,
+    ButtonComponent,
   ],
   templateUrl: './dress-form-page.component.html',
   styleUrls: ['./dress-form-page.component.css'],
@@ -36,6 +38,8 @@ export class DressFormPageComponent implements OnInit {
     color: new FormControl('#000000'),
     price: new FormControl(0)
   });
+  isEditMode = false;
+  initialData: any = null;
 
   get titleControl(): FormControl {
     return this.dressForm.controls['title'] as FormControl;
@@ -61,7 +65,23 @@ export class DressFormPageComponent implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam && idParam !== 'new') {
       this.id = +idParam;
+      this.isEditMode = false;
+      
+      this.route.queryParamMap.subscribe((params: ParamMap) => {
+        const editParam = params.get('edit');
+        if (editParam === 'true') {
+          this.isEditMode = true;
+        }
+      });
+
       this.dressService.getById(this.id).subscribe(data => {
+        this.initialData = {
+          title: data.title,
+          sku: data.sku,
+          size: data.size,
+          color: data.color,
+          price: data.price
+        };
         this.dressForm.patchValue({
           title: data.title,
           sku: data.sku,
@@ -70,6 +90,8 @@ export class DressFormPageComponent implements OnInit {
           price: data.price
         });
       });
+    } else {
+      this.isEditMode = true;
     }
   }
 
@@ -105,7 +127,33 @@ export class DressFormPageComponent implements OnInit {
     this.router.navigate(['/dresses']);
   }
 
+  enableEditMode(): void {
+    this.isEditMode = true;
+  }
+
+  cancelEdit(): void {
+    if (!this.id) {
+      this.router.navigate(['/dresses']);
+      return;
+    }
+    this.isEditMode = false;
+    if (this.initialData) {
+      this.dressForm.patchValue({
+        title: this.initialData.title,
+        sku: this.initialData.sku,
+        size: this.initialData.size,
+        color: this.initialData.color,
+        price: this.initialData.price
+      });
+    }
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { edit: null },
+      queryParamsHandling: 'merge'
+    });
+  }
+
   canDeactivate(): boolean {
-    return !this.dressForm.dirty;
+    return !this.dressForm.dirty || !this.isEditMode;
   }
 }

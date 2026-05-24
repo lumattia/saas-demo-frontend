@@ -1,4 +1,17 @@
 <div class="pro-table-container">
+  @if (titleKey) {
+    <div class="page-header">
+      <h1>{{ titleKey | translate }}</h1>
+      @if (addLink && addLabelKey) {
+        <app-button
+          [routerLink]="addLink"
+          variant="primary">
+          {{ addLabelKey | translate }}
+        </app-button>
+      }
+    </div>
+  }
+
   <!-- Header with Filters Toggle and Sorting -->
   <div class="pro-table-header">
     <button (click)="toggleFilters()" class="toggle-filters-btn">
@@ -6,7 +19,7 @@
     </button>
 
     <div class="sorting-section">
-         <app-select-input 
+         <app-select-input
          [labelKey]="'shared.table.sortBy' | translate"
             [value]="currentSort.field"
             [options]="sortOptions"
@@ -14,7 +27,7 @@
             (valueChange)="onSortChange($event)">
           </app-select-input>
           <app-button (click)="onSortChange(currentSort.field)">
-              {{ currentSort.direction === 'asc' ? '↑' : '↓' }}    
+              {{ currentSort.direction === 'asc' ? '↑' : '↓' }}
           </app-button>
     </div>
   </div>
@@ -47,7 +60,7 @@
             } @else if (column.type === 'date') {
               {{ transformValue(getNestedValue(row, column.key), column) }}
             } @else {
-              {{ getNestedValue(row, column.key) }}
+              {{ getNestedValue(row, column.key, column.translation) }}
             }
           </td>
           <td *ngIf="showActions" class="actions-cell">

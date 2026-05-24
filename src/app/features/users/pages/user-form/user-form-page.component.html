@@ -7,26 +7,39 @@
       placeholderKey="users.form.usernamePlaceholder"
       [control]="usernameControl"
       [required]="true"
+      [readonly]="!isEditMode"
     />
 
     <app-select-input
       labelKey="users.form.role"
       [options]="roleOptions"
       [control]="roleControl"
+      [readonly]="!isEditMode"
     />
 
     <div class="actions">
-      <button type="submit" class="btn btn-primary">
-        {{ 'users.form.save' | translate }}
-      </button>
-      @if (id) {
-        <button type="button" class="btn btn-danger" (click)="delete()">
-          {{ 'users.form.delete' | translate }}
-        </button>
+      @if (!isEditMode && id) {
+        <app-button
+          *ngIf="isEditable"
+          type="button"
+          variant="primary"
+          (click)="enableEditMode()">
+          {{ 'shared.table.edit' | translate }}
+        </app-button>
       }
-      <button type="button" class="btn" (click)="exit()">
-        {{ 'users.form.cancel' | translate }}
-      </button>
+      @if (isEditMode) {
+        <app-button
+          type="submit"
+          variant="primary">
+          {{ 'users.form.save' | translate }}
+        </app-button>
+        <app-button
+          type="button"
+          variant="secondary"
+          (click)="cancelEdit()">
+          {{ 'users.form.cancel' | translate }}
+        </app-button>
+      }
     </div>
   </form>
 </main>

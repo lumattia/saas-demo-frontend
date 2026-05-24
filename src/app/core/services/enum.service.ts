@@ -1,10 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User, UserFilter, UserCreateRequest, UserUpdateRequest } from '../models/user.model';
 import { environment } from '../../../environments/environment';
-import { PageResponse } from '../models/common.models';
-import { IdName } from '../models/common.models';
 
 @Injectable({
   providedIn: 'root'

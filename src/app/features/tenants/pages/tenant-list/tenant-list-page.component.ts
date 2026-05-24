@@ -1,6 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TenantService } from '../../../../core/services/tenant.service';
 import { Tenant } from '../../../../core/models/tenant.model';
@@ -10,7 +10,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 @Component({
   selector: 'app-tenant-list-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslateModule, ProTableComponent],
+  imports: [CommonModule, TranslateModule, ProTableComponent],
   templateUrl: './tenant-list-page.component.html',
   styleUrls: ['./tenant-list-page.component.css'],
 })
@@ -29,7 +29,7 @@ export class TenantListPageComponent implements OnInit {
     { key: 'name', labelKey: 'tenants.list.columns.name' },
     { key: 'createdAt', labelKey: 'tenants.list.columns.createdAt', type: 'date' },
     { key: 'expiresAt', labelKey: 'tenants.list.columns.expiresAt', type: 'date' },
-    { key: 'modules', labelKey: 'tenants.list.columns.modules' },
+    { key: 'modules', labelKey: 'tenants.list.columns.modules', translation: 'tenants.form.modules' },
   ];
 
   sortOptions: IdName[] = [
@@ -74,6 +74,6 @@ export class TenantListPageComponent implements OnInit {
   }
 
   onEditClick(tenant: Tenant): void {
-    this.router.navigate(['/tenants', tenant.id]);
+    this.router.navigate(['/tenants', tenant.id], { queryParams: { edit: true } });
   }
 }

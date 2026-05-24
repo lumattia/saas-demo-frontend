@@ -2,7 +2,7 @@
   @if (labelKey) {
   <label class="select-input-label">
     {{ labelKey | translate }}
-    @if (required) {
+    @if (!readonly && required) {
       <span class="required-mark">*</span>
     }
   </label>
@@ -13,6 +13,7 @@
     <div
       class="select-trigger"
       [class.disabled]="disabled"
+      [class.readonly]="readonly"
       [class.error]="errorKey"
       [class.dirty]="isDirty"
       (click)="toggleDropdown()"

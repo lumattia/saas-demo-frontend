@@ -56,7 +56,7 @@
       "cancel": "Cancelar"
     }
   },
-  "inventory": {
+  "dress-movements": {
     "title": "Gestión de Movimientos de Vestidos",
     "list": {
       "title": "Movimientos de Vestidos",
@@ -105,7 +105,7 @@
   "nav": {
     "home": "Inicio",
     "dresses": "Vestidos",
-    "inventory": "Movimientos de Vestidos",
+    "dressMovement": "Movimientos de Vestidos",
     "tenants": "Tenants",
     "users": "Usuarios",
     "toggleTheme": "Cambiar tema",
@@ -137,8 +137,7 @@
       "modules": {
         "label": "Módulos",
         "DRESS": "Vestidos",
-        "INVENTORY": "Inventario",
-        "USER": "Usuarios"
+        "DRESS_MOVEMENT": "Movimientos de Vestidos"
       },
       "save": "Guardar",
       "delete": "Eliminar",
@@ -171,9 +170,10 @@
       "usernamePlaceholder": "Introduce el usuario",
       "role": "Rol",
       "roleOptions": {
-        "user": "Usuario",
-        "admin": "Admin",
-        "superadmin": "Super Admin"
+        "USER": "Usuario",
+        "ADMIN": "Admin",
+        "RESELLER": "Revendedor",
+        "SUPERADMIN": "Super Admin"
       },
       "save": "Guardar",
       "delete": "Eliminar",

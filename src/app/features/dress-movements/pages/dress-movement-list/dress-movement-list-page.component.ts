@@ -1,6 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { DressMovementService } from '../../../../core/services/dress-movement.service';
@@ -12,7 +12,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 @Component({
   selector: 'app-dress-movement-list-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent],
+  imports: [CommonModule, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent],
   templateUrl: './dress-movement-list-page.component.html',
   styleUrls: ['./dress-movement-list-page.component.css'],
 })
@@ -20,7 +20,7 @@ export class DressMovementListPageComponent implements OnInit {
   private dressMovementService = inject(DressMovementService);
   private router = inject(Router);
 
-  inventory = signal<DressMovement[]>([]);
+  dressMovement = signal<DressMovement[]>([]);
   filter: DressMovementFilter = { dressTitle: '', sku: '', color: '', size: '', minQuantity: undefined, maxQuantity: undefined };
   filterForm = new FormGroup({
     dressTitle: new FormControl(''),
@@ -61,25 +61,25 @@ export class DressMovementListPageComponent implements OnInit {
   totalItems = signal<number>(0);
 
   columns = [
-    { key: 'dress.sku', labelKey: 'inventory.list.columns.sku' },
-    { key: 'dress.title', labelKey: 'inventory.list.columns.title' },
-    { key: 'dress.size', labelKey: 'inventory.list.columns.size' },
-    { key: 'dress.color', labelKey: 'inventory.list.columns.color', type: 'color' },
-    { key: 'quantity', labelKey: 'inventory.list.columns.quantity' },
-    { key: 'instant', labelKey: 'inventory.list.columns.date', type: 'date' },
+    { key: 'dress.sku', labelKey: 'dress-movements.list.columns.sku' },
+    { key: 'dress.title', labelKey: 'dress-movements.list.columns.title' },
+    { key: 'dress.size', labelKey: 'dress-movements.list.columns.size' },
+    { key: 'dress.color', labelKey: 'dress-movements.list.columns.color', type: 'color' },
+    { key: 'quantity', labelKey: 'dress-movements.list.columns.quantity' },
+    { key: 'instant', labelKey: 'dress-movements.list.columns.date', type: 'date' },
   ];
 
   sortOptions: IdName[] = [
-    { id: 'dress.sku', name: 'inventory.list.sort.sku' },
-    { id: 'quantity', name: 'inventory.list.sort.quantity' },
-    { id: 'instant', name: 'inventory.list.sort.date' },
+    { id: 'dress.sku', name: 'dress-movements.list.sort.sku' },
+    { id: 'quantity', name: 'dress-movements.list.sort.quantity' },
+    { id: 'instant', name: 'dress-movements.list.sort.date' },
   ];
 
   ngOnInit() {
-    this.loadInventory();
+    this.loadDressMovement();
   }
 
-  loadInventory() {
+  loadDressMovement() {
     this.filter.dressTitle = this.filterForm.value.dressTitle || '';
     this.filter.sku = this.filterForm.value.sku || '';
     this.filter.color = this.filterForm.value.color || '';
@@ -87,7 +87,7 @@ export class DressMovementListPageComponent implements OnInit {
     this.filter.minQuantity = this.filterForm.value.minQuantity ? Number(this.filterForm.value.minQuantity) : undefined;
     this.filter.maxQuantity = this.filterForm.value.maxQuantity ? Number(this.filterForm.value.maxQuantity) : undefined;
     this.dressMovementService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
-      this.inventory.set(data.content);
+      this.dressMovement.set(data.content);
       this.totalItems.set(data.totalElements);
       this.pageNumber.set(data.number);
     });
@@ -96,24 +96,24 @@ export class DressMovementListPageComponent implements OnInit {
   onSortChange(sortState: SortState) {
     this.sort.set(sortState.field);
     this.order.set(sortState.direction);
-    this.loadInventory();
+    this.loadDressMovement();
   }
 
   onPaginationChange(pagination: PaginationState) {
     this.pageNumber.set(pagination.pageNumber);
     this.pageSize.set(pagination.pageSize);
-    this.loadInventory();
+    this.loadDressMovement();
   }
 
   onFilterChange() {
     this.pageNumber.set(0);
-    this.loadInventory();
+    this.loadDressMovement();
   }
 
   deleteItem(id: number) {
     if (confirm('Are you sure you want to delete this record?')) {
       this.dressMovementService.delete(id).subscribe(() => {
-        this.loadInventory();
+        this.loadDressMovement();
       });
     }
   }
@@ -123,6 +123,6 @@ export class DressMovementListPageComponent implements OnInit {
   }
 
   onEditClick(item: DressMovement): void {
-    this.router.navigate(['/dress-movements', item.id]);
+    this.router.navigate(['/dress-movements', item.id], { queryParams: { edit: true } });
   }
 }

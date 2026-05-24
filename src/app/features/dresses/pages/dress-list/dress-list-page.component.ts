@@ -1,6 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { DressService } from '../../../../core/services/dress.service';
@@ -14,7 +14,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 @Component({
   selector: 'app-dress-list-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent, ColorInputComponent, NumberInputComponent],
+  imports: [CommonModule, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent, ColorInputComponent, NumberInputComponent],
   templateUrl: './dress-list-page.component.html',
   styleUrls: ['./dress-list-page.component.css'],
 })
@@ -139,6 +139,6 @@ export class DressListPageComponent implements OnInit {
   }
 
   onEditClick(dress: Dress): void {
-    this.router.navigate(['/dresses', dress.id]);
+    this.router.navigate(['/dresses', dress.id], { queryParams: { edit: true } });
   }
 }

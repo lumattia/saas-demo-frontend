@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'success';
 export type ButtonSize = 'sm' | 'md' | 'lg';
@@ -18,8 +19,11 @@ export class ButtonComponent {
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() icon?: string;
   @Input() fullWidth = false;
+  @Input() routerLink?: string | any[];
   
   @Output() click = new EventEmitter<MouseEvent>();
+
+  constructor(private router: Router) {}
 
   get classes(): string {
     return `button ${this.variant} ${this.size} ${this.fullWidth ? 'full-width' : ''}`;
@@ -28,6 +32,9 @@ export class ButtonComponent {
   onClick(event: MouseEvent): void {
     if (!this.disabled) {
       event.stopPropagation();
+      if (this.routerLink) {
+        this.router.navigate(Array.isArray(this.routerLink) ? this.routerLink : [this.routerLink]);
+      }
       this.click.emit(event);
     }
   }

@@ -20,6 +20,7 @@ export class SelectInputComponent {
   @Input() options: IdName[] = [];
   @Input() required = false;
   @Input() disabled = false;
+  @Input() readonly = false;
   @Input() errorKey = '';
   @Input() showDirtyIndicator = false;
   @Input() showClearButton = true;
@@ -42,7 +43,7 @@ export class SelectInputComponent {
   get selectedOptionName(): string {
     const currentValue = this.internalControl.value;
     if (!currentValue) return '';
-    const selectedOption = this.options.find(opt => opt.id === currentValue);
+    const selectedOption = this.options.find(opt => opt.id == currentValue);
     return selectedOption ? selectedOption.name : '';
   }
 
@@ -65,7 +66,7 @@ export class SelectInputComponent {
   }
 
   toggleDropdown(): void {
-    if (!this.disabled) {
+    if (!this.disabled && !this.readonly) {
       this.isDropdownOpen.update(open => !open);
       this.searchTerm.set('');
     }

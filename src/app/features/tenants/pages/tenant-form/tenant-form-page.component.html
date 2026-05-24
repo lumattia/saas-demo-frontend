@@ -7,6 +7,7 @@
       placeholderKey="tenants.form.namePlaceholder"
       [control]="nameControl"
       [required]="true"
+      [readonly]="!isEditMode"
     />
 
     <div class="modules-section">
@@ -27,17 +28,27 @@
     </div>
 
     <div class="actions">
-      <button type="submit" class="btn btn-primary">
-        {{ 'tenants.form.save' | translate }}
-      </button>
-      @if (id) {
-        <button type="button" class="btn btn-danger" (click)="delete()">
-          {{ 'tenants.form.delete' | translate }}
-        </button>
+      @if (!isEditMode && id) {
+        <app-button
+          type="button"
+          variant="primary"
+          (click)="enableEditMode()">
+          {{ 'shared.table.edit' | translate }}
+        </app-button>
       }
-      <button type="button" class="btn" (click)="exit()">
-        {{ 'tenants.form.cancel' | translate }}
-      </button>
+      @if (isEditMode) {
+        <app-button
+          type="submit"
+          variant="primary">
+          {{ 'tenants.form.save' | translate }}
+        </app-button>
+        <app-button
+          type="button"
+          variant="secondary"
+          (click)="cancelEdit()">
+          {{ 'tenants.form.cancel' | translate }}
+        </app-button>
+      }
     </div>
   </form>
 </main>

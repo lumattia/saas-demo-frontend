@@ -1,11 +1,4 @@
 <main class="dress-list-container">
-  <div class="page-header">
-    <h1>{{ 'dresses.list.title' | translate }}</h1>
-    <a routerLink="/dresses/new" class="btn btn-primary">
-      {{ 'dresses.list.add' | translate }}
-    </a>
-  </div>
-
   <app-pro-table
     [columns]="columns"
     [data]="dresses()"
@@ -13,6 +6,9 @@
     [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
     [showDirtyIndicator]="true"
     [filterForm]="filterForm"
+    [titleKey]="'dresses.list.title'"
+    [addLink]="'/dresses/new'"
+    [addLabelKey]="'dresses.list.add'"
     (sortChange)="onSortChange($event)"
     (paginationChange)="onPaginationChange($event)"
     (rowClick)="onRowClick($event)"

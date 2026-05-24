@@ -18,10 +18,10 @@
           <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.dresses' | translate }}</span>
         </a>
       }
-      @if (auth.hasModule('INVENTORY')) {
+      @if (auth.hasModule('DRESS_MOVEMENT')) {
         <a routerLink="/dress-movements" routerLinkActive="active" class="nav-item">
           <span class="nav-icon">📊</span>
-          <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.inventory' | translate }}</span>
+          <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.dressMovement' | translate }}</span>
         </a>
       }  
       @if (auth.isAtLeastAdmin()) {
@@ -51,7 +51,8 @@
           <app-select-input 
             [value]="auth.user()?.tenant?.id"
             [options]="auth.user()!.allowedTenants!"
-            (valueChange)="switchTenant($event)">
+            (valueChange)="switchTenant($event)"
+            [showClearButton]="false">
           </app-select-input>
           }
         <button class="icon-btn theme-toggle" (click)="theme.toggle()" [title]="'nav.toggleTheme' | translate">
@@ -64,7 +65,8 @@
         <app-select-input 
           [value]="currentLang()"
           [options]="availableLanguages"
-          (valueChange)="changeLanguage($event)">
+          (valueChange)="changeLanguage($event)"
+          [showClearButton]="false">
         </app-select-input>
         <div class="user-info">
           <span class="user-name">{{ auth.user()?.username }}</span>

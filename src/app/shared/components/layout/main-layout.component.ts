@@ -30,9 +30,12 @@ export class MainLayoutComponent {
   ];
 
   ngOnInit() {
-    this.currentLang.set(this.translate.currentLang || 'es');
+    const savedLang = localStorage.getItem('user_language') || this.translate.currentLang || 'es';
+    
+    this.translate.use(savedLang);
+    this.currentLang.set(savedLang);
   }
-
+  
   toggleSidenav(): void {
     this.sidenavCollapsed.update(collapsed => !collapsed);
   }
@@ -40,6 +43,7 @@ export class MainLayoutComponent {
   changeLanguage(lang: string): void {
     this.translate.use(lang).subscribe(() => {
       this.currentLang.set(lang);
+      localStorage.setItem('user_language', lang);
     });
   }
 

@@ -84,6 +84,29 @@
   box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
 }
 
+.color-input-field[readonly] {
+  border: none;
+  background: transparent;
+  cursor: default;
+}
+
+.color-input-field[readonly]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.color-text-field[readonly] {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: default;
+}
+
+.color-text-field[readonly]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .color-input-error {
   font-size: 0.75rem;
   color: var(--error);

@@ -1,16 +1,12 @@
 <main class="tenant-list-container">
-  <div class="page-header">
-    <h1>{{ 'tenants.list.title' | translate }}</h1>
-    <a routerLink="/tenants/new" class="btn btn-primary">
-      {{ 'tenants.list.add' | translate }}
-    </a>
-  </div>
-
   <app-pro-table
     [columns]="columns"
     [data]="tenants()"
     [sortOptions]="sortOptions"
     [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
+    [titleKey]="'tenants.list.title'"
+    [addLink]="'/tenants/new'"
+    [addLabelKey]="'tenants.list.add'"
     (sortChange)="onSortChange($event)"
     (paginationChange)="onPaginationChange($event)"
     (rowClick)="onRowClick($event)"

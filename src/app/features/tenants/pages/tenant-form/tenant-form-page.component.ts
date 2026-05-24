@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TenantService } from '../../../../core/services/tenant.service';
 import { Tenant, TenantCreateRequest, TenantUpdateRequest, ModuleType } from '../../../../core/models/tenant.model';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-tenant-form-page',
@@ -15,6 +16,7 @@ import { TextInputComponent } from '../../../../shared/components/inputs/text-in
     ReactiveFormsModule,
     TranslateModule,
     TextInputComponent,
+    ButtonComponent,
   ],
   templateUrl: './tenant-form-page.component.html',
   styleUrls: ['./tenant-form-page.component.css'],
@@ -30,9 +32,11 @@ export class TenantFormPageComponent implements OnInit {
   });
   modules: ModuleType[] = [];
   moduleOptions = [
-    { id: ModuleType.DRESS, name: 'tenants.form.modules.dress' },
-    { id: ModuleType.INVENTORY, name: 'tenants.form.modules.inventory' },
+    { id: ModuleType.DRESS, name: 'tenants.form.modules.DRESS' },
+    { id: ModuleType.DRESS_MOVEMENT, name: 'tenants.form.modules.DRESS_MOVEMENT' },
   ];
+  isEditMode = false;
+  initialData: any = null;
 
   get nameControl(): FormControl {
     return this.tenantForm.controls['name'] as FormControl;
@@ -42,12 +46,27 @@ export class TenantFormPageComponent implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam && idParam !== 'new') {
       this.id = idParam;
+      this.isEditMode = false;
+      
+      this.route.queryParamMap.subscribe((params: ParamMap) => {
+        const editParam = params.get('edit');
+        if (editParam === 'true') {
+          this.isEditMode = true;
+        }
+      });
+
       this.tenantService.getById(this.id).subscribe(data => {
+        this.initialData = {
+          name: data.name,
+          modules: data.modules || []
+        };
         this.tenantForm.patchValue({
           name: data.name
         });
         this.modules = data.modules || [];
       });
+    } else {
+      this.isEditMode = true;
     }
   }
 
@@ -85,6 +104,29 @@ export class TenantFormPageComponent implements OnInit {
     this.router.navigate(['/tenants']);
   }
 
+  enableEditMode(): void {
+    this.isEditMode = true;
+  }
+
+  cancelEdit(): void {
+    if (!this.id) {
+      this.router.navigate(['/tenants']);
+      return;
+    }
+    this.isEditMode = false;
+    if (this.initialData) {
+      this.tenantForm.patchValue({
+        name: this.initialData.name
+      });
+      this.modules = this.initialData.modules;
+    }
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { edit: null },
+      queryParamsHandling: 'merge'
+    });
+  }
+
   onModuleChange(module: ModuleType, target: EventTarget|null) {
     if (target && (target as HTMLInputElement).checked) {
       this.modules.push(module);
@@ -97,6 +139,6 @@ export class TenantFormPageComponent implements OnInit {
   }
 
   canDeactivate(): boolean {
-    return !this.tenantForm.dirty && this.modules.length === 0;
+    return !this.tenantForm.dirty || !this.isEditMode;
   }
 }

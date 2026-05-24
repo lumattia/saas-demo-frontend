@@ -19,6 +19,7 @@ export class NumberInputComponent {
   @Input() unit = '';
   @Input() required = false;
   @Input() disabled = false;
+  @Input() readonly = false;
   @Input() min?: number;
   @Input() max?: number;
   @Input() errorKey = '';

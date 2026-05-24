@@ -14,6 +14,8 @@ export class ColorInputComponent {
   @Input() labelKey = '';
   @Input() control: FormControl | null = null;
   @Input() value: string | null = null;
+  @Input() disabled = false;
+  @Input() readonly = false;
   @Input() errorKey = '';
   @Input() showDirtyIndicator = false;
 

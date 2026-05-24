@@ -1,15 +1,15 @@
-.inventory-form-container {
+.dress-movements-form-container {
   padding: 2rem;
   max-width: 800px;
   margin: 0 auto;
 }
 
-.inventory-form-container h1 {
+.dress-movements-form-container h1 {
   margin-bottom: 2rem;
   color: var(--text-primary);
 }
 
-.inventory-form {
+.dress-movements-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

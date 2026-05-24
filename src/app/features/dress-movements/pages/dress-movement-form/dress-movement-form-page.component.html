@@ -1,37 +1,48 @@
-<main class="inventory-form-container">
-  <h1>{{ (id ? 'inventory.edit' : 'inventory.new') | translate }}</h1>
+<main class="dress-movements-form-container">
+  <h1>{{ (id ? 'dress-movements.edit' : 'dress-movements.new') | translate }}</h1>
 
-  <form (ngSubmit)="save()" class="inventory-form">
+  <form (ngSubmit)="save()" class="dress-movements-form">
     <app-select-input
-      labelKey="inventory.form.dress"
-      placeholderKey="inventory.form.dressPlaceholder"
+      labelKey="dress-movements.form.dress"
+      placeholderKey="dress-movements.form.dressPlaceholder"
       [options]="dresses"
       [control]="dressIdControl"
       [required]="true"
-      [disabled]="!!id"
+      [readonly]="!isEditMode"
     />
 
     <app-number-input
-      labelKey="inventory.form.quantity"
-      placeholderKey="inventory.form.quantityPlaceholder"
+      labelKey="dress-movements.form.quantity"
+      placeholderKey="dress-movements.form.quantityPlaceholder"
       [control]="quantityControl"
       [decimalPlaces]="0"
       [required]="true"
       [min]="1"
+      [readonly]="!isEditMode"
     />
 
     <div class="actions">
-      <button type="submit" class="btn btn-primary">
-        {{ 'inventory.form.save' | translate }}
-      </button>
-      @if (id) {
-        <button type="button" class="btn btn-danger" (click)="delete()">
-          {{ 'inventory.form.delete' | translate }}
-        </button>
+      @if (!isEditMode && id) {
+        <app-button
+          type="button"
+          variant="primary"
+          (click)="enableEditMode()">
+          {{ 'shared.table.edit' | translate }}
+        </app-button>
       }
-      <button type="button" class="btn" (click)="exit()">
-        {{ 'inventory.form.cancel' | translate }}
-      </button>
+      @if (isEditMode) {
+        <app-button
+          type="submit"
+          variant="primary">
+          {{ 'dress-movements.form.save' | translate }}
+        </app-button>
+        <app-button
+          type="button"
+          variant="secondary"
+          (click)="cancelEdit()">
+          {{ 'dress-movements.form.cancel' | translate }}
+        </app-button>
+      }
     </div>
   </form>
 </main>

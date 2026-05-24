@@ -56,7 +56,7 @@
       "cancel": "Annulla"
     }
   },
-  "inventory": {
+  "dress-movements": {
     "title": "Gestione Movimenti Abiti",
     "list": {
       "title": "Movimenti Abiti",
@@ -105,7 +105,7 @@
   "nav": {
     "home": "Home",
     "dresses": "Abiti",
-    "inventory": "Movimenti Abiti",
+    "dressMovement": "Movimenti Abiti",
     "tenants": "Tenant",
     "users": "Utenti",
     "toggleTheme": "Cambia tema",
@@ -137,8 +137,7 @@
       "modules": {
         "label": "Moduli",
         "DRESS": "Abiti",
-        "INVENTORY": "Inventario",
-        "USER": "Utenti"
+        "DRESS_MOVEMENT": "Movimenti Abiti"
       },
       "save": "Salva",
       "delete": "Elimina",
@@ -171,9 +170,10 @@
       "usernamePlaceholder": "Inserisci utente",
       "role": "Ruolo",
       "roleOptions": {
-        "user": "Utente",
-        "admin": "Admin",
-        "superadmin": "Super Admin"
+        "USER": "Utente",
+        "ADMIN": "Admin",
+        "RESELLER": "Revenditore",
+        "SUPERADMIN": "Super Admin"
       },
       "save": "Salva",
       "delete": "Elimina",

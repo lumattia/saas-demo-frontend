@@ -1,6 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserService } from '../../../../core/services/user.service';
@@ -12,7 +12,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 @Component({
   selector: 'app-user-list-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent],
+  imports: [CommonModule, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent],
   templateUrl: './user-list-page.component.html',
   styleUrls: ['./user-list-page.component.css'],
 })
@@ -37,7 +37,7 @@ export class UserListPageComponent implements OnInit {
 
   columns = [
     { key: 'username', labelKey: 'users.list.columns.username' },
-    { key: 'role', labelKey: 'users.list.columns.role' },
+    { key: 'role', labelKey: 'users.list.columns.role', translation: 'users.form.roleOptions' },
   ];
 
   sortOptions: IdName[] = [
@@ -88,6 +88,6 @@ export class UserListPageComponent implements OnInit {
   }
 
   onEditClick(user: User): void {
-    this.router.navigate(['/users', user.id]);
+    this.router.navigate(['/users', user.id], { queryParams: { edit: true } });
   }
 }

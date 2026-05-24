@@ -52,6 +52,18 @@
   cursor: not-allowed;
 }
 
+.number-input-field[readonly] {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: default;
+}
+
+.number-input-field[readonly]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .number-input-field.error {
   border-color: var(--error);
 }

@@ -95,7 +95,7 @@ export class LoginPageComponent {
         const firstModule = availableModules[0];
         const moduleRouteMap: { [key: string]: string } = {
           'DRESS': '/dresses',
-          'INVENTORY': '/inventory',
+          'DRESS_MOVEMENT': '/dress-movements',
           'TENANT': '/tenants',
           'USER': '/users'
         };
