@@ -10,7 +10,7 @@
   <div class="number-input-container">
     <input
       type="number"
-      [formControl]="control"
+      [formControl]="internalControl"
       [placeholder]="placeholderKey ? (placeholderKey | translate) : ''"
       [required]="required"
       [disabled]="disabled"
@@ -20,6 +20,7 @@
       class="number-input-field"
       [class.error]="errorKey"
       [class.dirty]="isDirty"
+      (change)="onValueChange($event)"
     />
     @if (unit) {
       <span class="number-input-unit">{{ unit }}</span>

@@ -48,7 +48,5 @@ export class UserService {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 
-  switchTenant(tenantId: string): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/switch-tenant`, { tenantId });
-  }
+
 }

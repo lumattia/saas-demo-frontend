@@ -7,19 +7,21 @@
   <div class="color-input-container">
     <input
       type="color"
-      [formControl]="control"
+      [formControl]="internalControl"
       class="color-input-field"
       [class.invalid]="!isValid"
       [class.dirty]="isDirty"
+      (change)="onValueChange($event)"
     />
     <input
       type="text"
-      [formControl]="control"
+      [formControl]="internalControl"
       class="color-text-field"
       [class.invalid]="!isValid"
       [class.dirty]="isDirty"
       maxlength="7"
       placeholder="#000000"
+      (change)="onValueChange($event)"
     />
   </div>
   @if (!isValid && errorKey) {

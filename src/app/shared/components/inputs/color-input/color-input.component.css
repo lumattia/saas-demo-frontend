@@ -1,3 +1,6 @@
+:host{
+  flex-grow: 1; width: 100%; max-width: var(--input-max-width);
+}
 .color-input-wrapper {
   display: flex;
   flex-direction: column;

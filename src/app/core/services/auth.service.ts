@@ -4,7 +4,7 @@ import { User } from '../models/user.model';
 import { environment } from '../../../environments/environment';
 import { tap, switchMap, of } from 'rxjs';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
-import { UserService } from './user.service';
+import { TenantService } from './tenant.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private auth0 = inject(Auth0Service);
   private userSignal = signal<User | null>(null);
-  private userService = inject(UserService);
+  private tenantService = inject(TenantService);
 
   user = this.userSignal.asReadonly();
   isAuthenticated = computed(() => !!this.userSignal());
@@ -44,7 +44,19 @@ export class AuthService {
             switchMap(token => {
               localStorage.setItem('access_token', token);
               const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-              return this.http.get<User>(`${environment.apiUrl}/users/me`, { headers });
+              return this.http.get<User>(`${environment.apiUrl}/users/me`, { headers }).pipe(
+                switchMap(user => {
+                  if (user && (user.role === 'RESELLER' || user.role === 'SUPERADMIN')) {
+                    return this.http.get<any[]>(`${environment.apiUrl}/tenants/list`, { headers }).pipe(
+                      tap(allowedTenants => {
+                        user.allowedTenants = allowedTenants;
+                      }),
+                      switchMap(() => of(user))
+                    );
+                  }
+                  return of(user);
+                })
+              );
             })
           );
         } else {
@@ -92,7 +104,7 @@ export class AuthService {
   }
 
   switchTenant(tenantId: string) {
-    return this.userService.switchTenant(tenantId).pipe(
+    return this.tenantService.switchTenant(tenantId).pipe(
       tap(user => {
         this.userSignal.set(user);
         localStorage.setItem('user', JSON.stringify(user));

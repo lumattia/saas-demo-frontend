@@ -9,7 +9,7 @@
 }
   <input
     [type]="type"
-    [formControl]="control"
+    [formControl]="internalControl"
     [placeholder]="placeholderKey ? (placeholderKey | translate) : ''"
     [required]="required"
     [disabled]="disabled"
@@ -17,6 +17,7 @@
     class="text-input-field"
     [class.error]="errorKey"
     [class.dirty]="isDirty"
+    (change)="onValueChange($event)"
   />
   @if (errorKey) {
     <span class="text-input-error">

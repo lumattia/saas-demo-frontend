@@ -5,6 +5,7 @@ import { Tenant, TenantFilter, TenantCreateRequest, TenantUpdateRequest } from '
 import { environment } from '../../../environments/environment';
 import { PageResponse } from '../models/common.models';
 import { IdName } from '../models/common.models';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -42,4 +43,8 @@ export class TenantService {
   delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
+  switchTenant(tenantId: string): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/switch/${tenantId}`, {});
+  }
+
 }

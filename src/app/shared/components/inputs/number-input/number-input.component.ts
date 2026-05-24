@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -13,7 +13,8 @@ import { TranslateModule } from '@ngx-translate/core';
 export class NumberInputComponent {
   @Input() labelKey = '';
   @Input() placeholderKey = '';
-  @Input() control: FormControl = new FormControl(0);
+  @Input() control: FormControl | null = null;
+  @Input() value: number | null = null;
   @Input() decimalPlaces = 0;
   @Input() unit = '';
   @Input() required = false;
@@ -23,18 +24,34 @@ export class NumberInputComponent {
   @Input() errorKey = '';
   @Input() showDirtyIndicator = false;
 
+  @Output() valueChange = new EventEmitter<number>();
+
   get step(): string {
     return this.decimalPlaces > 0 ? `0.${'0'.repeat(this.decimalPlaces - 1)}1` : '1';
   }
 
+  get internalControl(): FormControl {
+    return this.control || new FormControl(this.value ?? 0);
+  }
+
   get displayValue(): string {
-    const value = this.control.value || 0;
-    return this.decimalPlaces > 0 
-      ? value.toFixed(this.decimalPlaces) 
+    const value = this.internalControl.value || 0;
+    return this.decimalPlaces > 0
+      ? value.toFixed(this.decimalPlaces)
       : value.toString();
   }
 
   get isDirty(): boolean {
-    return this.showDirtyIndicator && this.control.dirty;
+    return this.showDirtyIndicator && !!this.control?.dirty;
+  }
+
+  onValueChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const newValue = input.value ? parseFloat(input.value) : null;
+    if (this.control) {
+      this.control.setValue(newValue);
+    } else {
+      this.valueChange.emit(newValue ?? 0);
+    }
   }
 }

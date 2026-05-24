@@ -7,24 +7,68 @@
     }
   </label>
 }
-  <select
-    [formControl]="control"
-    [disabled]="disabled"
-    class="select-input-field"
-    [class.error]="errorKey"
-    [class.dirty]="isDirty"
-  >
-    @if (placeholderKey) {
-      <option value="">
-        {{ placeholderKey | translate }}
-      </option>
+
+  <div class="select-dropdown-container">
+    <!-- Trigger -->
+    <div
+      class="select-trigger"
+      [class.disabled]="disabled"
+      [class.error]="errorKey"
+      [class.dirty]="isDirty"
+      (click)="toggleDropdown()"
+    >
+      <span class="select-trigger-text">
+        @if (selectedOptionName) {
+          {{ selectedOptionName | translate }}
+        } @else {
+          <span class="select-placeholder">
+            {{ placeholderKey ? (placeholderKey | translate) : 'shared.selectInput.placeholder' | translate }}
+          </span>
+        }
+      </span>
+      @if (showClearButton && hasValue) {
+        <button
+          class="select-clear-btn"
+          (click)="clearSelection($event)"
+          type="button"
+        >
+          ×
+        </button>
+      }
+      <span class="select-arrow">▼</span>
+    </div>
+
+    <!-- Dropdown -->
+    @if (isDropdownOpen()) {
+      <div class="select-dropdown">
+        <!-- Search Input -->
+        <input
+          type="text"
+          class="select-search"
+          [placeholder]="'shared.selectInput.search' | translate"
+          (input)="onSearchInput($event)"
+          (click)="$event.stopPropagation()"
+        />
+
+        <!-- Options List -->
+        <ul class="select-options">
+          @for (option of filteredOptions(); track option.id) {
+            <li
+              class="select-option"
+              [class.selected]="internalControl.value === option.id"
+              (click)="selectOption(option)"
+            >
+              @if (option.flag) {
+                {{ option.flag }}
+              }
+              {{ option.name | translate }}
+            </li>
+          }
+        </ul>
+      </div>
     }
-    @for (option of options; track option.id) {
-      <option [value]="option.id">
-        {{ option.name | translate }}
-      </option>
-    }
-  </select>
+  </div>
+
   @if (errorKey) {
     <span class="select-input-error">
       {{ errorKey | translate }}

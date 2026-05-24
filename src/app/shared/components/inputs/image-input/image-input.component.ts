@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-image-input',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   template: `
     <label>
       Imagen
@@ -14,8 +15,20 @@ import { Component, EventEmitter, Output } from '@angular/core';
   `,
 })
 export class ImageInputComponent {
+  @Input() control: FormControl | null = null;
+  @Input() value: string | null = null;
   @Output() fileReady = new EventEmitter<File>();
+  @Output() valueChange = new EventEmitter<string>();
+
   preview = '';
+
+  ngOnInit() {
+    if (this.control) {
+      this.preview = this.control.value || '';
+    } else if (this.value) {
+      this.preview = this.value;
+    }
+  }
 
   async onFileSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
@@ -24,6 +37,13 @@ export class ImageInputComponent {
     const processed = await this.cropSquareAndCompress(file);
     this.preview = URL.createObjectURL(processed);
     this.fileReady.emit(processed);
+
+    // Also emit the preview URL as value
+    if (this.control) {
+      this.control.setValue(this.preview);
+    } else {
+      this.valueChange.emit(this.preview);
+    }
   }
 
   private cropSquareAndCompress(file: File): Promise<File> {
