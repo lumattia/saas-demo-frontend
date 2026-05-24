@@ -18,7 +18,7 @@ export class TenantService {
       .set('pageNumber', page.toString())
       .set('pageSize', size.toString());
   
-    if (sort) params = params.set('sort', sort);
+    if (sort) params = params.set('sort', `${sort},${order}`);
 
     return this.http.get<PageResponse<Tenant>>(`${this.apiUrl}/page`, { params });
   }

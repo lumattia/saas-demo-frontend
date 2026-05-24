@@ -25,8 +25,7 @@ export class DressMovementService {
     }
     if (pageNumber) params = params.set('pageNumber', pageNumber.toString());
     if (pageSize) params = params.set('pageSize', pageSize.toString());
-    if (sort) params = params.set('sort', sort);
-    if (order) params = params.set('order', order);
+    if (sort) params = params.set('sort', `${sort},${order}`);
 
     return this.http.get<PageResponse<DressMovement>>(this.apiUrl+'/page', { params });
   }

@@ -23,7 +23,7 @@ export class DressService {
       if (value != null && value !== '') params = params.set(key, value);
     });
   }
-  if (sort) params = params.set('sort', sort);  // 格式 "field,asc"
+    if (sort) params = params.set('sort', `${sort},${order}`);
 
   return this.http.get<PageResponse<Dress>>(`${this.apiUrl}/page`, { params });
 }
