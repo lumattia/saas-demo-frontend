@@ -7,6 +7,7 @@ import { UserService } from '../../../../core/services/user.service';
 import { User, UserCreateRequest, UserUpdateRequest } from '../../../../core/models/user.model';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import { SelectInputComponent } from '../../../../shared/components/inputs/select-input/select-input.component';
+import { EnumService } from '../../../../core/services/enum.service';
 
 @Component({
   selector: 'app-user-form-page',
@@ -23,6 +24,7 @@ import { SelectInputComponent } from '../../../../shared/components/inputs/selec
 })
 export class UserFormPageComponent implements OnInit {
   private userService = inject(UserService);
+  private enumService = inject(EnumService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -32,11 +34,14 @@ export class UserFormPageComponent implements OnInit {
     role: new FormControl('USER')
   });
   allowedTenantIds: string[] = [];
-  roleOptions = [
-    { id: 'USER', name: 'users.form.roleOptions.user' },
-    { id: 'ADMIN', name: 'users.form.roleOptions.admin' },
-    { id: 'SUPERADMIN', name: 'users.form.roleOptions.superadmin' },
-  ];
+  assignableRoles: string[] = [];
+
+  get roleOptions() {
+    return this.assignableRoles.map(role => ({
+      id: role,
+      name: `users.form.roleOptions.${role.toLowerCase()}`
+    }));
+  }
 
   get usernameControl(): FormControl {
     return this.userForm.controls['username'] as FormControl;
@@ -47,6 +52,10 @@ export class UserFormPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.enumService.getAssignableRoles().subscribe(roles => {
+      this.assignableRoles = roles;
+    });
+
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam && idParam !== 'new') {
       this.id = +idParam;
