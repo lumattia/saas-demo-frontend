@@ -12,7 +12,7 @@ import { IdName } from '../../../../core/models/common.models';
   templateUrl: './select-input.component.html',
   styleUrls: ['./select-input.component.css'],
 })
-export class SelectInputComponent implements OnChanges {
+export class SelectInputComponent {
   @Input() labelKey = '';
   @Input() placeholderKey = '';
   @Input() control: FormControl | null = null;
@@ -23,7 +23,6 @@ export class SelectInputComponent implements OnChanges {
   @Input() errorKey = '';
   @Input() showDirtyIndicator = false;
   @Input() showClearButton = true;
-  @Input() selectFirstByDefault = false;
 
   @Output() valueChange = new EventEmitter<any>();
 
@@ -64,12 +63,6 @@ export class SelectInputComponent implements OnChanges {
      this.searchTerm.set('');
     }
   }
-  
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['options']) {
-      this.setFirstOption();
-    }
-  }
 
   toggleDropdown(): void {
     if (!this.disabled) {
@@ -97,23 +90,12 @@ export class SelectInputComponent implements OnChanges {
     this.searchTerm.set(input.value);
   }
 
-
-  setFirstOption(): void {
-    if (this.selectFirstByDefault && this.options.length > 0) {
-      this.selectOption(this.options[0]);
-    }
-  }
-  
   clearSelection(event: MouseEvent): void {
     event.stopPropagation();
-    if (this.selectFirstByDefault) {
-      this.setFirstOption();
+    if (this.control) {
+      this.control.setValue(null);
     } else {
-      if (this.control) {
-        this.control.setValue(null);
-      } else {
-        this.valueChange.emit(null);
-      }
+      this.valueChange.emit(null);
     }
   }
 

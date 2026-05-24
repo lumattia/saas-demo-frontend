@@ -11,7 +11,6 @@
             [value]="currentSort.field"
             [options]="sortOptions"
             [showClearButton]="false"
-            [selectFirstByDefault]="true"
             (valueChange)="onSortChange($event)">
           </app-select-input>
           <app-button (click)="onSortChange(currentSort.field)">
@@ -52,12 +51,22 @@
             }
           </td>
           <td *ngIf="showActions" class="actions-cell">
-            <button (click)="onEditClick(row, $event)" class="action-btn edit-btn" title="{{ 'shared.table.edit' | translate }}">
-              ✏️
-            </button>
-            <button (click)="onDeleteClick(row, $event)" class="action-btn delete-btn" title="{{ 'shared.table.delete' | translate }}">
-              🗑️
-            </button>
+            <app-button
+              (click)="onEditClick(row, $event)"
+              [disabled]="!isRowEditable(row)"
+              [icon]="isRowEditable(row) ? '✏️' : '🔒'"
+              size="sm"
+              variant="secondary"
+              [title]="'shared.table.edit' | translate">
+            </app-button>
+            <app-button
+              (click)="onDeleteClick(row, $event)"
+              [disabled]="!isRowEditable(row)"
+              [icon]="isRowEditable(row) ? '🗑️' : '🔒'"
+              size="sm"
+              variant="danger"
+              [title]="'shared.table.delete' | translate">
+            </app-button>
           </td>
         </tr>
         <tr *ngIf="data.length === 0">

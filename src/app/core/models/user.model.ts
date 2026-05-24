@@ -4,6 +4,7 @@ export interface User {
   role: 'USER' | 'ADMIN' | 'RESELLER' | 'SUPERADMIN';
   tenant?: Tenant;
   allowedTenants?: IdName[];
+  isEditable?: boolean;
 }
 
 export interface Tenant {

@@ -11,8 +11,7 @@ export const usersRoutes: Routes = [
     path: 'users',
     component: UsersPageComponent,
     canActivate: [authGuard, roleGuard],
-    canActivateChild: [moduleGuard],
-    data: { module: 'USER', requiredRole: 'ADMIN' },
+    data: { requiredRole: 'ADMIN' },
     children: [
       { path: '', component: UserListPageComponent },
       { path: 'new', component: UserFormPageComponent },

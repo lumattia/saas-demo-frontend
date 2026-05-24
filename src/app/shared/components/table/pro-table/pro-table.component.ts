@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
@@ -21,11 +21,11 @@ export interface TableColumn {
   templateUrl: './pro-table.component.html',
   styleUrls: ['./pro-table.component.css'],
 })
-export class ProTableComponent {
+export class ProTableComponent implements OnInit {
   @Input() columns: TableColumn[] = [];
   @Input() data: any[] = [];
   @Input() sortOptions: IdName[] = [];
-  @Input() pagination: PaginationState = { pageSize: 10, pageNumber: 1, totalItems: 0 };
+  @Input() pagination: PaginationState = { pageSize: 10, pageNumber: 0, totalItems: 0 };
   @Input() filtersCollapsed = true;
   @Input() showActions = true;
   @Input() rowClickable = true;
@@ -42,6 +42,12 @@ export class ProTableComponent {
   currentSort: SortState = { field: '', direction: 'asc' };
   private dateTimePipe = new DateTimePipe();
 
+  ngOnInit(): void {
+    if (this.sortOptions.length > 0) {
+      this.currentSort.field = String(this.sortOptions[0].id);
+    }
+  }
+
   onSortChange(field: string): void {
     if (this.currentSort.field === field) {
       this.currentSort.direction = this.currentSort.direction === 'asc' ? 'desc' : 'asc';
@@ -56,7 +62,7 @@ export class ProTableComponent {
     const input = event.target as HTMLInputElement;
     const newPageSize = parseInt(input.value, 10);
     if (newPageSize > 0 && newPageSize <= 100) {
-      this.paginationChange.emit({ ...this.pagination, pageSize: newPageSize, pageNumber: 1 });
+      this.paginationChange.emit({ ...this.pagination, pageSize: newPageSize, pageNumber: 0 });
     }
   }
 
@@ -149,5 +155,9 @@ export class ProTableComponent {
       return this.dateTimePipe.transform(value, format as 'date' | 'datetime' | 'time');
     }
     return value;
+  }
+
+  isRowEditable(row: any): boolean {
+    return row.isEditable !== false;
   }
 }

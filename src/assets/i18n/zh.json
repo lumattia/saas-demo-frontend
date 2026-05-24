@@ -154,6 +154,10 @@
         "username": "用户名",
         "role": "角色"
       },
+      "sort": {
+        "username": "用户名",
+        "role": "角色"
+      },
       "filter": {
         "username": "用户名",
         "usernamePlaceholder": "按用户名筛选",

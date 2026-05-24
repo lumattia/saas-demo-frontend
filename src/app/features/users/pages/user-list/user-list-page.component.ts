@@ -38,7 +38,6 @@ export class UserListPageComponent implements OnInit {
   columns = [
     { key: 'username', labelKey: 'users.list.columns.username' },
     { key: 'role', labelKey: 'users.list.columns.role' },
-    { key: 'tenant', labelKey: 'users.list.columns.tenant' },
   ];
 
   sortOptions: IdName[] = [

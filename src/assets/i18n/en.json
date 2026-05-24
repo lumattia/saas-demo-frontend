@@ -154,6 +154,10 @@
         "username": "Username",
         "role": "Role"
       },
+      "sort": {
+        "username": "Username",
+        "role": "Role"
+      },
       "filter": {
         "username": "Username",
         "usernamePlaceholder": "Filter by username",
