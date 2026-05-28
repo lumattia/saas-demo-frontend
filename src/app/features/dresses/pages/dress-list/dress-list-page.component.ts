@@ -10,6 +10,8 @@ import { TextInputComponent } from '../../../../shared/components/inputs/text-in
 import { ColorInputComponent } from '../../../../shared/components/inputs/color-input/color-input.component';
 import { NumberInputComponent } from '../../../../shared/components/inputs/number-input/number-input.component';
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
+import { ModalService } from '../../../../shared/services/modal.service';
+import { ConfirmModalComponent } from '../../../../shared/components/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-dress-list-page',
@@ -21,6 +23,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 export class DressListPageComponent implements OnInit {
   private dressService = inject(DressService);
   private router = inject(Router);
+  private modalService = inject(ModalService);
 
   dresses = signal<Dress[]>([]);
   filter: DressFilter = { title: '', sku: '', size: '', color: '', minStock: undefined, maxStock: undefined, minPrice: undefined, maxPrice: undefined };
@@ -127,11 +130,16 @@ export class DressListPageComponent implements OnInit {
   }
 
   deleteDress(id: number) {
-    if (confirm('Are you sure you want to delete this dress?')) {
-      this.dressService.delete(id).subscribe(() => {
-        this.loadDresses();
-      });
-    }
+    const modalRef = this.modalService.open(ConfirmModalComponent, {
+      open: true,
+      title: 'dresses.form.delete',
+      message: 'dresses.form.deleteConfirm'
+    });
+    modalRef.result.then((confirmed) => {
+      if (confirmed) {
+        this.dressService.delete(id).subscribe(() => this.loadDresses());
+      }
+    })
   }
 
   onRowClick(dress: Dress): void {

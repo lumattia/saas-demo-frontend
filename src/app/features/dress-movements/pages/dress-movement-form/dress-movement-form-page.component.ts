@@ -10,6 +10,9 @@ import { IdName } from '../../../../core/models/common.models';
 import { SelectInputComponent } from '../../../../shared/components/inputs/select-input/select-input.component';
 import { NumberInputComponent } from '../../../../shared/components/inputs/number-input/number-input.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
+import { ModalService } from '../../../../shared/services/modal.service';
+import { UnsavedChangesModalComponent } from '../../../../shared/components/modals/unsaved-changes-modal/unsaved-changes-modal.component';
 
 @Component({
   selector: 'app-dress-movement-form-page',
@@ -18,11 +21,12 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
   templateUrl: './dress-movement-form-page.component.html',
   styleUrls: ['./dress-movement-form-page.component.css'],
 })
-export class DressMovementFormPageComponent implements OnInit {
+export class DressMovementFormPageComponent implements OnInit, CanDeactivateComponent {
   private dressMovementService = inject(DressMovementService);
   private dressService = inject(DressService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private modalService = inject(ModalService);
 
   id: number | null = null;
   dressMovementForm = new FormGroup({
@@ -87,14 +91,6 @@ export class DressMovementFormPageComponent implements OnInit {
     }
   }
 
-  delete(): void {
-    if (this.id && confirm('Are you sure you want to delete this record?')) {
-      this.dressMovementService.delete(this.id).subscribe(() => {
-        this.router.navigate(['/dress-movements']);
-      });
-    }
-  }
-
   exit(): void {
     this.router.navigate(['/dress-movements']);
   }
@@ -122,7 +118,15 @@ export class DressMovementFormPageComponent implements OnInit {
     });
   }
 
-  canDeactivate(): boolean {
-    return !this.dressMovementForm.dirty || !this.isEditMode;
+  canDeactivate(): boolean | Promise<boolean> {
+    if (!this.dressMovementForm.dirty || !this.isEditMode) {
+      return true;
+    }
+    
+    const modalRef = this.modalService.open(UnsavedChangesModalComponent, {
+      open: true
+    });
+    
+    return modalRef.result;
   }
 }

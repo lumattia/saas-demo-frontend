@@ -9,6 +9,9 @@ import { TextInputComponent } from '../../../../shared/components/inputs/text-in
 import { ColorInputComponent } from '../../../../shared/components/inputs/color-input/color-input.component';
 import { NumberInputComponent } from '../../../../shared/components/inputs/number-input/number-input.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
+import { ModalService } from '../../../../shared/services/modal.service';
+import { UnsavedChangesModalComponent } from '../../../../shared/components/modals/unsaved-changes-modal/unsaved-changes-modal.component';
 
 @Component({
   selector: 'app-dress-form-page',
@@ -25,10 +28,11 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
   templateUrl: './dress-form-page.component.html',
   styleUrls: ['./dress-form-page.component.css'],
 })
-export class DressFormPageComponent implements OnInit {
+export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
   private dressService = inject(DressService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private modalService = inject(ModalService);
 
   id: number | null = null;
   dressForm = new FormGroup({
@@ -115,14 +119,6 @@ export class DressFormPageComponent implements OnInit {
     }
   }
 
-  delete(): void {
-    if (this.id && confirm('Are you sure you want to delete this dress?')) {
-      this.dressService.delete(this.id).subscribe(() => {
-        this.router.navigate(['/dresses']);
-      });
-    }
-  }
-
   exit(): void {
     this.router.navigate(['/dresses']);
   }
@@ -153,7 +149,15 @@ export class DressFormPageComponent implements OnInit {
     });
   }
 
-  canDeactivate(): boolean {
-    return !this.dressForm.dirty || !this.isEditMode;
+  canDeactivate(): boolean | Promise<boolean> {
+    if (!this.dressForm.dirty || !this.isEditMode) {
+      return true;
+    }
+    
+    const modalRef = this.modalService.open(UnsavedChangesModalComponent, {
+      open: true
+    });
+    
+    return modalRef.result;
   }
 }

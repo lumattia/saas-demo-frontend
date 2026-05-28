@@ -4,6 +4,7 @@ import { DressMovementListPageComponent } from '../features/dress-movements/page
 import { DressMovementFormPageComponent } from '../features/dress-movements/pages/dress-movement-form/dress-movement-form-page.component';
 import { moduleGuard } from '../core/guards/module.guard';
 import { authGuard } from '../core/guards/auth.guard';
+import { UnsavedChangesGuard } from '../core/guards/unsaved-changes.guard';
 
 export const dressMovementRoutes: Routes = [
   {
@@ -14,8 +15,8 @@ export const dressMovementRoutes: Routes = [
     data: { module: 'DRESS_MOVEMENT' },
     children: [
       { path: '', component: DressMovementListPageComponent },
-      { path: 'new', component: DressMovementFormPageComponent },
-      { path: ':id', component: DressMovementFormPageComponent }
+      { path: 'new', component: DressMovementFormPageComponent, canDeactivate: [UnsavedChangesGuard] },
+      { path: ':id', component: DressMovementFormPageComponent, canDeactivate: [UnsavedChangesGuard] }
     ]
   }
 ];

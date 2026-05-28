@@ -4,6 +4,7 @@ import { TenantListPageComponent } from '../features/tenants/pages/tenant-list/t
 import { TenantFormPageComponent } from '../features/tenants/pages/tenant-form/tenant-form-page.component';
 import { authGuard } from '../core/guards/auth.guard';
 import { roleGuard } from '../core/guards/role.guard';
+import { UnsavedChangesGuard } from '../core/guards/unsaved-changes.guard';
 
 export const tenantsRoutes: Routes = [
   {
@@ -13,8 +14,8 @@ export const tenantsRoutes: Routes = [
     data: { requiredRole: 'RESELLER' },
     children: [
       { path: '', component: TenantListPageComponent },
-      { path: 'new', component: TenantFormPageComponent },
-      { path: ':id', component: TenantFormPageComponent }
+      { path: 'new', component: TenantFormPageComponent, canDeactivate: [UnsavedChangesGuard] },
+      { path: ':id', component: TenantFormPageComponent, canDeactivate: [UnsavedChangesGuard] }
     ]
   }
 ];

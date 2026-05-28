@@ -8,6 +8,8 @@ import { User, UserFilter } from '../../../../core/models/user.model';
 import { ProTableComponent } from '../../../../shared/components/table/pro-table/pro-table.component';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
+import { ModalService } from '../../../../shared/services/modal.service';
+import { ConfirmModalComponent } from '../../../../shared/components/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-user-list-page',
@@ -19,6 +21,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 export class UserListPageComponent implements OnInit {
   private userService = inject(UserService);
   private router = inject(Router);
+  private modalService = inject(ModalService);
 
   users = signal<User[]>([]);
   filter: UserFilter = { username: '', role: undefined };
@@ -76,11 +79,19 @@ export class UserListPageComponent implements OnInit {
   }
 
   deleteUser(id: number) {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.userService.delete(id).subscribe(() => {
-        this.loadUsers();
-      });
-    }
+    const modalRef = this.modalService.open(ConfirmModalComponent, {
+      open: true,
+      title: 'users.form.delete',
+      message: 'users.form.deleteConfirm'
+    });
+    
+    modalRef.result.then((confirmed) => {
+      if (confirmed) {
+        this.userService.delete(id).subscribe(() => {
+          this.loadUsers();
+        });
+      }
+    })
   }
 
   onRowClick(user: User): void {

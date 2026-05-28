@@ -5,6 +5,7 @@ import { UserFormPageComponent } from '../features/users/pages/user-form/user-fo
 import { moduleGuard } from '../core/guards/module.guard';
 import { authGuard } from '../core/guards/auth.guard';
 import { roleGuard } from '../core/guards/role.guard';
+import { UnsavedChangesGuard } from '../core/guards/unsaved-changes.guard';
 
 export const usersRoutes: Routes = [
   {
@@ -14,8 +15,8 @@ export const usersRoutes: Routes = [
     data: { requiredRole: 'ADMIN' },
     children: [
       { path: '', component: UserListPageComponent },
-      { path: 'new', component: UserFormPageComponent },
-      { path: ':id', component: UserFormPageComponent }
+      { path: 'new', component: UserFormPageComponent, canDeactivate: [UnsavedChangesGuard] },
+      { path: ':id', component: UserFormPageComponent, canDeactivate: [UnsavedChangesGuard] }
     ]
   }
 ];

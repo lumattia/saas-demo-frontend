@@ -10,6 +10,9 @@ import { TextInputComponent } from '../../../../shared/components/inputs/text-in
 import { SelectInputComponent } from '../../../../shared/components/inputs/select-input/select-input.component';
 import { EnumService } from '../../../../core/services/enum.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
+import { ModalService } from '../../../../shared/services/modal.service';
+import { UnsavedChangesModalComponent } from '../../../../shared/components/modals/unsaved-changes-modal/unsaved-changes-modal.component';
 
 @Component({
   selector: 'app-user-form-page',
@@ -25,12 +28,13 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
   templateUrl: './user-form-page.component.html',
   styleUrls: ['./user-form-page.component.css'],
 })
-export class UserFormPageComponent implements OnInit {
+export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
   private userService = inject(UserService);
   private enumService = inject(EnumService);
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private modalService = inject(ModalService);
 
   id: number | null = null;
   userForm = new FormGroup({
@@ -150,19 +154,19 @@ export class UserFormPageComponent implements OnInit {
     });
   }
 
-  delete(): void {
-    if (this.id && confirm('Are you sure you want to delete this user?')) {
-      this.userService.delete(this.id).subscribe(() => {
-        this.router.navigate(['/users']);
-      });
-    }
-  }
-
   exit(): void {
     this.router.navigate(['/users']);
   }
 
-  canDeactivate(): boolean {
-    return !this.userForm.dirty || !this.isEditMode;
+  canDeactivate(): boolean | Promise<boolean> {
+    if (!this.userForm.dirty || !this.isEditMode) {
+      return true;
+    }
+    
+    const modalRef = this.modalService.open(UnsavedChangesModalComponent, {
+      open: true
+    });
+    
+    return modalRef.result;
   }
 }

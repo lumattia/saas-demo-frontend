@@ -8,6 +8,8 @@ import { DressMovement, DressMovementFilter } from '../../../../core/models/dres
 import { ProTableComponent } from '../../../../shared/components/table/pro-table/pro-table.component';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
+import { ModalService } from '../../../../shared/services/modal.service';
+import { ConfirmModalComponent } from '../../../../shared/components/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-dress-movement-list-page',
@@ -19,6 +21,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 export class DressMovementListPageComponent implements OnInit {
   private dressMovementService = inject(DressMovementService);
   private router = inject(Router);
+  private modalService = inject(ModalService);
 
   dressMovement = signal<DressMovement[]>([]);
   filter: DressMovementFilter = { dressTitle: '', sku: '', color: '', size: '', minQuantity: undefined, maxQuantity: undefined };
@@ -111,11 +114,16 @@ export class DressMovementListPageComponent implements OnInit {
   }
 
   deleteItem(id: number) {
-    if (confirm('Are you sure you want to delete this record?')) {
-      this.dressMovementService.delete(id).subscribe(() => {
-        this.loadDressMovement();
-      });
-    }
+    const modalRef = this.modalService.open(ConfirmModalComponent, {
+      open: true,
+      title: 'dress-movements.form.delete',
+      message: 'dress-movements.form.deleteConfirm'
+    });
+    modalRef.result.then((confirmed) => {
+      if (confirmed) {
+        this.dressMovementService.delete(id).subscribe(() => this.loadDressMovement());
+      }
+    })
   }
 
   onRowClick(item: DressMovement): void {

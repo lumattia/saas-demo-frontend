@@ -4,6 +4,7 @@ import { DressListPageComponent } from '../features/dresses/pages/dress-list/dre
 import { DressFormPageComponent } from '../features/dresses/pages/dress-form/dress-form-page.component';
 import { moduleGuard } from '../core/guards/module.guard';
 import { authGuard } from '../core/guards/auth.guard';
+import { UnsavedChangesGuard } from '../core/guards/unsaved-changes.guard';
 
 export const dressesRoutes: Routes = [
   {
@@ -14,8 +15,8 @@ export const dressesRoutes: Routes = [
     data: { module: 'DRESS' },
     children: [
       { path: '', component: DressListPageComponent },
-      { path: 'new', component: DressFormPageComponent },
-      { path: ':id', component: DressFormPageComponent }
+      { path: 'new', component: DressFormPageComponent, canDeactivate: [UnsavedChangesGuard] },
+      { path: ':id', component: DressFormPageComponent, canDeactivate: [UnsavedChangesGuard] }
     ]
   }
 ];

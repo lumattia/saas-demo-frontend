@@ -7,6 +7,9 @@ import { TenantService } from '../../../../core/services/tenant.service';
 import { Tenant, TenantCreateRequest, TenantUpdateRequest, ModuleType } from '../../../../core/models/tenant.model';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
+import { ModalService } from '../../../../shared/services/modal.service';
+import { UnsavedChangesModalComponent } from '../../../../shared/components/modals/unsaved-changes-modal/unsaved-changes-modal.component';
 
 @Component({
   selector: 'app-tenant-form-page',
@@ -21,10 +24,11 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
   templateUrl: './tenant-form-page.component.html',
   styleUrls: ['./tenant-form-page.component.css'],
 })
-export class TenantFormPageComponent implements OnInit {
+export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
   private tenantService = inject(TenantService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private modalService = inject(ModalService);
 
   id: string | null = null;
   tenantForm = new FormGroup({
@@ -92,13 +96,6 @@ export class TenantFormPageComponent implements OnInit {
     }
   }
 
-  delete(): void {
-    if (this.id && confirm('Are you sure you want to delete this tenant?')) {
-      this.tenantService.delete(this.id).subscribe(() => {
-        this.router.navigate(['/tenants']);
-      });
-    }
-  }
 
   exit(): void {
     this.router.navigate(['/tenants']);
@@ -138,7 +135,15 @@ export class TenantFormPageComponent implements OnInit {
     }
   }
 
-  canDeactivate(): boolean {
-    return !this.tenantForm.dirty || !this.isEditMode;
+  canDeactivate(): boolean | Promise<boolean> {
+    if (!this.tenantForm.dirty || !this.isEditMode) {
+      return true;
+    }
+    
+    const modalRef = this.modalService.open(UnsavedChangesModalComponent, {
+      open: true
+    });
+    
+    return modalRef.result;
   }
 }

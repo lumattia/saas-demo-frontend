@@ -6,6 +6,8 @@ import { TenantService } from '../../../../core/services/tenant.service';
 import { Tenant } from '../../../../core/models/tenant.model';
 import { ProTableComponent } from '../../../../shared/components/table/pro-table/pro-table.component';
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
+import { ModalService } from '../../../../shared/services/modal.service';
+import { ConfirmModalComponent } from '../../../../shared/components/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-tenant-list-page',
@@ -17,6 +19,7 @@ import { IdName, PaginationState, SortState } from '../../../../core/models/comm
 export class TenantListPageComponent implements OnInit {
   private tenantService = inject(TenantService);
   private router = inject(Router);
+  private modalService = inject(ModalService);
 
   tenants = signal<Tenant[]>([]);
   sort = signal<string>('id');
@@ -62,11 +65,19 @@ export class TenantListPageComponent implements OnInit {
   }
 
   deleteTenant(id: string) {
-    if (confirm('Are you sure you want to delete this tenant?')) {
-      this.tenantService.delete(id).subscribe(() => {
-        this.loadTenants();
-      });
-    }
+    const modalRef = this.modalService.open(ConfirmModalComponent, {
+      open: true,
+      title: 'tenants.form.delete',
+      message: 'tenants.form.deleteConfirm'
+    });
+    
+    modalRef.result.then((confirmed) => {
+      if (confirmed) {
+        this.tenantService.delete(id).subscribe(() => {
+          this.loadTenants();
+        });
+      }
+    })
   }
 
   onRowClick(tenant: Tenant): void {
