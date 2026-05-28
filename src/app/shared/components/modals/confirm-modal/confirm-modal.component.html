@@ -1,0 +1,10 @@
+<section class="modal" *ngIf="open" (click)="onCancel()">
+  <div class="dialog" (click)="$event.stopPropagation()">
+    <h3>{{ translatedTitle }}</h3>
+    <p>{{ translatedMessage }}</p>
+    <div class="modal-actions">
+      <app-button (click)="onCancel()">{{ 'confirmModal.cancel' | translate }}</app-button>
+      <app-button variant="danger" (click)="onConfirm()">{{ 'confirmModal.confirm' | translate }}</app-button>
+    </div>
+  </div>
+</section>
