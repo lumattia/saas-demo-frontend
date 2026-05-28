@@ -3,36 +3,42 @@
   <aside class="sidenav" [class.collapsed]="sidenavCollapsed()">
     <div class="sidenav-header">
       <div class="logo">
-        <span class="logo-icon">📦</span>
+        <span class="logo-icon"><img src="assets/icons/box.svg" alt="Warehouse"></span>
         <span class="logo-text" *ngIf="!sidenavCollapsed()">Warehouse</span>
       </div>
       <button class="sidenav-toggle" (click)="toggleSidenav()">
-        <span class="toggle-icon">{{ sidenavCollapsed() ? '→' : '←' }}</span>
+        <span class="toggle-icon"><img [src]="sidenavCollapsed() ? 'assets/icons/arrow-right.svg' : 'assets/icons/arrow-left.svg'" alt="Toggle"></span>
       </button>
     </div>
 
     <nav class="sidenav-nav">
       @if (auth.hasModule('DRESS')) {
         <a routerLink="/dresses" routerLinkActive="active" class="nav-item">
-          <span class="nav-icon">👗</span>
+          <span class="nav-icon"><img src="assets/icons/dress.svg" alt="Dresses"></span>
           <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.dresses' | translate }}</span>
         </a>
       }
       @if (auth.hasModule('DRESS_MOVEMENT')) {
         <a routerLink="/dress-movements" routerLinkActive="active" class="nav-item">
-          <span class="nav-icon">📊</span>
+          <span class="nav-icon"><img src="assets/icons/chart.svg" alt="Dress Movements"></span>
           <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.dressMovement' | translate }}</span>
         </a>
       }  
       @if (auth.isAtLeastAdmin()) {
         <a routerLink="/users" routerLinkActive="active" class="nav-item">
-          <span class="nav-icon">📊</span>
+          <span class="nav-icon"><img src="assets/icons/user.svg" alt="Users"></span>
           <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.users' | translate }}</span>
+        </a>
+      }
+      @if (auth.isAtLeastAdmin() && auth.user()?.tenant?.hasCustomFields) {
+        <a routerLink="/custom-fields" routerLinkActive="active" class="nav-item">
+          <span class="nav-icon"><img src="assets/icons/settings.svg" alt="Custom Fields"></span>
+          <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.customFields' | translate }}</span>
         </a>
       }
       @if (auth.canSwitchTenant()) {
         <a routerLink="/tenants" routerLinkActive="active" class="nav-item">
-          <span class="nav-icon">🏢</span>
+          <span class="nav-icon"><img src="assets/icons/building.svg" alt="Tenants"></span>
           <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.tenants' | translate }}</span>
         </a>
       }
@@ -57,9 +63,9 @@
           }
         <button class="icon-btn theme-toggle" (click)="theme.toggle()" [title]="'nav.toggleTheme' | translate">
           @if (theme.mode() === 'light') {
-            <span>🌙</span>
+            <img src="assets/icons/moon.svg" alt="Dark mode">
           } @else {
-            <span>☀️</span>
+            <img src="assets/icons/sun.svg" alt="Light mode">
           }
         </button>
         <app-select-input 

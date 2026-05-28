@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -30,6 +30,35 @@ export class TextInputComponent {
 
   get internalControl(): FormControl {
     return this.control || new FormControl(this.value);
+  }
+
+  get shouldShowError(): boolean {
+    const ctrl = this.internalControl;
+    return ctrl.invalid && (ctrl.dirty || ctrl.touched);
+  }
+
+  get errorMessage(): string {
+    const ctrl = this.internalControl;
+    if (!this.shouldShowError) return '';
+
+    // Check errors in priority order
+    if (ctrl.hasError('required')) {
+      return this.errorKey || 'validation.required';
+    }
+    if (ctrl.hasError('minlength')) {
+      return this.errorKey || 'validation.minLength';
+    }
+    if (ctrl.hasError('maxlength')) {
+      return this.errorKey || 'validation.maxLength';
+    }
+    if (ctrl.hasError('pattern')) {
+      return this.errorKey || 'validation.pattern';
+    }
+    if (ctrl.hasError('email')) {
+      return this.errorKey || 'validation.email';
+    }
+
+    return this.errorKey || 'validation.invalid';
   }
 
   onValueChange(event: Event): void {
