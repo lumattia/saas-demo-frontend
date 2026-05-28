@@ -6,6 +6,7 @@ import { dressesRoutes } from './routes/dresses.route';
 import { dressMovementRoutes } from './routes/dress-movement.route';
 import { tenantsRoutes } from './routes/tenants.route';
 import { usersRoutes } from './routes/users.route';
+import { customFieldsRoutes } from './routes/custom-fields.route';
 
 export const routes: Routes = [
   ...authRoutes,
@@ -23,6 +24,7 @@ export const routes: Routes = [
       ...dressMovementRoutes,
       ...tenantsRoutes,
       ...usersRoutes,
+      ...customFieldsRoutes,
       {
         path: '**',
         redirectTo: 'dresses',

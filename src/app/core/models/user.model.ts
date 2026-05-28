@@ -12,6 +12,7 @@ export interface Tenant {
   name: string;
   createdAt: string;
   expiresAt: string;
+  hasCustomFields: boolean;
   modules?: string[];
 }
 

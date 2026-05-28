@@ -53,6 +53,7 @@
       "pricePlaceholder": "Inserisci prezzo",
       "save": "Salva",
       "delete": "Elimina",
+      "deleteConfirm": "Sei sicuro di voler eliminare questo abito?",
       "cancel": "Annulla"
     }
   },
@@ -99,6 +100,7 @@
       "quantityPlaceholder": "Inserisci quantità",
       "save": "Salva",
       "delete": "Elimina",
+      "deleteConfirm": "Sei sicuro di voler eliminare questo movimento?",
       "cancel": "Annulla"
     }
   },
@@ -108,6 +110,7 @@
     "dressMovement": "Movimenti Abiti",
     "tenants": "Tenant",
     "users": "Utenti",
+    "customFields": "Campi Personalizzati",
     "toggleTheme": "Cambia tema",
     "logout": "Logout",
     "createDemo": "Crea Demo (24h)",
@@ -141,6 +144,7 @@
       },
       "save": "Salva",
       "delete": "Elimina",
+      "deleteConfirm": "Sei sicuro di voler eliminare questo tenant?",
       "cancel": "Annulla"
     }
   },
@@ -177,10 +181,74 @@
       },
       "save": "Salva",
       "delete": "Elimina",
+      "deleteConfirm": "Sei sicuro di voler eliminare questo utente?",
       "cancel": "Annulla"
     }
   },
+  "customFields": {
+    "title": "Configurazione Campi Personalizzati",
+    "actions": {
+      "addGroup": "Aggiungi Gruppo",
+      "saveOrder": "Salva Ordine",
+      "addField": "Aggiungi Campo",
+      "addOption": "Aggiungi Opzione"
+    },
+    "modals": {
+      "editGroup": "Modifica Gruppo",
+      "createGroup": "Crea Gruppo",
+      "editField": "Modifica Campo",
+      "createField": "Crea Campo",
+      "deleteGroup": "Elimina Gruppo",
+      "deleteField": "Elimina Campo",
+      "deleteGroupConfirm": "Sei sicuro di voler eliminare il gruppo \"{{name}}\"?",
+      "deleteFieldConfirm": "Sei sicuro di voler eliminare il campo \"{{name}}\"?"
+    },
+    "form": {
+      "groupName": "Nome Gruppo",
+      "groupNamePlaceholder": "Inserisci nome gruppo",
+      "fieldLabel": "Etichetta Campo",
+      "fieldLabelPlaceholder": "Inserisci etichetta campo",
+      "fieldType": "Tipo Campo",
+      "fieldTypePlaceholder": "Seleziona tipo campo",
+      "required": "Richiesto",
+      "minValue": "Valore Minimo",
+      "minValuePlaceholder": "Inserisci valore minimo",
+      "maxValue": "Valore Massimo",
+      "maxValuePlaceholder": "Inserisci valore massimo",
+      "maxLength": "Lunghezza Massima",
+      "maxLengthPlaceholder": "Inserisci lunghezza massima",
+      "options": "Opzioni",
+      "moduleOptions": {
+        "DRESS": "Abiti",
+        "DRESS_MOVEMENT": "Movimenti Abiti"
+      }
+    },
+    "fieldTypes": {
+      "TEXT": "Testo",
+      "NUMBER": "Numero",
+      "DATE": "Data",
+      "SELECT": "Selezione",
+      "CHECKBOX": "Casella di controllo"
+    }
+  },
+  "confirmModal": {
+    "cancel": "Annulla",
+    "confirm": "Conferma"
+  },
+  "unsavedChanges": {
+    "title": "Modifiche non salvate",
+    "message": "Hai modifiche non salvate. Sei sicuro di voler uscire da questa pagina?",
+    "stay": "Rimani",
+    "leave": "Esci"
+  },
   "shared": {
+    "actions": {
+      "edit": "Modifica",
+      "delete": "Elimina",
+      "cancel": "Annulla",
+      "save": "Salva",
+      "remove": "Rimuovi"
+    },
     "imageInput": {
       "label": "Immagine"
     },

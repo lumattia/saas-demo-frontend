@@ -9,6 +9,7 @@ export interface Tenant {
   createdAt: string;
   expiresAt: string;
   modules: ModuleType[];
+  hasCustomFields: boolean;
 }
 
 export interface TenantFilter {

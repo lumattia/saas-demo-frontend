@@ -1,0 +1,63 @@
+@if (loading()) {
+  <div class="loading">Loading...</div>
+} @else {
+  <div class="dynamic-form">
+    @for (group of groups(); track group.id) {
+      <div class="form-section">
+        <h3 class="section-title">{{ group.name }}</h3>
+        <div class="section-fields">
+          @for (field of group.definitions; track field.id) {
+            <div class="field-wrapper">
+              @switch (field.type) {
+                @case (CustomFieldType.TEXT) {
+                  <app-text-input
+                    [labelKey]="field.label"
+                    [control]="getFormControl(field.id)"
+                    [required]="field.validations?.required || false"
+                    [maxLength]="field.validations?.maxLength"
+                  ></app-text-input>
+                }
+                @case (CustomFieldType.NUMBER) {
+                  <app-number-input
+                    [labelKey]="field.label"
+                    [control]="getFormControl(field.id)"
+                    [required]="field.validations?.required || false"
+                    [min]="field.validations?.min"
+                    [max]="field.validations?.max"
+                  ></app-number-input>
+                }
+                @case (CustomFieldType.SELECT) {
+                  <app-select-input
+                    [labelKey]="field.label"
+                    [control]="getFormControl(field.id)"
+                    [options]="getOptionsForSelect(field)"
+                    [required]="field.validations?.required || false"
+                  ></app-select-input>
+                }
+                @case (CustomFieldType.DATE) {
+                  <app-text-input
+                    [labelKey]="field.label"
+                    [control]="getFormControl(field.id)"
+                    [required]="field.validations?.required || false"
+                    [type]="'date'"
+                  ></app-text-input>
+                }
+                @case (CustomFieldType.CHECKBOX) {
+                  <div class="checkbox-wrapper">
+                    <label>
+                      <input type="checkbox" [formControl]="getFormControl(field.id)" />
+                      {{ field.label }}
+                      @if (field.validations?.required) {
+                        <span class="required-mark">*</span>
+                      }
+                    </label>
+                  </div>
+                }
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+}

@@ -53,6 +53,7 @@
       "pricePlaceholder": "输入价格",
       "save": "保存",
       "delete": "删除",
+      "deleteConfirm": "确定要删除这条连衣裙吗？",
       "cancel": "取消"
     }
   },
@@ -99,6 +100,7 @@
       "quantityPlaceholder": "输入数量",
       "save": "保存",
       "delete": "删除",
+      "deleteConfirm": "确定要删除这条变动记录吗？",
       "cancel": "取消"
     }
   },
@@ -108,6 +110,7 @@
     "dressMovement": "连衣裙变动",
     "tenants": "租户",
     "users": "用户",
+    "customFields": "自定义字段",
     "toggleTheme": "切换主题",
     "logout": "退出登录",
     "createDemo": "创建演示(24小时)",
@@ -141,6 +144,7 @@
       },
       "save": "保存",
       "delete": "删除",
+      "deleteConfirm": "确定要删除这个租户吗？",
       "cancel": "取消"
     }
   },
@@ -177,10 +181,74 @@
       },
       "save": "保存",
       "delete": "删除",
+      "deleteConfirm": "确定要删除这个用户吗？",
       "cancel": "取消"
     }
   },
+  "customFields": {
+    "title": "自定义字段配置",
+    "actions": {
+      "addGroup": "添加组",
+      "saveOrder": "保存顺序",
+      "addField": "添加字段",
+      "addOption": "添加选项"
+    },
+    "modals": {
+      "editGroup": "编辑组",
+      "createGroup": "创建组",
+      "editField": "编辑字段",
+      "createField": "创建字段",
+      "deleteGroup": "删除组",
+      "deleteField": "删除字段",
+      "deleteGroupConfirm": "确定要删除组 \"{{name}}\" 吗？",
+      "deleteFieldConfirm": "确定要删除字段 \"{{name}}\" 吗？"
+    },
+    "form": {
+      "groupName": "组名称",
+      "groupNamePlaceholder": "输入组名称",
+      "fieldLabel": "字段标签",
+      "fieldLabelPlaceholder": "输入字段标签",
+      "fieldType": "字段类型",
+      "fieldTypePlaceholder": "选择字段类型",
+      "required": "必填",
+      "minValue": "最小值",
+      "minValuePlaceholder": "输入最小值",
+      "maxValue": "最大值",
+      "maxValuePlaceholder": "输入最大值",
+      "maxLength": "最大长度",
+      "maxLengthPlaceholder": "输入最大长度",
+      "options": "选项",
+      "moduleOptions": {
+        "DRESS": "连衣裙",
+        "DRESS_MOVEMENT": "连衣裙变动"
+      }
+    },
+    "fieldTypes": {
+      "TEXT": "文本",
+      "NUMBER": "数字",
+      "DATE": "日期",
+      "SELECT": "选择",
+      "CHECKBOX": "复选框"
+    }
+  },
+  "confirmModal": {
+    "cancel": "取消",
+    "confirm": "确认"
+  },
+  "unsavedChanges": {
+    "title": "未保存的更改",
+    "message": "您有未保存的更改。确定要离开此页面吗？",
+    "stay": "停留",
+    "leave": "离开"
+  },
   "shared": {
+    "actions": {
+      "edit": "编辑",
+      "delete": "删除",
+      "cancel": "取消",
+      "save": "保存",
+      "remove": "移除"
+    },
     "imageInput": {
       "label": "图片"
     },

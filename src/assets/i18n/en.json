@@ -53,6 +53,7 @@
       "pricePlaceholder": "Enter price",
       "save": "Save",
       "delete": "Delete",
+      "deleteConfirm": "Are you sure you want to delete this dress?",
       "cancel": "Cancel"
     }
   },
@@ -99,6 +100,7 @@
       "quantityPlaceholder": "Enter quantity",
       "save": "Save",
       "delete": "Delete",
+      "deleteConfirm": "Are you sure you want to delete this movement?",
       "cancel": "Cancel"
     }
   },
@@ -108,6 +110,7 @@
     "dressMovement": "Dress Movements",
     "tenants": "Tenants",
     "users": "Users",
+    "customFields": "Custom Fields",
     "toggleTheme": "Toggle theme",
     "logout": "Logout",
     "createDemo": "Create Demo (24h)",
@@ -141,6 +144,7 @@
       },
       "save": "Save",
       "delete": "Delete",
+      "deleteConfirm": "Are you sure you want to delete this tenant?",
       "cancel": "Cancel"
     }
   },
@@ -177,10 +181,74 @@
       },
       "save": "Save",
       "delete": "Delete",
+      "deleteConfirm": "Are you sure you want to delete this user?",
       "cancel": "Cancel"
     }
   },
+  "customFields": {
+    "title": "Custom Fields Configuration",
+    "actions": {
+      "addGroup": "Add Group",
+      "saveOrder": "Save Order",
+      "addField": "Add Field",
+      "addOption": "Add Option"
+    },
+    "modals": {
+      "editGroup": "Edit Group",
+      "createGroup": "Create Group",
+      "editField": "Edit Field",
+      "createField": "Create Field",
+      "deleteGroup": "Delete Group",
+      "deleteField": "Delete Field",
+      "deleteGroupConfirm": "Are you sure you want to delete group \"{{name}}\"?",
+      "deleteFieldConfirm": "Are you sure you want to delete field \"{{name}}\"?"
+    },
+    "form": {
+      "groupName": "Group Name",
+      "groupNamePlaceholder": "Enter group name",
+      "fieldLabel": "Field Label",
+      "fieldLabelPlaceholder": "Enter field label",
+      "fieldType": "Field Type",
+      "fieldTypePlaceholder": "Select field type",
+      "required": "Required",
+      "minValue": "Min Value",
+      "minValuePlaceholder": "Enter min value",
+      "maxValue": "Max Value",
+      "maxValuePlaceholder": "Enter max value",
+      "maxLength": "Max Length",
+      "maxLengthPlaceholder": "Enter max length",
+      "options": "Options",
+      "moduleOptions": {
+        "DRESS": "Dresses",
+        "DRESS_MOVEMENT": "Dress Movements"
+      }
+    },
+    "fieldTypes": {
+      "TEXT": "Text",
+      "NUMBER": "Number",
+      "DATE": "Date",
+      "SELECT": "Select",
+      "CHECKBOX": "Checkbox"
+    }
+  },
+  "confirmModal": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "unsavedChanges": {
+    "title": "Unsaved Changes",
+    "message": "You have unsaved changes. Are you sure you want to leave this page?",
+    "stay": "Stay",
+    "leave": "Leave"
+  },
   "shared": {
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save",
+      "remove": "Remove"
+    },
     "imageInput": {
       "label": "Image"
     },
