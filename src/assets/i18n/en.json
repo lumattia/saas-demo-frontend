@@ -241,6 +241,16 @@
     "stay": "Stay",
     "leave": "Leave"
   },
+  "validation": {
+    "required": "This field is required",
+    "min": "Minimum value is {{min}}",
+    "max": "Maximum value is {{max}}",
+    "minLength": "Minimum length is {{minLength}} characters",
+    "maxLength": "Maximum length is {{maxLength}} characters",
+    "pattern": "Invalid format",
+    "email": "Invalid email",
+    "invalid": "Invalid value"
+  },
   "shared": {
     "actions": {
       "edit": "Edit",

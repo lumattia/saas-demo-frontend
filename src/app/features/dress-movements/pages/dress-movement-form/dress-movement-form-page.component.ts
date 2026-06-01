@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { DressMovementService } from '../../../../core/services/dress-movement.service';
@@ -30,19 +30,15 @@ export class DressMovementFormPageComponent implements OnInit, CanDeactivateComp
 
   id: number | null = null;
   dressMovementForm = new FormGroup({
-    dressId: new FormControl(''),
-    quantity: new FormControl('')
+    dressId: new FormControl('', [Validators.required]),
+    quantity: new FormControl('', [Validators.required, Validators.min(1)])
   });
   dresses: IdName[] = [];
   isEditMode = false;
   initialData: any = null;
 
-  get dressIdControl(): FormControl {
-    return this.dressMovementForm.controls['dressId'] as FormControl;
-  }
-
-  get quantityControl(): FormControl {
-    return this.dressMovementForm.controls['quantity'] as FormControl;
+  getControl(name: string): FormControl {
+    return this.dressMovementForm.get(name) as FormControl;
   }
 
   ngOnInit() {

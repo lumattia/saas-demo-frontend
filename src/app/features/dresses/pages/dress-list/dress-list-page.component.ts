@@ -1,7 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { DressService } from '../../../../core/services/dress.service';
 import { Dress, DressFilter } from '../../../../core/models/dress.model';
@@ -32,44 +32,17 @@ export class DressListPageComponent implements OnInit {
     sku: new FormControl(''),
     size: new FormControl(''),
     color: new FormControl(''),
-    minStock: new FormControl(''),
-    maxStock: new FormControl(''),
-    minPrice: new FormControl(''),
-    maxPrice: new FormControl('')
+    minStock: new FormControl('', [Validators.min(0)]),
+    maxStock: new FormControl('', [Validators.min(0)]),
+    minPrice: new FormControl('', [Validators.min(0)]),
+    maxPrice: new FormControl('', [Validators.min(0)])
   });
   sort = signal<string>('id');
 
-  get titleControl(): FormControl {
-    return this.filterForm.controls['title'] as FormControl;
+  getControl(name: string): FormControl {
+    return this.filterForm.get(name) as FormControl;
   }
 
-  get skuControl(): FormControl {
-    return this.filterForm.controls['sku'] as FormControl;
-  }
-
-  get sizeControl(): FormControl {
-    return this.filterForm.controls['size'] as FormControl;
-  }
-
-  get colorControl(): FormControl {
-    return this.filterForm.controls['color'] as FormControl;
-  }
-
-  get minStockControl(): FormControl {
-    return this.filterForm.controls['minStock'] as FormControl;
-  }
-
-  get maxStockControl(): FormControl {
-    return this.filterForm.controls['maxStock'] as FormControl;
-  }
-
-  get minPriceControl(): FormControl {
-    return this.filterForm.controls['minPrice'] as FormControl;
-  }
-
-  get maxPriceControl(): FormControl {
-    return this.filterForm.controls['maxPrice'] as FormControl;
-  }
   order = signal<'asc' | 'desc'>('asc');
   pageNumber = signal<number>(0);
   pageSize = signal<number>(10);

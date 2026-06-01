@@ -2,35 +2,37 @@
   @if (labelKey) {
   <label class="color-input-label">
     {{ labelKey | translate }}
+    @if (!readonly && isRequired) {
+      <span class="required-mark">*</span>
+    }
   </label>
 }
   <div class="color-input-container">
     <input
       type="color"
-      [formControl]="internalControl"
+      [formControl]="control!"
       [attr.disabled]="disabled"
       [readonly]="readonly"
       class="color-input-field"
-      [class.invalid]="!isValid"
+      [class.error]="shouldShowError"
       [class.dirty]="isDirty"
       (change)="onValueChange($event)"
     />
     <input
       type="text"
-      [formControl]="internalControl"
+      [formControl]="control!"
       [attr.disabled]="disabled"
       [readonly]="readonly"
       class="color-text-field"
-      [class.invalid]="!isValid"
+      [class.error]="shouldShowError"
       [class.dirty]="isDirty"
-      maxlength="7"
       placeholder="#000000"
       (change)="onValueChange($event)"
     />
   </div>
-  @if (!isValid && errorKey) {
+  @if (shouldShowError && errorMessage) {
     <span class="color-input-error">
-      {{ errorKey | translate }}
+      {{ errorMessage.key | translate: errorMessage.params }}
     </span>
   }
 </div>

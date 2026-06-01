@@ -6,18 +6,15 @@
       labelKey="dress-movements.form.dress"
       placeholderKey="dress-movements.form.dressPlaceholder"
       [options]="dresses"
-      [control]="dressIdControl"
-      [required]="true"
+      [control]="getControl('dressId')"
       [readonly]="!isEditMode"
     />
 
     <app-number-input
       labelKey="dress-movements.form.quantity"
       placeholderKey="dress-movements.form.quantityPlaceholder"
-      [control]="quantityControl"
+      [control]="getControl('quantity')"
       [decimalPlaces]="0"
-      [required]="true"
-      [min]="1"
       [readonly]="!isEditMode"
     />
 

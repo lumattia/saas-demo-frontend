@@ -241,6 +241,16 @@
     "stay": "Quedarse",
     "leave": "Salir"
   },
+  "validation": {
+    "required": "Este campo es obligatorio",
+    "min": "El valor mínimo es {{min}}",
+    "max": "El valor máximo es {{max}}",
+    "minLength": "La longitud mínima es {{minLength}} caracteres",
+    "maxLength": "La longitud máxima es {{maxLength}} caracteres",
+    "pattern": "Formato inválido",
+    "email": "Email inválido",
+    "invalid": "Valor inválido"
+  },
   "shared": {
     "actions": {
       "edit": "Editar",

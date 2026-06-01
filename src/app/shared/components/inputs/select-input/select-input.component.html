@@ -2,7 +2,7 @@
   @if (labelKey) {
   <label class="select-input-label">
     {{ labelKey | translate }}
-    @if (!readonly && required) {
+    @if (!readonly && isRequired) {
       <span class="required-mark">*</span>
     }
   </label>
@@ -14,7 +14,7 @@
       class="select-trigger"
       [class.disabled]="disabled"
       [class.readonly]="readonly"
-      [class.error]="errorKey"
+      [class.error]="shouldShowError"
       [class.dirty]="isDirty"
       (click)="toggleDropdown()"
     >
@@ -42,6 +42,7 @@
     <!-- Dropdown -->
     @if (isDropdownOpen()) {
       <div class="select-dropdown">
+        @if (showSearch) {
         <!-- Search Input -->
         <input
           type="text"
@@ -50,13 +51,14 @@
           (input)="onSearchInput($event)"
           (click)="$event.stopPropagation()"
         />
+        }
 
         <!-- Options List -->
         <ul class="select-options">
           @for (option of filteredOptions(); track option.id) {
             <li
               class="select-option"
-              [class.selected]="internalControl.value === option.id"
+              [class.selected]="control?.value === option.id"
               (click)="selectOption(option)"
             >
               @if (option.flag) {
@@ -70,9 +72,9 @@
     }
   </div>
 
-  @if (errorKey) {
+  @if (shouldShowError && errorMessage) {
     <span class="select-input-error">
-      {{ errorKey | translate }}
+      {{ errorMessage.key | translate: errorMessage.params }}
     </span>
   }
 </div>

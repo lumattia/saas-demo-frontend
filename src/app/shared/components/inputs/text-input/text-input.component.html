@@ -2,27 +2,25 @@
   @if (labelKey) {
   <label class="text-input-label">
     {{ labelKey | translate }}
-    @if (!readonly && required) {
+    @if (!readonly && isRequired) {
       <span class="required-mark">*</span>
     }
   </label>
 }
   <input
     [type]="type"
-    [formControl]="internalControl"
+    [formControl]="control!"
     [placeholder]="placeholderKey ? (placeholderKey | translate) : ''"
-    [required]="required"
     [attr.disabled]="disabled"
     [readonly]="readonly"
-    [maxLength]="maxLength ?? 20"
     class="text-input-field"
-    [class.error]="errorKey"
+    [class.error]="shouldShowError"
     [class.dirty]="isDirty"
     (change)="onValueChange($event)"
   />
-  @if (errorKey) {
+  @if (shouldShowError && errorMessage) {
     <span class="text-input-error">
-      {{ errorKey | translate }}
+      {{ errorMessage.key | translate: errorMessage.params }}
     </span>
   }
 </div>

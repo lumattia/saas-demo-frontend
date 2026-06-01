@@ -2,7 +2,7 @@
   @if (labelKey) {
   <label class="number-input-label">
     {{ labelKey | translate }}
-    @if (!readonly && required) {
+    @if (!readonly && isRequired) {
       <span class="required-mark">*</span>
     }
   </label>
@@ -10,16 +10,13 @@
   <div class="number-input-container">
     <input
       type="number"
-      [formControl]="internalControl"
+      [formControl]="control!"
       [placeholder]="placeholderKey ? (placeholderKey | translate) : ''"
-      [required]="required"
       [attr.disabled]="disabled"
       [readonly]="readonly"
-      [attr.min]="min"
-      [attr.max]="max"
       [step]="step"
       class="number-input-field"
-      [class.error]="errorKey"
+      [class.error]="shouldShowError"
       [class.dirty]="isDirty"
       (change)="onValueChange($event)"
     />
@@ -27,9 +24,7 @@
       <span class="number-input-unit">{{ unit }}</span>
     }
   </div>
-  @if (errorKey) {
-    <span class="number-input-error">
-      {{ errorKey | translate }}
-    </span>
+  @if (shouldShowError && errorMessage) {
+    <span class="number-input-error"> {{ errorMessage.key | translate: errorMessage.params }} </span>
   }
 </div>

@@ -73,7 +73,6 @@
             labelKey="customFields.form.groupName"
             placeholderKey="customFields.form.groupNamePlaceholder"
             [control]="getFormControl(groupForm, 'name')"
-            [required]="true"
           ></app-text-input>
         </form>
       </div>
@@ -99,7 +98,6 @@
             labelKey="customFields.form.fieldLabel"
             placeholderKey="customFields.form.fieldLabelPlaceholder"
             [control]="getFormControl(fieldForm, 'label')"
-            [required]="true"
           ></app-text-input>
 
           <app-select-input
@@ -107,7 +105,6 @@
             placeholderKey="customFields.form.fieldTypePlaceholder"
             [options]="fieldTypeOptions"
             [control]="getFormControl(fieldForm, 'type')"
-            [required]="true"
           ></app-select-input>
 
           <div class="form-group">

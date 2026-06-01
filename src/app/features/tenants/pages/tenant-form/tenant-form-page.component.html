@@ -5,8 +5,7 @@
     <app-text-input
       labelKey="tenants.form.name"
       placeholderKey="tenants.form.namePlaceholder"
-      [control]="nameControl"
-      [required]="true"
+      [control]="getControl('name')"
       [readonly]="!isEditMode"
     />
 

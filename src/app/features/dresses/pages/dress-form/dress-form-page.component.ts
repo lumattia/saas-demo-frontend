@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { DressService } from '../../../../core/services/dress.service';
@@ -36,33 +36,17 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
 
   id: number | null = null;
   dressForm = new FormGroup({
-    title: new FormControl(''),
-    sku: new FormControl(''),
+    title: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    sku: new FormControl('', Validators.required),
     size: new FormControl(''),
     color: new FormControl('#000000'),
-    price: new FormControl(0)
+    price: new FormControl(0, Validators.min(0))
   });
   isEditMode = false;
   initialData: any = null;
 
-  get titleControl(): FormControl {
-    return this.dressForm.controls['title'] as FormControl;
-  }
-
-  get skuControl(): FormControl {
-    return this.dressForm.controls['sku'] as FormControl;
-  }
-
-  get sizeControl(): FormControl {
-    return this.dressForm.controls['size'] as FormControl;
-  }
-
-  get colorControl(): FormControl {
-    return this.dressForm.controls['color'] as FormControl;
-  }
-
-  get priceControl(): FormControl {
-    return this.dressForm.controls['price'] as FormControl;
+  getControl(name: string): FormControl {
+    return this.dressForm.get(name) as FormControl;
   }
 
   ngOnInit() {

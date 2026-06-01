@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter, signal, computed, HostListener, inject, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, computed, HostListener, inject, ElementRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IdName } from '../../../../core/models/common.models';
 
 
@@ -12,7 +12,8 @@ import { IdName } from '../../../../core/models/common.models';
   templateUrl: './select-input.component.html',
   styleUrls: ['./select-input.component.css'],
 })
-export class SelectInputComponent {
+export class SelectInputComponent implements OnInit {
+  private translateService = inject(TranslateService);
   @Input() labelKey = '';
   @Input() placeholderKey = '';
   @Input() control: FormControl | null = null;
@@ -22,6 +23,7 @@ export class SelectInputComponent {
   @Input() disabled = false;
   @Input() readonly = false;
   @Input() errorKey = '';
+  @Input() showSearch = true;
   @Input() showDirtyIndicator = false;
   @Input() showClearButton = true;
 
@@ -31,33 +33,75 @@ export class SelectInputComponent {
 
   isDropdownOpen = signal(false);
   searchTerm = signal('');
+  translatedOptions = computed(() => {
+    return this.options.map(opt => ({
+      ...opt,
+      name: this.translateService.instant(opt.name || '')
+    }));
+  });
+
+  ngOnInit(): void {
+    if (!this.control) {
+      const validators = [];
+      if (this.required) {
+        validators.push(Validators.required);
+      }
+      
+      this.control = new FormControl(this.value, validators);
+    }
+  }
+
+  get isRequired(): boolean {
+    return this.control?.hasValidator(Validators.required) ?? false;
+  }
 
   get isDirty(): boolean {
     return this.showDirtyIndicator && !!this.control?.dirty;
   }
 
-  get internalControl(): FormControl {
-    return this.control || new FormControl(this.value);
-  }
-
   get selectedOptionName(): string {
-    const currentValue = this.internalControl.value;
+    const currentValue = this.control?.value;
     if (!currentValue) return '';
     const selectedOption = this.options.find(opt => opt.id == currentValue);
     return selectedOption ? selectedOption.name : '';
   }
 
+  get shouldShowError(): boolean {
+    if (!this.control) return false;
+    return this.control.invalid && (this.control.dirty || this.control.touched);
+  }
+
+  get errorMessage(): { key: string; params?: any } | null {
+    if (!this.control || !this.shouldShowError) return null;
+
+    if (this.control.hasError('required')) {
+      return { key: this.errorKey || 'validation.required' };
+    }
+
+    return { key: this.errorKey || 'validation.invalid' };
+  }
+
   filteredOptions = computed(() => {
-    const search = this.searchTerm().toLowerCase();
-    if (!search) return this.options;
-    return this.options.filter(opt =>
-      opt.name.toLowerCase().includes(search)
-    );
+    const search = this.searchTerm().toLowerCase().trim();
+    const optionsList = this.translatedOptions();
+    if (!search) return optionsList;
+
+    // Auxiliary function to make the search ignore accents/tildes natively
+    const normalizeText = (text: string) => 
+      text ? text.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : '';
+
+    const normalizedSearch = normalizeText(search);
+
+    return optionsList.filter(opt => {
+      if (!opt.name) return false;
+      const normalizedOptionName = normalizeText(opt.name.toLowerCase());
+      return normalizedOptionName.includes(normalizedSearch);
+    });
   });
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
-    if (!this.isDropdownOpen) return;
+    if (!this.isDropdownOpen()) return;
     const clickedInside = this.elementRef.nativeElement.contains(event.target);
     if (!clickedInside) {
     this.isDropdownOpen.set(false);
@@ -78,11 +122,9 @@ export class SelectInputComponent {
 
   selectOption(option: IdName): void {
     const newValue = option.id;
-    if (this.control) {
-      this.control.setValue(newValue);
-    } else {
-      this.valueChange.emit(newValue);
-    }
+    this.control!.setValue(newValue);
+    this.value = newValue;
+    this.valueChange.emit(newValue);
     this.closeDropdown();
   }
 
@@ -93,14 +135,12 @@ export class SelectInputComponent {
 
   clearSelection(event: MouseEvent): void {
     event.stopPropagation();
-    if (this.control) {
-      this.control.setValue(null);
-    } else {
-      this.valueChange.emit(null);
-    }
+    this.control!.setValue(null);
+    this.value = null;
+    this.valueChange.emit(null);
   }
 
   get hasValue(): boolean {
-    return !!this.internalControl.value;
+    return !!this.control?.value;
   }
 }

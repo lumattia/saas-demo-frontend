@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -10,10 +10,11 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './color-input.component.html',
   styleUrls: ['./color-input.component.css'],
 })
-export class ColorInputComponent {
+export class ColorInputComponent implements OnInit {
   @Input() labelKey = '';
   @Input() control: FormControl | null = null;
   @Input() value: string | null = null;
+  @Input() required = false;
   @Input() disabled = false;
   @Input() readonly = false;
   @Input() errorKey = '';
@@ -23,25 +24,53 @@ export class ColorInputComponent {
 
   private hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 
-  get internalControl(): FormControl {
-    return this.control || new FormControl(this.value ?? '#000000');
+  ngOnInit(): void {
+    if (!this.control) {
+      const validators = [];
+      if (this.required) {
+        validators.push(Validators.required);
+      }
+      validators.push(Validators.pattern(this.hexColorRegex));
+      
+      this.control = new FormControl(this.value ?? '#000000', validators);
+    }
+  }
+
+  get isRequired(): boolean {
+    return this.control?.hasValidator(Validators.required) ?? false;
   }
 
   get isValid(): boolean {
-    return this.hexColorRegex.test(this.internalControl.value || '');
+    return this.hexColorRegex.test(this.control?.value || '');
   }
 
   get isDirty(): boolean {
     return this.showDirtyIndicator && !!this.control?.dirty;
   }
 
+  get shouldShowError(): boolean {
+    if (!this.control) return false;
+    return this.control.invalid && (this.control.dirty || this.control.touched);
+  }
+
+  get errorMessage(): { key: string; params?: any } | null {
+    if (!this.control || !this.shouldShowError) return null;
+
+    if (this.control.hasError('required')) {
+      return { key: this.errorKey || 'validation.required' };
+    }
+    if (this.control.hasError('pattern')) {
+      return { key: this.errorKey || 'validation.pattern' };
+    }
+
+    return { key: this.errorKey || 'validation.invalid' };
+  }
+
   onValueChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     const newValue = input.value;
-    if (this.control) {
-      this.control.setValue(newValue);
-    } else {
-      this.valueChange.emit(newValue);
-    }
+    this.control!.setValue(newValue);
+    this.value = newValue;
+    this.valueChange.emit(newValue);
   }
 }

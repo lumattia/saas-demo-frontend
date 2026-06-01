@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TenantService } from '../../../../core/services/tenant.service';
@@ -32,7 +32,7 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
 
   id: string | null = null;
   tenantForm = new FormGroup({
-    name: new FormControl('')
+    name: new FormControl('', [Validators.required])
   });
   modules: ModuleType[] = [];
   moduleOptions = [
@@ -42,8 +42,8 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
   isEditMode = false;
   initialData: any = null;
 
-  get nameControl(): FormControl {
-    return this.tenantForm.controls['name'] as FormControl;
+  getControl(name: string): FormControl {
+    return this.tenantForm.get(name) as FormControl;
   }
 
   ngOnInit() {

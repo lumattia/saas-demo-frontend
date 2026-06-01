@@ -5,15 +5,14 @@
     <app-text-input
       labelKey="users.form.username"
       placeholderKey="users.form.usernamePlaceholder"
-      [control]="usernameControl"
-      [required]="true"
+      [control]="getControl('username')"
       [readonly]="!isEditMode"
     />
 
     <app-select-input
       labelKey="users.form.role"
       [options]="roleOptions"
-      [control]="roleControl"
+      [control]="getControl('role')"
       [readonly]="!isEditMode"
     />
 

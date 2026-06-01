@@ -21,25 +21,25 @@
         <app-text-input
           labelKey="dresses.list.filter.title"
           placeholderKey="dresses.list.filter.titlePlaceholder"
-          [control]="titleControl"
+          [control]="getControl('title')"
           [showDirtyIndicator]="true"
         />
         <app-text-input
           labelKey="dresses.list.filter.sku"
           placeholderKey="dresses.list.filter.skuPlaceholder"
-          [control]="skuControl"
+          [control]="getControl('sku')"
           [showDirtyIndicator]="true"
         />
         <app-text-input
           labelKey="dresses.list.filter.size"
           placeholderKey="dresses.list.filter.sizePlaceholder"
-          [control]="sizeControl"
+          [control]="getControl('size')"
           [showDirtyIndicator]="true"
         />
         <app-color-input
           labelKey="dresses.list.filter.color"
           placeholderKey="dresses.list.filter.colorPlaceholder"
-          [control]="colorControl"
+          [control]="getControl('color')"
           [showDirtyIndicator]="true"
         />
       </div>
@@ -47,31 +47,27 @@
         <app-number-input
           labelKey="dresses.list.filter.minStock"
           placeholderKey="dresses.list.filter.minStockPlaceholder"
-          [control]="minStockControl"
+          [control]="getControl('minStock')"
           [showDirtyIndicator]="true"
-          [min]="0"
         />
         <app-number-input
           labelKey="dresses.list.filter.maxStock"
           placeholderKey="dresses.list.filter.maxStockPlaceholder"
-          [control]="maxStockControl"
+          [control]="getControl('maxStock')"
           [showDirtyIndicator]="true"
-          [min]="0"
         />
         <app-number-input
           labelKey="dresses.list.filter.minPrice"
           placeholderKey="dresses.list.filter.minPricePlaceholder"
-          [control]="minPriceControl"
+          [control]="getControl('minPrice')"
           [showDirtyIndicator]="true"
-          [min]="0"
           [decimalPlaces]="2"
         />
         <app-number-input
           labelKey="dresses.list.filter.maxPrice"
           placeholderKey="dresses.list.filter.maxPricePlaceholder"
-          [control]="maxPriceControl"
+          [control]="getControl('maxPrice')"
           [showDirtyIndicator]="true"
-          [min]="0"
           [decimalPlaces]="2"
         />
       </div>

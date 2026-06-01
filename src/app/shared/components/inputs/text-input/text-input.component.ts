@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -9,7 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './text-input.component.html',
   styleUrls: ['./text-input.component.css'],
 })
-export class TextInputComponent {
+export class TextInputComponent implements OnInit {
   @Input() labelKey = '';
   @Input() placeholderKey = '';
   @Input() control: FormControl | null = null;
@@ -18,56 +18,82 @@ export class TextInputComponent {
   @Input() required = false;
   @Input() disabled = false;
   @Input() readonly = false;
+  @Input() minLength?: number;
   @Input() maxLength?: number;
+  @Input() pattern?: string;
   @Input() errorKey = '';
   @Input() showDirtyIndicator = false;
 
   @Output() valueChange = new EventEmitter<any>();
 
+  ngOnInit(): void {
+    if (!this.control) {
+      const validators = [];
+      if (this.required) {
+        validators.push(Validators.required);
+      }
+      if (this.minLength !== undefined) {
+        validators.push(Validators.minLength(this.minLength));
+      }
+      if (this.maxLength !== undefined) {
+        validators.push(Validators.maxLength(this.maxLength));
+      }
+      if (this.pattern) {
+        validators.push(Validators.pattern(this.pattern));
+      }
+      
+      this.control = new FormControl(this.value, validators);
+    }
+  }
+
+  get isRequired(): boolean {
+    return this.control?.hasValidator(Validators.required) ?? false;
+  }
+
   get isDirty(): boolean {
     return this.showDirtyIndicator && !!this.control?.dirty;
   }
 
-  get internalControl(): FormControl {
-    return this.control || new FormControl(this.value);
-  }
-
   get shouldShowError(): boolean {
-    const ctrl = this.internalControl;
-    return ctrl.invalid && (ctrl.dirty || ctrl.touched);
+    if (!this.control) return false;
+    return this.control.invalid && (this.control.dirty || this.control.touched);
   }
 
-  get errorMessage(): string {
-    const ctrl = this.internalControl;
-    if (!this.shouldShowError) return '';
+  get errorMessage(): { key: string; params?: any } | null {
+    if (!this.control || !this.shouldShowError) return null;
 
-    // Check errors in priority order
-    if (ctrl.hasError('required')) {
-      return this.errorKey || 'validation.required';
+    if (this.control.hasError('required')) {
+      return { key: this.errorKey || 'validation.required' };
     }
-    if (ctrl.hasError('minlength')) {
-      return this.errorKey || 'validation.minLength';
+    if (this.control.hasError('minlength')) {
+      const errorDetails = this.control.getError('minlength');
+      return { 
+        key: this.errorKey || 'validation.minLength', 
+        params: { minLength: errorDetails.requiredLength }
+      };
     }
-    if (ctrl.hasError('maxlength')) {
-      return this.errorKey || 'validation.maxLength';
+    if (this.control.hasError('maxlength')) {
+      const errorDetails = this.control.getError('maxlength');
+      return { 
+        key: this.errorKey || 'validation.maxLength', 
+        params: { maxLength: errorDetails.requiredLength }
+      };
     }
-    if (ctrl.hasError('pattern')) {
-      return this.errorKey || 'validation.pattern';
+    if (this.control.hasError('pattern')) {
+      return { key: this.errorKey || 'validation.pattern' };
     }
-    if (ctrl.hasError('email')) {
-      return this.errorKey || 'validation.email';
+    if (this.control.hasError('email')) {
+      return { key: this.errorKey || 'validation.email' };
     }
 
-    return this.errorKey || 'validation.invalid';
+    return { key: this.errorKey || 'validation.invalid' };
   }
 
   onValueChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     const newValue = input.value;
-    if (this.control) {
-      this.control.setValue(newValue);
-    } else {
-      this.valueChange.emit(newValue);
-    }
+    this.control!.setValue(newValue);
+    this.value = newValue;
+    this.valueChange.emit(newValue);
   }
 }

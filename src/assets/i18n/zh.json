@@ -241,6 +241,16 @@
     "stay": "停留",
     "leave": "离开"
   },
+  "validation": {
+    "required": "此字段为必填项",
+    "min": "最小值为 {{min}}",
+    "max": "最大值为 {{max}}",
+    "minLength": "最小长度为 {{minLength}} 个字符",
+    "maxLength": "最大长度为 {{maxLength}} 个字符",
+    "pattern": "格式无效",
+    "email": "邮箱无效",
+    "invalid": "无效值"
+  },
   "shared": {
     "actions": {
       "edit": "编辑",

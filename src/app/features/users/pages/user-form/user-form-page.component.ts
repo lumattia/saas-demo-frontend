@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserService } from '../../../../core/services/user.service';
@@ -38,8 +38,8 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
 
   id: number | null = null;
   userForm = new FormGroup({
-    username: new FormControl(''),
-    role: new FormControl('USER')
+    username: new FormControl('', [Validators.required]),
+    role: new FormControl('USER', [Validators.required])
   });
   allowedTenantIds: string[] = [];
   assignableRoles: string[] = [];
@@ -54,12 +54,8 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
     }));
   }
 
-  get usernameControl(): FormControl {
-    return this.userForm.controls['username'] as FormControl;
-  }
-
-  get roleControl(): FormControl {
-    return this.userForm.controls['role'] as FormControl;
+  getControl(name: string): FormControl {
+    return this.userForm.get(name) as FormControl;
   }
 
   ngOnInit() {

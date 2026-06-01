@@ -13,17 +13,12 @@
                   <app-text-input
                     [labelKey]="field.label"
                     [control]="getFormControl(field.id)"
-                    [required]="field.validations?.required || false"
-                    [maxLength]="field.validations?.maxLength"
                   ></app-text-input>
                 }
                 @case (CustomFieldType.NUMBER) {
                   <app-number-input
                     [labelKey]="field.label"
                     [control]="getFormControl(field.id)"
-                    [required]="field.validations?.required || false"
-                    [min]="field.validations?.min"
-                    [max]="field.validations?.max"
                   ></app-number-input>
                 }
                 @case (CustomFieldType.SELECT) {
@@ -31,14 +26,12 @@
                     [labelKey]="field.label"
                     [control]="getFormControl(field.id)"
                     [options]="getOptionsForSelect(field)"
-                    [required]="field.validations?.required || false"
                   ></app-select-input>
                 }
                 @case (CustomFieldType.DATE) {
                   <app-text-input
                     [labelKey]="field.label"
                     [control]="getFormControl(field.id)"
-                    [required]="field.validations?.required || false"
                     [type]="'date'"
                   ></app-text-input>
                 }
