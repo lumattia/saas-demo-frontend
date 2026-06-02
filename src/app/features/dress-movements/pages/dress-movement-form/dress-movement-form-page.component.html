@@ -1,45 +1,80 @@
-<main class="dress-movements-form-container">
-  <h1>{{ (id ? 'dress-movements.edit' : 'dress-movements.new') | translate }}</h1>
+<main class="dress-movement-form-container">
+  <h1>{{ (id ? 'dressMovements.edit' : 'dressMovements.new') | translate }}</h1>
 
-  <form (ngSubmit)="save()" class="dress-movements-form">
-    <app-select-input
-      labelKey="dress-movements.form.dress"
-      placeholderKey="dress-movements.form.dressPlaceholder"
-      [options]="dresses"
-      [control]="getControl('dressId')"
-      [readonly]="!isEditMode"
-    />
+  <form class="dress-movement-form">
+    @if (!id) {
+      <!-- Add mode: single save button for all sections -->
+      <div class="add-mode-form">
+        <app-collapsible-section
+          titleKey="dressMovements.sections.basicInfo"
+          [showActions]="false">
+          <div class="form-grid">
+            <app-select-input
+              labelKey="dressMovements.form.dress"
+              placeholderKey="dressMovements.form.dressPlaceholder"
+              [options]="dresses"
+              [control]="getControl('dressId')"
+            />
+            <app-number-input
+              labelKey="dressMovements.form.quantity"
+              placeholderKey="dressMovements.form.quantityPlaceholder"
+              [control]="getControl('quantity')"
+              [decimalPlaces]="0"
+            />
+          </div>
+        </app-collapsible-section>
 
-    <app-number-input
-      labelKey="dress-movements.form.quantity"
-      placeholderKey="dress-movements.form.quantityPlaceholder"
-      [control]="getControl('quantity')"
-      [decimalPlaces]="0"
-      [readonly]="!isEditMode"
-    />
+        <app-dynamic-form
+          [form]="customFieldsForm"
+          [entityIdentifier]="id ? id.toString() : ''"
+          [module]="module"
+          [showActions]="false"
+        />
 
-    <div class="actions">
-      @if (!isEditMode && id) {
-        <app-button
-          type="button"
-          variant="primary"
-          (click)="enableEditMode()">
-          {{ 'shared.table.edit' | translate }}
-        </app-button>
-      }
-      @if (isEditMode) {
-        <app-button
-          type="submit"
-          variant="primary">
-          {{ 'dress-movements.form.save' | translate }}
-        </app-button>
-        <app-button
-          type="button"
-          variant="secondary"
-          (click)="cancelEdit()">
-          {{ 'dress-movements.form.cancel' | translate }}
-        </app-button>
-      }
-    </div>
+        <div class="actions">
+          <app-button
+            type="submit"
+            variant="primary"
+            (click)="saveAll()">
+            {{ 'shared.actions.save' | translate }}
+          </app-button>
+        </div>
+      </div>
+    } @else {
+      <!-- Edit mode: individual save buttons per section -->
+      <div class="edit-mode-form">
+        <app-collapsible-section
+          titleKey="dressMovements.sections.basicInfo"
+          [isEditMode]="!isSectionEditing('basicInfo')"
+          [isValid]="isSectionValid('basicInfo')"
+          (save)="saveSection('basicInfo')"
+          (cancel)="resetSection('basicInfo')"
+          (edit)="toggleSectionEdit('basicInfo')">
+          <div class="form-grid">
+            <app-select-input
+              labelKey="dressMovements.form.dress"
+              placeholderKey="dressMovements.form.dressPlaceholder"
+              [options]="dresses"
+              [control]="getControl('dressId')"
+              [readonly]="!isSectionEditing('basicInfo')"
+            />
+            <app-number-input
+              labelKey="dressMovements.form.quantity"
+              placeholderKey="dressMovements.form.quantityPlaceholder"
+              [control]="getControl('quantity')"
+              [decimalPlaces]="0"
+              [readonly]="!isSectionEditing('basicInfo')"
+            />
+          </div>
+        </app-collapsible-section>
+
+        <app-dynamic-form
+          [form]="customFieldsForm"
+          [entityIdentifier]="id ? id.toString() : ''"
+          [module]="module"
+          [isEditMode]="isEditMode"
+        />
+      </div>
+    }
   </form>
 </main>

@@ -6,9 +6,9 @@
     [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
     [showDirtyIndicator]="true"
     [filterForm]="filterForm"
-    [titleKey]="'dress-movements.list.title'"
+    [titleKey]="'dressMovements.list.title'"
     [addLink]="'/dress-movements/new'"
-    [addLabelKey]="'dress-movements.list.add'"
+    [addLabelKey]="'dressMovements.list.add'"
     (sortChange)="onSortChange($event)"
     (paginationChange)="onPaginationChange($event)"
     (rowClick)="onRowClick($event)"
@@ -19,38 +19,38 @@
     <div filters>
       <div class="filter-row">
         <app-text-input
-          labelKey="dress-movements.list.filter.title"
-          placeholderKey="dress-movements.list.filter.titlePlaceholder"
+          labelKey="dressMovements.list.filter.title"
+          placeholderKey="dressMovements.list.filter.titlePlaceholder"
           [control]="dressTitleControl"
           [showDirtyIndicator]="true"
         />
         <app-text-input
-          labelKey="dress-movements.list.filter.sku"
-          placeholderKey="dress-movements.list.filter.skuPlaceholder"
+          labelKey="dressMovements.list.filter.sku"
+          placeholderKey="dressMovements.list.filter.skuPlaceholder"
           [control]="skuControl"
           [showDirtyIndicator]="true"
         />
         <app-text-input
-          labelKey="dress-movements.list.filter.size"
-          placeholderKey="dress-movements.list.filter.sizePlaceholder"
+          labelKey="dressMovements.list.filter.size"
+          placeholderKey="dressMovements.list.filter.sizePlaceholder"
           [control]="sizeControl"
           [showDirtyIndicator]="true"
         />
         <app-text-input
-          labelKey="dress-movements.list.filter.color"
-          placeholderKey="dress-movements.list.filter.colorPlaceholder"
+          labelKey="dressMovements.list.filter.color"
+          placeholderKey="dressMovements.list.filter.colorPlaceholder"
           [control]="colorControl"
           [showDirtyIndicator]="true"
         />
         <app-text-input
-          labelKey="dress-movements.list.filter.minQuantity"
-          placeholderKey="dress-movements.list.filter.minQuantityPlaceholder"
+          labelKey="dressMovements.list.filter.minQuantity"
+          placeholderKey="dressMovements.list.filter.minQuantityPlaceholder"
           [control]="minQuantityControl"
           [showDirtyIndicator]="true"
         />
         <app-text-input
-          labelKey="dress-movements.list.filter.maxQuantity"
-          placeholderKey="dress-movements.list.filter.maxQuantityPlaceholder"
+          labelKey="dressMovements.list.filter.maxQuantity"
+          placeholderKey="dressMovements.list.filter.maxQuantityPlaceholder"
           [control]="maxQuantityControl"
           [showDirtyIndicator]="true"
         />

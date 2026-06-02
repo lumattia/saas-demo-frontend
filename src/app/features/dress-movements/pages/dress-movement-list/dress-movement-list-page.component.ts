@@ -64,18 +64,18 @@ export class DressMovementListPageComponent implements OnInit {
   totalItems = signal<number>(0);
 
   columns = [
-    { key: 'dress.sku', labelKey: 'dress-movements.list.columns.sku' },
-    { key: 'dress.title', labelKey: 'dress-movements.list.columns.title' },
-    { key: 'dress.size', labelKey: 'dress-movements.list.columns.size' },
-    { key: 'dress.color', labelKey: 'dress-movements.list.columns.color', type: 'color' },
-    { key: 'quantity', labelKey: 'dress-movements.list.columns.quantity' },
-    { key: 'instant', labelKey: 'dress-movements.list.columns.date', type: 'date' },
+    { key: 'dress.sku', labelKey: 'dressMovements.list.columns.sku' },
+    { key: 'dress.title', labelKey: 'dressMovements.list.columns.title' },
+    { key: 'dress.size', labelKey: 'dressMovements.list.columns.size' },
+    { key: 'dress.color', labelKey: 'dressMovements.list.columns.color', type: 'color' },
+    { key: 'quantity', labelKey: 'dressMovements.list.columns.quantity' },
+    { key: 'instant', labelKey: 'dressMovements.list.columns.date', type: 'date' },
   ];
 
   sortOptions: IdName[] = [
-    { id: 'dress.sku', name: 'dress-movements.list.sort.sku' },
-    { id: 'quantity', name: 'dress-movements.list.sort.quantity' },
-    { id: 'instant', name: 'dress-movements.list.sort.date' },
+    { id: 'dress.sku', name: 'dressMovements.list.sort.sku' },
+    { id: 'quantity', name: 'dressMovements.list.sort.quantity' },
+    { id: 'instant', name: 'dressMovements.list.sort.date' },
   ];
 
   ngOnInit() {
@@ -116,8 +116,8 @@ export class DressMovementListPageComponent implements OnInit {
   deleteItem(id: number) {
     const modalRef = this.modalService.open(ConfirmModalComponent, {
       open: true,
-      title: 'dress-movements.form.delete',
-      message: 'dress-movements.form.deleteConfirm'
+      title: 'shared.actions.delete',
+      message: 'dressMovements.form.deleteConfirm'
     });
     modalRef.result.then((confirmed) => {
       if (confirmed) {

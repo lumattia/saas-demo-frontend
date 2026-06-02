@@ -7,7 +7,9 @@ import { TenantService } from '../../../../core/services/tenant.service';
 import { TenantCreateRequest, TenantUpdateRequest, ModuleType } from '../../../../core/models/tenant.model';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { CollapsibleSectionComponent } from '../../../../shared/components/collapsible-section/collapsible-section.component';
 import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
+import { CheckboxInputComponent } from '../../../../shared/components/inputs/checkbox-input/checkbox-input.component';
 
 @Component({
   selector: 'app-tenant-form-page',
@@ -18,6 +20,8 @@ import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.
     TranslateModule,
     TextInputComponent,
     ButtonComponent,
+    CollapsibleSectionComponent,
+    CheckboxInputComponent,
   ],
   templateUrl: './tenant-form-page.component.html',
   styleUrls: ['./tenant-form-page.component.css'],
@@ -38,9 +42,91 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
   ];
   isEditMode = false;
   initialData: any = null;
+  editingSections = new Set<string>();
 
   getControl(name: string): FormControl {
     return this.tenantForm.get(name) as FormControl;
+  }
+
+  isSectionEditing(section: string): boolean {
+    return this.editingSections.has(section);
+  }
+
+  toggleSectionEdit(section: string): void {
+    if (this.editingSections.has(section)) {
+      this.editingSections.delete(section);
+    } else {
+      this.editingSections.add(section);
+    }
+  }
+
+  isSectionValid(section: string): boolean {
+    switch (section) {
+      case 'basicInfo':
+        return this.tenantForm.get('name')?.valid ?? false;
+      case 'modules':
+        return this.modules.length > 0;
+      default:
+        return true;
+    }
+  }
+
+  saveSection(section: string): void {
+    if (!this.isSectionValid(section)) return;
+
+    if (section === 'basicInfo') {
+      const formValue = this.tenantForm.value;
+      if (this.id) {
+        const updateRequest: TenantUpdateRequest = {
+          id: this.id,
+          name: formValue.name || '',
+          modules: this.modules || [],
+        };
+        this.tenantService.update(this.id, updateRequest).subscribe(() => {
+          this.editingSections.delete(section);
+          if (this.id) {
+            this.tenantService.getById(this.id).subscribe(data => {
+              this.initialData = {
+                name: data.name,
+                modules: data.modules || []
+              };
+            });
+          }
+        });
+      }
+    } else if (section === 'modules') {
+      if (this.id) {
+        const updateRequest: TenantUpdateRequest = {
+          id: this.id,
+          name: this.tenantForm.value.name || '',
+          modules: this.modules || [],
+        };
+        this.tenantService.update(this.id, updateRequest).subscribe(() => {
+          this.editingSections.delete(section);
+          if (this.id) {
+            this.tenantService.getById(this.id).subscribe(data => {
+              this.initialData = {
+                name: data.name,
+                modules: data.modules || []
+              };
+            });
+          }
+        });
+      }
+    }
+  }
+
+  resetSection(section: string): void {
+    if (this.initialData) {
+      if (section === 'basicInfo') {
+        this.tenantForm.patchValue({
+          name: this.initialData.name
+        });
+      } else if (section === 'modules') {
+        this.modules = [...this.initialData.modules];
+      }
+    }
+    this.editingSections.delete(section);
   }
 
   ngOnInit() {
@@ -80,7 +166,6 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
         modules: this.modules || [],
       };
       this.tenantService.update(this.id, updateRequest).subscribe(() => {
-        this.router.navigate(['/tenants']);
       });
     } else {
       const createRequest: TenantCreateRequest = {

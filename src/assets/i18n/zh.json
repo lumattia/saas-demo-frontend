@@ -1,293 +1,316 @@
 {
-  "dresses": {
-    "title": "连衣裙管理",
-    "list": {
-      "title": "连衣裙列表",
-      "add": "添加连衣裙",
-      "columns": {
-        "title": "标题",
-        "sku": "SKU",
-        "size": "尺码",
-        "color": "颜色",
-        "stock": "库存",
-        "price": "价格"
-      },
-      "filter": {
-        "title": "标题",
-        "titlePlaceholder": "按标题筛选",
-        "sku": "SKU",
-        "skuPlaceholder": "按SKU筛选",
-        "size": "尺码",
-        "sizePlaceholder": "按尺码筛选",
-        "color": "颜色",
-        "colorPlaceholder": "按颜色筛选",
-        "minStock": "最小库存",
-        "minStockPlaceholder": "最小库存",
-        "maxStock": "最大库存",
-        "maxStockPlaceholder": "最大库存",
-        "minPrice": "最低价格",
-        "minPricePlaceholder": "最低价格",
-        "maxPrice": "最高价格",
-        "maxPricePlaceholder": "最高价格",
-        "apply": "应用筛选"
-      },
-      "sort": {
-        "title": "标题",
-        "sku": "SKU",
-        "size": "尺码",
-        "stock": "库存",
-        "price": "价格"
-      }
-    },
-    "new": "新建连衣裙",
-    "edit": "编辑连衣裙",
-    "form": {
-      "title": "标题",
-      "titlePlaceholder": "输入连衣裙标题",
-      "sku": "SKU",
-      "skuPlaceholder": "输入SKU",
-      "size": "尺码",
-      "sizePlaceholder": "输入尺码",
+  "common": {
+    "fields": {
       "color": "颜色",
+      "date": "日期",
       "price": "价格",
-      "pricePlaceholder": "输入价格",
-      "save": "保存",
-      "delete": "删除",
-      "deleteConfirm": "确定要删除这条连衣裙吗？",
-      "cancel": "取消"
-    }
-  },
-  "dress-movements": {
-    "title": "连衣裙变动管理",
-    "list": {
-      "title": "连衣裙变动",
-      "add": "添加变动",
-      "columns": {
-        "sku": "SKU",
-        "title": "标题",
-        "size": "尺码",
-        "color": "颜色",
-        "quantity": "数量",
-        "date": "日期"
-      },
-      "filter": {
-        "title": "标题",
-        "titlePlaceholder": "按连衣裙标题筛选",
-        "sku": "SKU",
-        "skuPlaceholder": "按SKU筛选",
-        "size": "尺码",
-        "sizePlaceholder": "按尺码筛选",
-        "color": "颜色",
-        "colorPlaceholder": "按颜色筛选",
-        "minQuantity": "最小数量",
-        "minQuantityPlaceholder": "最小数量",
-        "maxQuantity": "最大数量",
-        "maxQuantityPlaceholder": "最大数量",
-        "apply": "应用筛选"
-      },
-      "sort": {
-        "sku": "SKU",
-        "quantity": "数量",
-        "date": "日期"
-      }
-    },
-    "new": "新建变动",
-    "edit": "编辑变动",
-    "form": {
-      "dress": "连衣裙",
-      "dressPlaceholder": "选择连衣裙",
       "quantity": "数量",
-      "quantityPlaceholder": "输入数量",
-      "save": "保存",
-      "delete": "删除",
-      "deleteConfirm": "确定要删除这条变动记录吗？",
-      "cancel": "取消"
-    }
-  },
-  "nav": {
-    "home": "首页",
-    "dresses": "连衣裙",
-    "dressMovement": "连衣裙变动",
-    "tenants": "租户",
-    "users": "用户",
-    "customFields": "自定义字段",
-    "toggleTheme": "切换主题",
-    "logout": "退出登录",
-    "createDemo": "创建演示(24小时)",
-    "login": "登录"
-  },
-  "tenants": {
-    "title": "租户管理",
-    "list": {
-      "title": "租户列表",
-      "add": "添加租户",
-      "columns": {
-        "name": "名称",
-        "createdAt": "创建时间",
-        "expiresAt": "过期时间",
-        "modules": "模块"
-      },
-      "sort": {
-        "name": "名称",
-        "createdAt": "创建时间"
-      }
+      "size": "尺码",
+      "sku": "SKU",
+      "stock": "库存",
+      "title": "标题"
     },
-    "new": "新建租户",
-    "edit": "编辑租户",
-    "form": {
-      "name": "名称",
-      "namePlaceholder": "输入租户名称",
-      "modules": {
-        "label": "模块",
-        "DRESS": "连衣裙",
-        "DRESS_MOVEMENT": "连衣裙变动"
-      },
-      "save": "保存",
-      "delete": "删除",
-      "deleteConfirm": "确定要删除这个租户吗？",
-      "cancel": "取消"
-    }
-  },
-  "users": {
-    "title": "用户管理",
-    "list": {
-      "title": "用户列表",
-      "add": "添加用户",
-      "columns": {
-        "username": "用户名",
-        "role": "角色"
-      },
-      "sort": {
-        "username": "用户名",
-        "role": "角色"
-      },
-      "filter": {
-        "username": "用户名",
-        "usernamePlaceholder": "按用户名筛选",
-        "apply": "应用筛选"
-      }
-    },
-    "new": "新建用户",
-    "edit": "编辑用户",
-    "form": {
-      "username": "用户名",
-      "usernamePlaceholder": "输入用户名",
-      "role": "角色",
-      "roleOptions": {
-        "USER": "用户",
-        "ADMIN": "管理员",
-        "RESELLER": "经销商",
-        "SUPERADMIN": "超级管理员"
-      },
-      "save": "保存",
-      "delete": "删除",
-      "deleteConfirm": "确定要删除这个用户吗？",
-      "cancel": "取消"
-    }
-  },
-  "customFields": {
-    "title": "自定义字段配置",
-    "actions": {
-      "addGroup": "添加组",
-      "saveOrder": "保存顺序",
-      "addField": "添加字段",
-      "addOption": "添加选项"
-    },
-    "modals": {
-      "editGroup": "编辑组",
-      "createGroup": "创建组",
-      "editField": "编辑字段",
-      "createField": "创建字段",
-      "deleteGroup": "删除组",
-      "deleteField": "删除字段",
-      "deleteGroupConfirm": "确定要删除组 \"{{name}}\" 吗？",
-      "deleteFieldConfirm": "确定要删除字段 \"{{name}}\" 吗？"
-    },
-    "form": {
-      "groupName": "组名称",
-      "groupNamePlaceholder": "输入组名称",
-      "fieldLabel": "字段标签",
-      "fieldLabelPlaceholder": "输入字段标签",
-      "fieldType": "字段类型",
-      "fieldTypePlaceholder": "选择字段类型",
-      "required": "必填",
-      "minValue": "最小值",
-      "minValuePlaceholder": "输入最小值",
-      "maxValue": "最大值",
-      "maxValuePlaceholder": "输入最大值",
-      "maxLength": "最大长度",
-      "maxLengthPlaceholder": "输入最大长度",
-      "options": "选项",
-      "moduleOptions": {
-        "DRESS": "连衣裙",
-        "DRESS_MOVEMENT": "连衣裙变动"
-      }
-    },
-    "fieldTypes": {
-      "TEXT": "文本",
-      "NUMBER": "数字",
-      "DATE": "日期",
-      "SELECT": "选择",
-      "CHECKBOX": "复选框"
+    "sections": {
+      "basicInfo": "基本信息",
+      "customFields": "自定义字段"
     }
   },
   "confirmModal": {
     "cancel": "取消",
     "confirm": "确认"
   },
-  "unsavedChanges": {
-    "title": "未保存的更改",
-    "message": "您有未保存的更改。确定要离开此页面吗？",
-    "stay": "停留",
-    "leave": "离开"
+  "customFields": {
+    "actions": {
+      "addField": "添加字段",
+      "addGroup": "添加组",
+      "addOption": "添加选项",
+      "saveOrder": "保存顺序"
+    },
+    "fieldTypes": {
+      "CHECKBOX": "复选框",
+      "DATE": "日期",
+      "NUMBER": "数字",
+      "SELECT": "选择",
+      "TEXT": "文本"
+    },
+    "form": {
+      "fieldLabel": "字段标签",
+      "fieldLabelPlaceholder": "输入字段标签",
+      "fieldType": "字段类型",
+      "fieldTypePlaceholder": "选择字段类型",
+      "groupName": "组名称",
+      "groupNamePlaceholder": "输入组名称",
+      "maxLength": "最大长度",
+      "maxLengthPlaceholder": "输入最大长度",
+      "maxValue": "最大值",
+      "maxValuePlaceholder": "输入最大值",
+      "minValue": "最小值",
+      "minValuePlaceholder": "输入最小值",
+      "moduleOptions": {
+        "DRESS": "连衣裙",
+        "DRESS_MOVEMENT": "连衣裙变动"
+      },
+      "options": "选项",
+      "required": "必填"
+    },
+    "modals": {
+      "createField": "创建字段",
+      "createGroup": "创建组",
+      "deleteField": "删除字段",
+      "deleteFieldConfirm": "确定要删除字段 \"{{name}}\" 吗？",
+      "deleteGroup": "删除组",
+      "deleteGroupConfirm": "确定要删除组 \"{{name}}\" 吗？",
+      "editField": "编辑字段",
+      "editGroup": "编辑组"
+    },
+    "title": "自定义字段配置"
   },
-  "validation": {
-    "required": "此字段为必填项",
-    "min": "最小值为 {{min}}",
-    "max": "最大值为 {{max}}",
-    "minLength": "最小长度为 {{minLength}} 个字符",
-    "maxLength": "最大长度为 {{maxLength}} 个字符",
-    "pattern": "格式无效",
-    "email": "邮箱无效",
-    "invalid": "无效值"
+  "dressMovements": {
+    "edit": "编辑变动",
+    "form": {
+      "dress": "连衣裙",
+      "dressPlaceholder": "选择连衣裙",
+      "deleteConfirm": "确定要删除这条变动记录吗？",
+      "quantity": "数量",
+      "quantityPlaceholder": "输入数量"
+    },
+    "list": {
+      "add": "添加变动",
+      "columns": {
+        "color": "颜色",
+        "date": "日期",
+        "quantity": "数量",
+        "size": "尺码",
+        "sku": "SKU",
+        "title": "标题"
+      },
+      "filter": {
+        "apply": "应用筛选",
+        "color": "颜色",
+        "colorPlaceholder": "按颜色筛选",
+        "maxQuantity": "最大数量",
+        "maxQuantityPlaceholder": "最大数量",
+        "minQuantity": "最小数量",
+        "minQuantityPlaceholder": "最小数量",
+        "size": "尺码",
+        "sizePlaceholder": "按尺码筛选",
+        "sku": "SKU",
+        "skuPlaceholder": "按SKU筛选",
+        "title": "标题",
+        "titlePlaceholder": "按连衣裙标题筛选"
+      },
+      "sort": {
+        "date": "日期",
+        "quantity": "数量",
+        "sku": "SKU"
+      },
+      "title": "连衣裙变动"
+    },
+    "new": "新建变动",
+    "sections": {
+      "basicInfo": "基本信息",
+      "customFields": "自定义字段"
+    },
+    "title": "连衣裙变动管理"
+  },
+  "dresses": {
+    "edit": "编辑连衣裙",
+    "form": {
+      "color": "颜色",
+      "deleteConfirm": "确定要删除这条连衣裙吗？",
+      "price": "价格",
+      "pricePlaceholder": "输入价格",
+      "size": "尺码",
+      "sizePlaceholder": "输入尺码",
+      "sku": "SKU",
+      "skuPlaceholder": "输入SKU",
+      "title": "标题",
+      "titlePlaceholder": "输入连衣裙标题"
+    },
+    "list": {
+      "add": "添加连衣裙",
+      "columns": {
+        "color": "颜色",
+        "price": "价格",
+        "size": "尺码",
+        "sku": "SKU",
+        "stock": "库存",
+        "title": "标题"
+      },
+      "filter": {
+        "apply": "应用筛选",
+        "color": "颜色",
+        "colorPlaceholder": "按颜色筛选",
+        "maxPrice": "最高价格",
+        "maxPricePlaceholder": "最高价格",
+        "maxStock": "最大库存",
+        "maxStockPlaceholder": "最大库存",
+        "minPrice": "最低价格",
+        "minPricePlaceholder": "最低价格",
+        "minStock": "最小库存",
+        "minStockPlaceholder": "最小库存",
+        "size": "尺码",
+        "sizePlaceholder": "按尺码筛选",
+        "sku": "SKU",
+        "skuPlaceholder": "按SKU筛选",
+        "title": "标题",
+        "titlePlaceholder": "按标题筛选"
+      },
+      "sort": {
+        "price": "价格",
+        "size": "尺码",
+        "sku": "SKU",
+        "stock": "库存",
+        "title": "标题"
+      },
+      "title": "连衣裙列表"
+    },
+    "new": "新建连衣裙",
+    "sections": {
+      "basicInfo": "基本信息",
+      "customFields": "自定义字段",
+      "details": "详细信息"
+    },
+    "title": "连衣裙管理"
+  },
+  "nav": {
+    "createDemo": "创建演示(24小时)",
+    "customFields": "自定义字段",
+    "dressMovements": "连衣裙变动",
+    "dresses": "连衣裙",
+    "home": "首页",
+    "login": "登录",
+    "logout": "退出登录",
+    "tenants": "租户",
+    "toggleTheme": "切换主题",
+    "users": "用户"
   },
   "shared": {
     "actions": {
-      "edit": "编辑",
-      "delete": "删除",
       "cancel": "取消",
-      "save": "保存",
-      "remove": "移除"
+      "delete": "删除",
+      "edit": "编辑",
+      "remove": "移除",
+      "save": "保存"
     },
+    "cancel": "取消",
+    "colorInput": {
+      "invalid": "无效的十六进制颜色格式（例如：#000000 或 #FFF）",
+      "label": "颜色"
+    },
+    "edit": "编辑",
     "imageInput": {
       "label": "图片"
     },
-    "colorInput": {
-      "label": "颜色",
-      "invalid": "无效的十六进制颜色格式（例如：#000000 或 #FFF）"
-    },
+    "save": "保存",
     "selectInput": {
       "placeholder": "选择一个选项",
       "search": "搜索..."
     },
     "table": {
-      "showFilters": "显示筛选",
-      "hideFilters": "隐藏筛选",
-      "sortBy": "排序方式",
-      "noSort": "无排序",
-      "noData": "无可用数据",
-      "showing": "显示",
-      "perPage": "每页",
-      "page": "页",
-      "total": "总计",
-      "first": "首页",
-      "previous": "上一页",
-      "next": "下一页",
-      "last": "末页",
       "actions": "操作",
-      "edit": "编辑",
+      "applyFilters": "应用筛选",
       "delete": "删除",
-      "applyFilters": "应用筛选"
+      "edit": "编辑",
+      "first": "首页",
+      "hideFilters": "隐藏筛选",
+      "last": "末页",
+      "next": "下一页",
+      "noData": "无可用数据",
+      "noSort": "无排序",
+      "page": "页",
+      "perPage": "每页",
+      "previous": "上一页",
+      "showFilters": "显示筛选",
+      "showing": "显示",
+      "sortBy": "排序方式",
+      "total": "总计"
     }
+  },
+  "tenants": {
+    "edit": "编辑租户",
+    "form": {
+      "deleteConfirm": "确定要删除这个租户吗？",
+      "modules": {
+        "DRESS": "连衣裙",
+        "DRESS_MOVEMENT": "连衣裙变动",
+        "label": "模块"
+      },
+      "name": "名称",
+      "namePlaceholder": "输入租户名称"
+    },
+    "list": {
+      "add": "添加租户",
+      "columns": {
+        "createdAt": "创建时间",
+        "expiresAt": "过期时间",
+        "modules": "模块",
+        "name": "名称"
+      },
+      "sort": {
+        "createdAt": "创建时间",
+        "name": "名称"
+      },
+      "title": "租户列表"
+    },
+    "new": "新建租户",
+    "sections": {
+      "basicInfo": "基本信息",
+      "modules": "模块"
+    },
+    "title": "租户管理"
+  },
+  "unsavedChanges": {
+    "leave": "离开",
+    "message": "您有未保存的更改。确定要离开此页面吗？",
+    "stay": "停留",
+    "title": "未保存的更改"
+  },
+  "users": {
+    "edit": "编辑用户",
+    "form": {
+      "deleteConfirm": "确定要删除这个用户吗？",
+      "role": "角色",
+      "roleOptions": {
+        "ADMIN": "管理员",
+        "RESELLER": "经销商",
+        "SUPERADMIN": "超级管理员",
+        "USER": "用户"
+      },
+      "username": "用户名",
+      "usernamePlaceholder": "输入用户名"
+    },
+    "list": {
+      "add": "添加用户",
+      "columns": {
+        "role": "角色",
+        "username": "用户名"
+      },
+      "filter": {
+        "apply": "应用筛选",
+        "username": "用户名",
+        "usernamePlaceholder": "按用户名筛选"
+      },
+      "sort": {
+        "role": "角色",
+        "username": "用户名"
+      },
+      "title": "用户列表"
+    },
+    "new": "新建用户",
+    "sections": {
+      "basicInfo": "基本信息"
+    },
+    "title": "用户管理"
+  },
+  "validation": {
+    "email": "邮箱无效",
+    "invalid": "无效值",
+    "max": "最大值为 {{max}}",
+    "maxLength": "最大长度为 {{maxLength}} 个字符",
+    "min": "最小值为 {{min}}",
+    "minLength": "最小长度为 {{minLength}} 个字符",
+    "pattern": "格式无效",
+    "required": "此字段为必填项"
   }
 }

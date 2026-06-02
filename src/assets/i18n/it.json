@@ -41,23 +41,25 @@
     },
     "new": "Nuovo Abito",
     "edit": "Modifica Abito",
+    "sections": {
+      "basicInfo": "Informazioni Base",
+      "customFields": "Campi Personalizzati",
+      "details": "Dettagli"
+    },
     "form": {
-      "title": "Titolo",
-      "titlePlaceholder": "Inserisci titolo abito",
-      "sku": "SKU",
-      "skuPlaceholder": "Inserisci SKU",
-      "size": "Taglia",
-      "sizePlaceholder": "Inserisci taglia",
       "color": "Colore",
+      "deleteConfirm": "Sei sicuro di voler eliminare questo abito?",
       "price": "Prezzo",
       "pricePlaceholder": "Inserisci prezzo",
-      "save": "Salva",
-      "delete": "Elimina",
-      "deleteConfirm": "Sei sicuro di voler eliminare questo abito?",
-      "cancel": "Annulla"
+      "size": "Taglia",
+      "sizePlaceholder": "Inserisci taglia",
+      "sku": "SKU",
+      "skuPlaceholder": "Inserisci SKU",
+      "title": "Titolo",
+      "titlePlaceholder": "Inserisci titolo abito"
     }
   },
-  "dress-movements": {
+  "dressMovements": {
     "title": "Gestione Movimenti Abiti",
     "list": {
       "title": "Movimenti Abiti",
@@ -93,21 +95,22 @@
     },
     "new": "Nuovo Movimento",
     "edit": "Modifica Movimento",
+    "sections": {
+      "basicInfo": "Informazioni Base",
+      "customFields": "Campi Personalizzati"
+    },
     "form": {
       "dress": "Abito",
       "dressPlaceholder": "Seleziona abito",
-      "quantity": "Quantità",
-      "quantityPlaceholder": "Inserisci quantità",
-      "save": "Salva",
-      "delete": "Elimina",
       "deleteConfirm": "Sei sicuro di voler eliminare questo movimento?",
-      "cancel": "Annulla"
+      "quantity": "Quantità",
+      "quantityPlaceholder": "Inserisci quantità"
     }
   },
   "nav": {
     "home": "Home",
     "dresses": "Abiti",
-    "dressMovement": "Movimenti Abiti",
+    "dressMovements": "Movimenti Abiti",
     "tenants": "Tenant",
     "users": "Utenti",
     "customFields": "Campi Personalizzati",
@@ -138,14 +141,15 @@
       "name": "Nome",
       "namePlaceholder": "Inserisci nome tenant",
       "modules": {
-        "label": "Moduli",
         "DRESS": "Abiti",
-        "DRESS_MOVEMENT": "Movimenti Abiti"
+        "DRESS_MOVEMENT": "Movimenti Abiti",
+        "label": "Moduli"
       },
-      "save": "Salva",
-      "delete": "Elimina",
-      "deleteConfirm": "Sei sicuro di voler eliminare questo tenant?",
-      "cancel": "Annulla"
+      "deleteConfirm": "Sei sicuro di voler eliminare questo tenant?"
+    },
+    "sections": {
+      "basicInfo": "Informazioni Base",
+      "modules": "Moduli"
     }
   },
   "users": {
@@ -170,8 +174,7 @@
     "new": "Nuovo Utente",
     "edit": "Modifica Utente",
     "form": {
-      "username": "Utente",
-      "usernamePlaceholder": "Inserisci utente",
+      "deleteConfirm": "Sei sicuro di voler eliminare questo utente?",
       "role": "Ruolo",
       "roleOptions": {
         "USER": "Utente",
@@ -179,10 +182,11 @@
         "RESELLER": "Revenditore",
         "SUPERADMIN": "Super Admin"
       },
-      "save": "Salva",
-      "delete": "Elimina",
-      "deleteConfirm": "Sei sicuro di voler eliminare questo utente?",
-      "cancel": "Annulla"
+      "username": "Utente",
+      "usernamePlaceholder": "Inserisci utente"
+    },
+    "sections": {
+      "basicInfo": "Informazioni Base"
     }
   },
   "customFields": {
@@ -204,24 +208,24 @@
       "deleteFieldConfirm": "Sei sicuro di voler eliminare il campo \"{{name}}\"?"
     },
     "form": {
-      "groupName": "Nome Gruppo",
-      "groupNamePlaceholder": "Inserisci nome gruppo",
       "fieldLabel": "Etichetta Campo",
       "fieldLabelPlaceholder": "Inserisci etichetta campo",
       "fieldType": "Tipo Campo",
       "fieldTypePlaceholder": "Seleziona tipo campo",
-      "required": "Richiesto",
-      "minValue": "Valore Minimo",
-      "minValuePlaceholder": "Inserisci valore minimo",
-      "maxValue": "Valore Massimo",
-      "maxValuePlaceholder": "Inserisci valore massimo",
+      "groupName": "Nome Gruppo",
+      "groupNamePlaceholder": "Inserisci nome gruppo",
       "maxLength": "Lunghezza Massima",
       "maxLengthPlaceholder": "Inserisci lunghezza massima",
-      "options": "Opzioni",
+      "maxValue": "Valore Massimo",
+      "maxValuePlaceholder": "Inserisci valore massimo",
+      "minValue": "Valore Minimo",
+      "minValuePlaceholder": "Inserisci valore minimo",
       "moduleOptions": {
         "DRESS": "Abiti",
         "DRESS_MOVEMENT": "Movimenti Abiti"
-      }
+      },
+      "options": "Opzioni",
+      "required": "Richiesto"
     },
     "fieldTypes": {
       "TEXT": "Testo",
@@ -229,6 +233,22 @@
       "DATE": "Data",
       "SELECT": "Selezione",
       "CHECKBOX": "Casella di controllo"
+    }
+  },
+  "common": {
+    "sections": {
+      "basicInfo": "Informazioni Base",
+      "customFields": "Campi Personalizzati"
+    },
+    "fields": {
+      "title": "Titolo",
+      "sku": "SKU",
+      "size": "Taglia",
+      "color": "Colore",
+      "quantity": "Quantità",
+      "date": "Data",
+      "price": "Prezzo",
+      "stock": "Magazzino"
     }
   },
   "confirmModal": {
@@ -253,19 +273,22 @@
   },
   "shared": {
     "actions": {
-      "edit": "Modifica",
-      "delete": "Elimina",
       "cancel": "Annulla",
-      "save": "Salva",
-      "remove": "Rimuovi"
+      "delete": "Elimina",
+      "edit": "Modifica",
+      "remove": "Rimuovi",
+      "save": "Salva"
     },
+    "cancel": "Annulla",
+    "colorInput": {
+      "invalid": "Formato esadecimale non valido (es: #000000 o #FFF)",
+      "label": "Colore"
+    },
+    "edit": "Modifica",
     "imageInput": {
       "label": "Immagine"
     },
-    "colorInput": {
-      "label": "Colore",
-      "invalid": "Formato esadecimale non valido (es: #000000 o #FFF)"
-    },
+    "save": "Salva",
     "selectInput": {
       "placeholder": "Seleziona un'opzione",
       "search": "Cerca..."
@@ -279,11 +302,11 @@
       "showing": "Mostrando",
       "perPage": "per pagina",
       "page": "Pagina",
+      "total": "totale",
       "first": "Primo",
       "previous": "Precedente",
       "next": "Successivo",
       "last": "Ultimo",
-      "total": "totale",
       "actions": "Azioni",
       "edit": "Modifica",
       "delete": "Elimina",

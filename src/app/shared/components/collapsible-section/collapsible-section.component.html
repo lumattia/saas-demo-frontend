@@ -1,0 +1,31 @@
+<div class="collapsible-section">
+  <div class="section-header" (click)="toggleCollapse()">
+    <h2 class="section-title">
+      {{ titleKey | translate }}
+    </h2>
+    <span class="collapse-icon">{{ isCollapsed() ? '▼' : '▲' }}</span>
+  </div>
+
+  @if (!isCollapsed()) {
+    <div class="section-content">
+      <ng-content></ng-content>
+
+      @if (showActions) {
+        <div class="section-actions">
+          @if (isEditMode) {
+            <app-button (click)="onEdit()">
+              {{ "shared.edit" | translate }}
+            </app-button>
+          }@else {
+            <app-button (click)="onSave()" [disabled]="!isValid">
+              {{ "shared.save" | translate }}
+            </app-button>
+            <app-button (click)="onCancel()">
+              {{ "shared.cancel" | translate }}
+            </app-button>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

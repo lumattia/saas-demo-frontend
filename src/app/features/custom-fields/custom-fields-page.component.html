@@ -1,27 +1,28 @@
-<div class="custom-fields-page">
-  <div class="page-header">
-    <h1>{{ 'customFields.title' | translate }}</h1>
-    <div class="module-selector">
-      <app-select-input [options]="moduleOptions" [value]="selectedModule()" (valueChange)="onModuleChange($event)"></app-select-input>
+@if (modules.length > 0) {
+  <div class="custom-fields-page">
+    <div class="page-header">
+      <h1>{{ 'customFields.title' | translate }}</h1>
+      <div class="module-selector">
+        <app-select-input [options]="moduleOptions" [value]="selectedModule()" (valueChange)="onModuleChange($event)" [showClearButton]="false"></app-select-input>
+      </div>
     </div>
-  </div>
-
-  <div class="actions-bar">
-    <app-button (click)="openGroupModal()">{{ 'customFields.actions.addGroup' | translate }}</app-button>
-    @if (hasUnsavedChanges()) {
-      <app-button (click)="saveOrders()">{{ 'customFields.actions.saveOrder' | translate }}</app-button>
-    }
-  </div>
-
-  <div class="groups-container">
-    @for (group of groups(); track group.id; let i = $index) {
-      <div 
+    
+    <div class="actions-bar">
+      <app-button (click)="openGroupModal()">{{ 'customFields.actions.addGroup' | translate }}</app-button>
+      @if (hasUnsavedChanges()) {
+        <app-button (click)="saveOrders()">{{ 'customFields.actions.saveOrder' | translate }}</app-button>
+      }
+    </div>
+    
+    <div class="groups-container">
+      @for (group of groups(); track group.id; let i = $index) {
+        <div 
         class="group-item"
         draggable="true"
         (dragstart)="onGroupDragStart($event, group)"
         (dragover)="onDragOver($event)"
         (drop)="onGroupDrop($event, i)"
-      >
+        >
         <div class="group-header">
           <h3>{{ group.name }}</h3>
           <div class="group-actions">
@@ -30,34 +31,35 @@
             <app-button (click)="openFieldModal(group.id)">{{ 'customFields.actions.addField' | translate }}</app-button>
           </div>
         </div>
-
+        
         <div class="fields-container">
           @for (field of group.definitions; track field.id; let j = $index) {
             <div 
-              class="field-item"
-              draggable="true"
-              (dragstart)="onFieldDragStart($event, field, group.id)"
-              (dragover)="onDragOver($event)"
-              (drop)="onFieldDrop($event, field, group.id)"
+            class="field-item"
+            draggable="true"
+            (dragstart)="onFieldDragStart($event, field, group.id)"
+            (dragover)="onDragOver($event)"
+            (drop)="onFieldDrop($event, field, group.id)"
             >
-              <div class="field-info">
-                <span class="field-type">{{ field.type }}</span>
-                <span class="field-label">{{ field.label }}</span>
-                @if (field.validations?.required) {
-                  <span class="field-required">*</span>
-                }
-              </div>
-              <div class="field-actions">
-                <app-button (click)="openFieldModal(group.id, field)">{{ 'shared.actions.edit' | translate }}</app-button>
-                <app-button variant="danger" (click)="confirmDelete('field', field.id, field.label)">{{ 'shared.actions.delete' | translate }}</app-button>
-              </div>
+            <div class="field-info">
+              <span class="field-type">{{ field.type }}</span>
+              <span class="field-label">{{ field.label }}</span>
+              @if (field.validations?.required) {
+                <span class="field-required">*</span>
+              }
             </div>
-          }
-        </div>
+            <div class="field-actions">
+              <app-button (click)="openFieldModal(group.id, field)">{{ 'shared.actions.edit' | translate }}</app-button>
+              <app-button variant="danger" (click)="confirmDelete('field', field.id, field.label)">{{ 'shared.actions.delete' | translate }}</app-button>
+            </div>
+          </div>
+        }
       </div>
-    }
-  </div>
+    </div>
+  }
 </div>
+</div>
+}
 
 <!-- Group Modal -->
 @if (showGroupModal()) {
@@ -107,12 +109,10 @@
             [control]="getFormControl(fieldForm, 'type')"
           ></app-select-input>
 
-          <div class="form-group">
-            <label>
-              <input type="checkbox" formControlName="required" />
-              {{ 'customFields.form.required' | translate }}
-            </label>
-          </div>
+          <app-checkbox-input
+            labelKey="customFields.form.required"
+            [control]="getFormControl(fieldForm, 'required')"
+          ></app-checkbox-input>
 
           @if (showMinValidation()) {
             <app-number-input

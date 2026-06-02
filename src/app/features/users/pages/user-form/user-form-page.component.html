@@ -1,44 +1,62 @@
 <main class="user-form-container">
   <h1>{{ (id ? 'users.edit' : 'users.new') | translate }}</h1>
 
-  <form (ngSubmit)="save()" class="user-form">
-    <app-text-input
-      labelKey="users.form.username"
-      placeholderKey="users.form.usernamePlaceholder"
-      [control]="getControl('username')"
-      [readonly]="!isEditMode"
-    />
+  <form class="user-form">
+    @if (!id) {
+      <!-- Add mode: single save button for all sections -->
+      <div class="add-mode-form">
+        <app-collapsible-section
+          titleKey="users.sections.basicInfo"
+          [showActions]="false">
+          <div class="form-grid">
+            <app-text-input
+              labelKey="users.form.username"
+              placeholderKey="users.form.usernamePlaceholder"
+              [control]="getControl('username')"
+            />
+            <app-select-input
+              labelKey="users.form.role"
+              [options]="roleOptions"
+              [control]="getControl('role')"
+            />
+          </div>
+        </app-collapsible-section>
 
-    <app-select-input
-      labelKey="users.form.role"
-      [options]="roleOptions"
-      [control]="getControl('role')"
-      [readonly]="!isEditMode"
-    />
-
-    <div class="actions">
-      @if (!isEditMode && id) {
-        <app-button
-          *ngIf="isEditable"
-          type="button"
-          variant="primary"
-          (click)="enableEditMode()">
-          {{ 'shared.table.edit' | translate }}
-        </app-button>
-      }
-      @if (isEditMode) {
-        <app-button
-          type="submit"
-          variant="primary">
-          {{ 'users.form.save' | translate }}
-        </app-button>
-        <app-button
-          type="button"
-          variant="secondary"
-          (click)="cancelEdit()">
-          {{ 'users.form.cancel' | translate }}
-        </app-button>
-      }
-    </div>
+        <div class="actions">
+          <app-button
+            type="submit"
+            variant="primary"
+            (click)="save()">
+            {{ 'shared.actions.save' | translate }}
+          </app-button>
+        </div>
+      </div>
+    } @else {
+      <!-- Edit mode: individual save buttons per section -->
+      <div class="edit-mode-form">
+        <app-collapsible-section
+          titleKey="users.sections.basicInfo"
+          [isEditMode]="!isSectionEditing('basicInfo')"
+          [isValid]="isSectionValid('basicInfo')"
+          (save)="saveSection('basicInfo')"
+          (cancel)="resetSection('basicInfo')"
+          (edit)="toggleSectionEdit('basicInfo')">
+          <div class="form-grid">
+            <app-text-input
+              labelKey="users.form.username"
+              placeholderKey="users.form.usernamePlaceholder"
+              [control]="getControl('username')"
+              [readonly]="!isSectionEditing('basicInfo')"
+            />
+            <app-select-input
+              labelKey="users.form.role"
+              [options]="roleOptions"
+              [control]="getControl('role')"
+              [readonly]="!isSectionEditing('basicInfo')"
+            />
+          </div>
+        </app-collapsible-section>
+      </div>
+    }
   </form>
 </main>

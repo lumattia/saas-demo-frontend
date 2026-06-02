@@ -21,7 +21,7 @@
       @if (auth.hasModule('DRESS_MOVEMENT')) {
         <a routerLink="/dress-movements" routerLinkActive="active" class="nav-item">
           <span class="nav-icon"><img src="assets/icons/chart.svg" alt="Dress Movements"></span>
-          <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.dressMovement' | translate }}</span>
+          <span class="nav-text" *ngIf="!sidenavCollapsed()">{{ 'nav.dressMovements' | translate }}</span>
         </a>
       }  
       @if (auth.isAtLeastAdmin()) {

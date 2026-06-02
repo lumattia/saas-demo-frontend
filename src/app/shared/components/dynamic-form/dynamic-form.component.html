@@ -3,22 +3,30 @@
 } @else {
   <div class="dynamic-form">
     @for (group of groups(); track group.id) {
-      <div class="form-section">
-        <h3 class="section-title">{{ group.name }}</h3>
-        <div class="section-fields">
-          @for (field of group.definitions; track field.id) {
+       <app-collapsible-section
+       [showActions]="showActions"
+          [titleKey]="group.name"
+          [isEditMode]="!isGroupEditing(group.id)"
+          [isValid]="isGroupValid(group.id)"
+          (save)="saveGroup(group.id)"
+          (cancel)="resetGroup(group.id)"
+          (edit)="toggleGroupEdit(group.id)">
+          <div class="form-grid">
+            @for (field of group.definitions; track field.id) {
             <div class="field-wrapper">
               @switch (field.type) {
                 @case (CustomFieldType.TEXT) {
                   <app-text-input
                     [labelKey]="field.label"
                     [control]="getFormControl(field.id)"
+                    [readonly]="!isGroupEditing(group.id)"
                   ></app-text-input>
                 }
                 @case (CustomFieldType.NUMBER) {
                   <app-number-input
                     [labelKey]="field.label"
                     [control]="getFormControl(field.id)"
+                    [readonly]="!isGroupEditing(group.id)"
                   ></app-number-input>
                 }
                 @case (CustomFieldType.SELECT) {
@@ -26,6 +34,7 @@
                     [labelKey]="field.label"
                     [control]="getFormControl(field.id)"
                     [options]="getOptionsForSelect(field)"
+                    [readonly]="!isGroupEditing(group.id)"
                   ></app-select-input>
                 }
                 @case (CustomFieldType.DATE) {
@@ -33,24 +42,21 @@
                     [labelKey]="field.label"
                     [control]="getFormControl(field.id)"
                     [type]="'date'"
+                    [readonly]="!isGroupEditing(group.id)"
                   ></app-text-input>
                 }
                 @case (CustomFieldType.CHECKBOX) {
-                  <div class="checkbox-wrapper">
-                    <label>
-                      <input type="checkbox" [formControl]="getFormControl(field.id)" />
-                      {{ field.label }}
-                      @if (field.validations?.required) {
-                        <span class="required-mark">*</span>
-                      }
-                    </label>
-                  </div>
+                  <app-checkbox-input
+                    [labelKey]="field.label"
+                    [control]="getFormControl(field.id)"
+                    [readonly]="!isGroupEditing(group.id)"
+                  ></app-checkbox-input>
                 }
               }
             </div>
           }
-        </div>
-      </div>
+          </div>
+        </app-collapsible-section>
     }
   </div>
 }

@@ -21,11 +21,11 @@ export class CustomFieldService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/custom-fields`;
 
-  getFormStructure(module: ModuleType, targetId: number): Observable<CustomFieldGroup[]> {
+  getFormStructure(module: ModuleType, targetId: string|number): Observable<CustomFieldGroup[]> {
     return this.http.get<CustomFieldGroup[]>(`${this.apiUrl}/form-structure/${module}/${targetId}`);
   }
 
-  saveValues(module: ModuleType, targetId: number, request: CustomFieldValueSaveRequest): Observable<void> {
+  saveValues(module: ModuleType, targetId: string|number, request: CustomFieldValueSaveRequest): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/values/${module}/${targetId}`, request);
   }
 
@@ -41,8 +41,8 @@ export class CustomFieldService {
     return this.http.post<CustomFieldGroup>(`${this.apiUrl}/groups`, request);
   }
 
-  updateGroup(request: CustomFieldGroupUpdateRequest): Observable<CustomFieldGroup> {
-    return this.http.put<CustomFieldGroup>(`${this.apiUrl}/groups`, request);
+  updateGroup(id: number, request: CustomFieldGroupUpdateRequest): Observable<CustomFieldGroup> {
+    return this.http.put<CustomFieldGroup>(`${this.apiUrl}/groups/${id}`, request);
   }
 
   deleteGroup(id: number): Observable<void> {
@@ -53,8 +53,8 @@ export class CustomFieldService {
     return this.http.post<CustomFieldDefinition>(`${this.apiUrl}/definitions`, request);
   }
 
-  updateDefinition(request: CustomFieldDefinitionUpdateRequest): Observable<CustomFieldDefinition> {
-    return this.http.put<CustomFieldDefinition>(`${this.apiUrl}/definitions`, request);
+  updateDefinition(id: number, request: CustomFieldDefinitionUpdateRequest): Observable<CustomFieldDefinition> {
+    return this.http.put<CustomFieldDefinition>(`${this.apiUrl}/definitions/${id}`, request);
   }
 
   deleteDefinition(id: number): Observable<void> {

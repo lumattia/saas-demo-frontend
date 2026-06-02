@@ -32,17 +32,6 @@
   gap: 0.5rem;
 }
 
-.module-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-
-.module-checkbox input[type="checkbox"] {
-  cursor: pointer;
-}
-
 .actions {
   display: flex;
   gap: 1rem;

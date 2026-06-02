@@ -41,23 +41,25 @@
     },
     "new": "Nuevo Vestido",
     "edit": "Editar Vestido",
+    "sections": {
+      "basicInfo": "Información Básica",
+      "customFields": "Campos Personalizados",
+      "details": "Detalles"
+    },
     "form": {
-      "title": "Título",
-      "titlePlaceholder": "Introduce el título del vestido",
-      "sku": "SKU",
-      "skuPlaceholder": "Introduce el SKU",
-      "size": "Talla",
-      "sizePlaceholder": "Introduce la talla",
       "color": "Color",
+      "deleteConfirm": "¿Estás seguro de que quieres eliminar este vestido?",
       "price": "Precio",
       "pricePlaceholder": "Introduce el precio",
-      "save": "Guardar",
-      "delete": "Eliminar",
-      "deleteConfirm": "¿Estás seguro de que quieres eliminar este vestido?",
-      "cancel": "Cancelar"
+      "size": "Talla",
+      "sizePlaceholder": "Introduce la talla",
+      "sku": "SKU",
+      "skuPlaceholder": "Introduce el SKU",
+      "title": "Título",
+      "titlePlaceholder": "Introduce el título del vestido"
     }
   },
-  "dress-movements": {
+  "dressMovements": {
     "title": "Gestión de Movimientos de Vestidos",
     "list": {
       "title": "Movimientos de Vestidos",
@@ -93,21 +95,22 @@
     },
     "new": "Nuevo Movimiento",
     "edit": "Editar Movimiento",
+    "sections": {
+      "basicInfo": "Información Básica",
+      "customFields": "Campos Personalizados"
+    },
     "form": {
       "dress": "Vestido",
       "dressPlaceholder": "Seleccionar vestido",
-      "quantity": "Cantidad",
-      "quantityPlaceholder": "Introduce la cantidad",
-      "save": "Guardar",
-      "delete": "Eliminar",
       "deleteConfirm": "¿Estás seguro de que quieres eliminar este movimiento?",
-      "cancel": "Cancelar"
+      "quantity": "Cantidad",
+      "quantityPlaceholder": "Introduce la cantidad"
     }
   },
   "nav": {
     "home": "Inicio",
     "dresses": "Vestidos",
-    "dressMovement": "Movimientos de Vestidos",
+    "dressMovements": "Movimientos de Vestidos",
     "tenants": "Tenants",
     "users": "Usuarios",
     "customFields": "Campos Personalizados",
@@ -138,14 +141,15 @@
       "name": "Nombre",
       "namePlaceholder": "Introduce el nombre del tenant",
       "modules": {
-        "label": "Módulos",
         "DRESS": "Vestidos",
-        "DRESS_MOVEMENT": "Movimientos de Vestidos"
+        "DRESS_MOVEMENT": "Movimientos de Vestidos",
+        "label": "Módulos"
       },
-      "save": "Guardar",
-      "delete": "Eliminar",
-      "deleteConfirm": "¿Estás seguro de que quieres eliminar este tenant?",
-      "cancel": "Cancelar"
+      "deleteConfirm": "¿Estás seguro de que quieres eliminar este tenant?"
+    },
+    "sections": {
+      "basicInfo": "Información Básica",
+      "modules": "Módulos"
     }
   },
   "users": {
@@ -170,8 +174,7 @@
     "new": "Nuevo Usuario",
     "edit": "Editar Usuario",
     "form": {
-      "username": "Usuario",
-      "usernamePlaceholder": "Introduce el usuario",
+      "deleteConfirm": "¿Estás seguro de que quieres eliminar este usuario?",
       "role": "Rol",
       "roleOptions": {
         "USER": "Usuario",
@@ -179,10 +182,11 @@
         "RESELLER": "Revendedor",
         "SUPERADMIN": "Super Admin"
       },
-      "save": "Guardar",
-      "delete": "Eliminar",
-      "deleteConfirm": "¿Estás seguro de que quieres eliminar este usuario?",
-      "cancel": "Cancelar"
+      "username": "Usuario",
+      "usernamePlaceholder": "Introduce el usuario"
+    },
+    "sections": {
+      "basicInfo": "Información Básica"
     }
   },
   "customFields": {
@@ -204,24 +208,24 @@
       "deleteFieldConfirm": "¿Estás seguro de que quieres eliminar el campo \"{{name}}\"?"
     },
     "form": {
-      "groupName": "Nombre del Grupo",
-      "groupNamePlaceholder": "Introduce el nombre del grupo",
       "fieldLabel": "Etiqueta del Campo",
       "fieldLabelPlaceholder": "Introduce la etiqueta del campo",
       "fieldType": "Tipo de Campo",
       "fieldTypePlaceholder": "Selecciona el tipo de campo",
-      "required": "Requerido",
-      "minValue": "Valor Mínimo",
-      "minValuePlaceholder": "Introduce el valor mínimo",
-      "maxValue": "Valor Máximo",
-      "maxValuePlaceholder": "Introduce el valor máximo",
+      "groupName": "Nombre del Grupo",
+      "groupNamePlaceholder": "Introduce el nombre del grupo",
       "maxLength": "Longitud Máxima",
       "maxLengthPlaceholder": "Introduce la longitud máxima",
-      "options": "Opciones",
+      "maxValue": "Valor Máximo",
+      "maxValuePlaceholder": "Introduce el valor máximo",
+      "minValue": "Valor Mínimo",
+      "minValuePlaceholder": "Introduce el valor mínimo",
       "moduleOptions": {
         "DRESS": "Vestidos",
         "DRESS_MOVEMENT": "Movimientos de Vestidos"
-      }
+      },
+      "options": "Opciones",
+      "required": "Requerido"
     },
     "fieldTypes": {
       "TEXT": "Texto",
@@ -231,13 +235,29 @@
       "CHECKBOX": "Casilla de verificación"
     }
   },
+  "common": {
+    "sections": {
+      "basicInfo": "Información Básica",
+      "customFields": "Campos Personalizados"
+    },
+    "fields": {
+      "title": "Título",
+      "sku": "SKU",
+      "size": "Talla",
+      "color": "Color",
+      "quantity": "Cantidad",
+      "date": "Fecha",
+      "price": "Precio",
+      "stock": "Stock"
+    }
+  },
   "confirmModal": {
     "cancel": "Cancelar",
     "confirm": "Confirmar"
   },
   "unsavedChanges": {
     "title": "Cambios sin guardar",
-    "message": "ienes cambios sin guardar. ¿Estás seguro de que quieres salir de esta página?",
+    "message": "Tienes cambios sin guardar. ¿Estás seguro de que quieres salir de esta página?",
     "stay": "Quedarse",
     "leave": "Salir"
   },
@@ -253,19 +273,22 @@
   },
   "shared": {
     "actions": {
-      "edit": "Editar",
-      "delete": "Eliminar",
       "cancel": "Cancelar",
-      "save": "Guardar",
-      "remove": "Eliminar"
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "remove": "Eliminar",
+      "save": "Guardar"
     },
+    "cancel": "Cancelar",
+    "colorInput": {
+      "invalid": "Formato hexadecimal inválido (ej: #000000 o #FFF)",
+      "label": "Color"
+    },
+    "edit": "Editar",
     "imageInput": {
       "label": "Imagen"
     },
-    "colorInput": {
-      "label": "Color",
-      "invalid": "Formato hexadecimal inválido (ej: #000000 o #FFF)"
-    },
+    "save": "Guardar",
     "selectInput": {
       "placeholder": "Selecciona una opción",
       "search": "Buscar..."

@@ -123,6 +123,8 @@ export class SelectInputComponent implements OnInit {
   selectOption(option: IdName): void {
     const newValue = option.id;
     this.control!.setValue(newValue);
+    this.control!.markAsDirty();
+    this.control!.markAsTouched();
     this.value = newValue;
     this.valueChange.emit(newValue);
     this.closeDropdown();

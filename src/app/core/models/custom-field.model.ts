@@ -34,14 +34,14 @@ export interface CustomFieldGroup {
   definitions: CustomFieldDefinition[];
 }
 
-export interface OrderUpdateDTO {
-  id: number;
-  order: number;
+export interface FieldOrderUpdate {
+  fieldId: number;
+  groupId: number;
 }
 
 export interface OrderUpdateRequest {
-  groupOrders: OrderUpdateDTO[];
-  fieldOrders: OrderUpdateDTO[];
+  groupOrders: number[];
+  fieldOrders: FieldOrderUpdate[];
 }
 
 export interface CustomFieldValueSaveRequest {

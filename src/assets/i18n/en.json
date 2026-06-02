@@ -41,23 +41,25 @@
     },
     "new": "New Dress",
     "edit": "Edit Dress",
+    "sections": {
+      "basicInfo": "Basic Information",
+      "customFields": "Custom Fields",
+      "details": "Details"
+    },
     "form": {
-      "title": "Title",
-      "titlePlaceholder": "Enter dress title",
-      "sku": "SKU",
-      "skuPlaceholder": "Enter SKU",
-      "size": "Size",
-      "sizePlaceholder": "Enter size",
       "color": "Color",
+      "deleteConfirm": "Are you sure you want to delete this dress?",
       "price": "Price",
       "pricePlaceholder": "Enter price",
-      "save": "Save",
-      "delete": "Delete",
-      "deleteConfirm": "Are you sure you want to delete this dress?",
-      "cancel": "Cancel"
+      "size": "Size",
+      "sizePlaceholder": "Enter size",
+      "sku": "SKU",
+      "skuPlaceholder": "Enter SKU",
+      "title": "Title",
+      "titlePlaceholder": "Enter dress title"
     }
   },
-  "dress-movements": {
+  "dressMovements": {
     "title": "Dress Movement Management",
     "list": {
       "title": "Dress Movements",
@@ -93,21 +95,22 @@
     },
     "new": "New Movement",
     "edit": "Edit Movement",
+    "sections": {
+      "basicInfo": "Basic Information",
+      "customFields": "Custom Fields"
+    },
     "form": {
       "dress": "Dress",
       "dressPlaceholder": "Select dress",
-      "quantity": "Quantity",
-      "quantityPlaceholder": "Enter quantity",
-      "save": "Save",
-      "delete": "Delete",
       "deleteConfirm": "Are you sure you want to delete this movement?",
-      "cancel": "Cancel"
+      "quantity": "Quantity",
+      "quantityPlaceholder": "Enter quantity"
     }
   },
   "nav": {
     "home": "Home",
     "dresses": "Dresses",
-    "dressMovement": "Dress Movements",
+    "dressMovements": "Dress Movements",
     "tenants": "Tenants",
     "users": "Users",
     "customFields": "Custom Fields",
@@ -138,14 +141,15 @@
       "name": "Name",
       "namePlaceholder": "Enter tenant name",
       "modules": {
-        "label": "Modules",
         "DRESS": "Dresses",
-        "DRESS_MOVEMENT": "Dress movement"
+        "DRESS_MOVEMENT": "Dress Movements",
+        "label": "Modules"
       },
-      "save": "Save",
-      "delete": "Delete",
-      "deleteConfirm": "Are you sure you want to delete this tenant?",
-      "cancel": "Cancel"
+      "deleteConfirm": "Are you sure you want to delete this tenant?"
+    },
+    "sections": {
+      "basicInfo": "Basic Info",
+      "modules": "Modules"
     }
   },
   "users": {
@@ -170,8 +174,7 @@
     "new": "New User",
     "edit": "Edit User",
     "form": {
-      "username": "Username",
-      "usernamePlaceholder": "Enter username",
+      "deleteConfirm": "Are you sure you want to delete this user?",
       "role": "Role",
       "roleOptions": {
         "USER": "User",
@@ -179,10 +182,11 @@
         "RESELLER": "Reseller",
         "SUPERADMIN": "Super Admin"
       },
-      "save": "Save",
-      "delete": "Delete",
-      "deleteConfirm": "Are you sure you want to delete this user?",
-      "cancel": "Cancel"
+      "username": "Username",
+      "usernamePlaceholder": "Enter username"
+    },
+    "sections": {
+      "basicInfo": "Basic Info"
     }
   },
   "customFields": {
@@ -204,24 +208,24 @@
       "deleteFieldConfirm": "Are you sure you want to delete field \"{{name}}\"?"
     },
     "form": {
-      "groupName": "Group Name",
-      "groupNamePlaceholder": "Enter group name",
       "fieldLabel": "Field Label",
       "fieldLabelPlaceholder": "Enter field label",
       "fieldType": "Field Type",
       "fieldTypePlaceholder": "Select field type",
-      "required": "Required",
-      "minValue": "Min Value",
-      "minValuePlaceholder": "Enter min value",
-      "maxValue": "Max Value",
-      "maxValuePlaceholder": "Enter max value",
+      "groupName": "Group Name",
+      "groupNamePlaceholder": "Enter group name",
       "maxLength": "Max Length",
       "maxLengthPlaceholder": "Enter max length",
-      "options": "Options",
+      "maxValue": "Max Value",
+      "maxValuePlaceholder": "Enter max value",
+      "minValue": "Min Value",
+      "minValuePlaceholder": "Enter min value",
       "moduleOptions": {
         "DRESS": "Dresses",
         "DRESS_MOVEMENT": "Dress Movements"
-      }
+      },
+      "options": "Options",
+      "required": "Required"
     },
     "fieldTypes": {
       "TEXT": "Text",
@@ -229,6 +233,22 @@
       "DATE": "Date",
       "SELECT": "Select",
       "CHECKBOX": "Checkbox"
+    }
+  },
+  "common": {
+    "sections": {
+      "basicInfo": "Basic Information",
+      "customFields": "Custom Fields"
+    },
+    "fields": {
+      "title": "Title",
+      "sku": "SKU",
+      "size": "Size",
+      "color": "Color",
+      "quantity": "Quantity",
+      "date": "Date",
+      "price": "Price",
+      "stock": "Stock"
     }
   },
   "confirmModal": {
@@ -253,19 +273,22 @@
   },
   "shared": {
     "actions": {
-      "edit": "Edit",
-      "delete": "Delete",
       "cancel": "Cancel",
-      "save": "Save",
-      "remove": "Remove"
+      "delete": "Delete",
+      "edit": "Edit",
+      "remove": "Remove",
+      "save": "Save"
     },
+    "cancel": "Cancel",
+    "colorInput": {
+      "invalid": "Invalid hex color format (e.g., #000000 or #FFF)",
+      "label": "Color"
+    },
+    "edit": "Edit",
     "imageInput": {
       "label": "Image"
     },
-    "colorInput": {
-      "label": "Color",
-      "invalid": "Invalid hex color format (e.g., #000000 or #FFF)"
-    },
+    "save": "Save",
     "selectInput": {
       "placeholder": "Select an option",
       "search": "Search..."

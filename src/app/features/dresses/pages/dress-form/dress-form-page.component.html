@@ -1,65 +1,129 @@
 <main class="dress-form-container">
   <h1>{{ (id ? 'dresses.edit' : 'dresses.new') | translate }}</h1>
 
-  <form (ngSubmit)="save()" class="dress-form">
-    <app-text-input
-      labelKey="dresses.form.title"
-      placeholderKey="dresses.form.titlePlaceholder"
-      [control]="getControl('title')"
-      [readonly]="!isEditMode"
-    />
+  <form class="dress-form">
+    @if (!id) {
+      <!-- Add mode: single save button for all sections -->
+      <div class="add-mode-form">
+        <app-collapsible-section
+          titleKey="dresses.sections.basicInfo"
+          [showActions]="false">
+          <div class="form-grid">
+            <app-text-input
+              labelKey="dresses.form.title"
+              placeholderKey="dresses.form.titlePlaceholder"
+              [control]="getControl('title')"
+            />
+            <app-text-input
+              labelKey="dresses.form.sku"
+              placeholderKey="dresses.form.skuPlaceholder"
+              [control]="getControl('sku')"
+            />
+            <app-text-input
+              labelKey="dresses.form.size"
+              placeholderKey="dresses.form.sizePlaceholder"
+              [control]="getControl('size')"
+            />
+          </div>
+        </app-collapsible-section>
 
-    <app-text-input
-      labelKey="dresses.form.sku"
-      placeholderKey="dresses.form.skuPlaceholder"
-      [control]="getControl('sku')"
-      [readonly]="!isEditMode"
-    />
+        <app-collapsible-section
+          titleKey="dresses.sections.details"
+          [showActions]="false">
+          <div class="form-grid">
+            <app-color-input
+              labelKey="dresses.form.color"
+              [control]="getControl('color')"
+            />
+            <app-number-input
+              labelKey="dresses.form.price"
+              placeholderKey="dresses.form.pricePlaceholder"
+              [control]="getControl('price')"
+              [decimalPlaces]="2"
+              unit="€"
+            />
+          </div>
+        </app-collapsible-section>
 
-    <app-text-input
-      labelKey="dresses.form.size"
-      placeholderKey="dresses.form.sizePlaceholder"
-      [control]="getControl('size')"
-      [readonly]="!isEditMode"
-    />
+        <app-dynamic-form
+          [form]="customFieldsForm"
+          [entityIdentifier]="id ? id.toString() : ''"
+          [module]="module"
+          [showActions]="false"
+        />
 
-    <app-color-input
-      labelKey="dresses.form.color"
-      [control]="getControl('color')"
-      [readonly]="!isEditMode"
-    />
+        <div class="actions">
+          <app-button
+            type="submit"
+            variant="primary"
+            (click)="saveAll()">
+            {{ 'shared.actions.save' | translate }}
+          </app-button>
+        </div>
+      </div>
+    } @else {
+      <!-- Edit mode: individual save buttons per section -->
+      <div class="edit-mode-form">
+        <app-collapsible-section
+          titleKey="dresses.sections.basicInfo"
+          [isEditMode]="!isSectionEditing('basicInfo')"
+          [isValid]="isSectionValid('basicInfo')"
+          (save)="saveSection('basicInfo')"
+          (cancel)="resetSection('basicInfo')"
+          (edit)="toggleSectionEdit('basicInfo')">
+          <div class="form-grid">
+            <app-text-input
+              labelKey="dresses.form.title"
+              placeholderKey="dresses.form.titlePlaceholder"
+              [control]="getControl('title')"
+              [readonly]="!isSectionEditing('basicInfo')"
+            />
+            <app-text-input
+              labelKey="dresses.form.sku"
+              placeholderKey="dresses.form.skuPlaceholder"
+              [control]="getControl('sku')"
+              [readonly]="!isSectionEditing('basicInfo')"
+            />
+            <app-text-input
+              labelKey="dresses.form.size"
+              placeholderKey="dresses.form.sizePlaceholder"
+              [control]="getControl('size')"
+              [readonly]="!isSectionEditing('basicInfo')"
+            />
+          </div>
+        </app-collapsible-section>
 
-    <app-number-input
-      labelKey="dresses.form.price"
-      placeholderKey="dresses.form.pricePlaceholder"
-      [control]="getControl('price')"
-      [decimalPlaces]="2"
-      unit="€"
-      [readonly]="!isEditMode"
-    />
+        <app-collapsible-section
+          titleKey="dresses.sections.details"
+          [isEditMode]="!isSectionEditing('details')"
+          [isValid]="isSectionValid('details')"
+          (save)="saveSection('details')"
+          (cancel)="resetSection('details')"
+          (edit)="toggleSectionEdit('details')">
+          <div class="form-grid">
+            <app-color-input
+              labelKey="dresses.form.color"
+              [control]="getControl('color')"
+              [readonly]="!isSectionEditing('details')"
+            />
+            <app-number-input
+              labelKey="dresses.form.price"
+              placeholderKey="dresses.form.pricePlaceholder"
+              [control]="getControl('price')"
+              [decimalPlaces]="2"
+              unit="€"
+              [readonly]="!isSectionEditing('details')"
+            />
+          </div>
+        </app-collapsible-section>
 
-    <div class="actions">
-      @if (!isEditMode && id) {
-        <app-button
-          type="button"
-          variant="primary"
-          (click)="enableEditMode()">
-          {{ 'shared.table.edit' | translate }}
-        </app-button>
-      }
-      @if (isEditMode) {
-        <app-button
-          type="submit"
-          variant="primary">
-          {{ 'dresses.form.save' | translate }}
-        </app-button>
-        <app-button
-          type="button"
-          variant="secondary"
-          (click)="cancelEdit()">
-          {{ 'dresses.form.cancel' | translate }}
-        </app-button>
-      }
-    </div>
+        <app-dynamic-form
+          [form]="customFieldsForm"
+          [entityIdentifier]="id ? id.toString() : ''"
+          [module]="module"
+          [isEditMode]="isEditMode"
+        />
+      </div>
+    }
   </form>
 </main>

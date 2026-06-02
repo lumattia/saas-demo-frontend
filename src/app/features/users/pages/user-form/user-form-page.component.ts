@@ -10,6 +10,7 @@ import { TextInputComponent } from '../../../../shared/components/inputs/text-in
 import { SelectInputComponent } from '../../../../shared/components/inputs/select-input/select-input.component';
 import { EnumService } from '../../../../core/services/enum.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { CollapsibleSectionComponent } from '../../../../shared/components/collapsible-section/collapsible-section.component';
 import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
 
 @Component({
@@ -22,6 +23,7 @@ import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.
     TextInputComponent,
     SelectInputComponent,
     ButtonComponent,
+    CollapsibleSectionComponent,
   ],
   templateUrl: './user-form-page.component.html',
   styleUrls: ['./user-form-page.component.css'],
@@ -43,6 +45,7 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
   isEditMode = false;
   initialData: any = null;
   isEditable = true;
+  editingSections = new Set<string>();
 
   get roleOptions() {
     return this.assignableRoles.map(role => ({
@@ -53,6 +56,63 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
 
   getControl(name: string): FormControl {
     return this.userForm.get(name) as FormControl;
+  }
+
+  isSectionEditing(section: string): boolean {
+    return this.editingSections.has(section);
+  }
+
+  toggleSectionEdit(section: string): void {
+    if (this.editingSections.has(section)) {
+      this.editingSections.delete(section);
+    } else {
+      this.editingSections.add(section);
+    }
+  }
+
+  isSectionValid(section: string): boolean {
+    switch (section) {
+      case 'basicInfo':
+        return (this.userForm.get('username')?.valid ?? false) && (this.userForm.get('role')?.valid ?? false);
+      default:
+        return true;
+    }
+  }
+
+  saveSection(section: string): void {
+    if (!this.isSectionValid(section)) return;
+
+    const formValue = this.userForm.value;
+    if (this.id) {
+      const updateRequest: UserUpdateRequest = {
+        id: this.id,
+        username: formValue.username || '',
+        role: (formValue.role || 'USER') as 'USER' | 'ADMIN' | 'SUPERADMIN',
+        allowedTenantIds: this.allowedTenantIds,
+      };
+      this.userService.update(this.id, updateRequest).subscribe(() => {
+        this.editingSections.delete(section);
+        if (this.id) {
+          this.userService.getById(this.id).subscribe(data => {
+            this.initialData = {
+              username: data.username,
+              role: data.role,
+              allowedTenantIds: data.allowedTenants?.map(t => t.id.toString()) || []
+            };
+          });
+        }
+      });
+    }
+  }
+
+  resetSection(section: string): void {
+    if (this.initialData) {
+      this.userForm.patchValue({
+        username: this.initialData.username,
+        role: this.initialData.role
+      });
+    }
+    this.editingSections.delete(section);
   }
 
   ngOnInit() {

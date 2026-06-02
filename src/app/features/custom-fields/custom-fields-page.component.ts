@@ -2,18 +2,20 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CustomFieldService } from '../../core/services/custom-field.service';
-import { CustomFieldGroup, CustomFieldDefinition, OrderUpdateDTO, CustomFieldType, FieldValidations } from '../../core/models/custom-field.model';
+import { CustomFieldGroup, CustomFieldDefinition, OrderUpdateRequest, CustomFieldType, FieldValidations } from '../../core/models/custom-field.model';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ModuleType } from '../../core/models/tenant.model';
 import { EnumService } from '../../core/services/enum.service';
 import { SelectInputComponent } from '../../shared/components/inputs/select-input/select-input.component';
 import { TextInputComponent } from '../../shared/components/inputs/text-input/text-input.component';
 import { NumberInputComponent } from '../../shared/components/inputs/number-input/number-input.component';
+import { CheckboxInputComponent } from '../../shared/components/inputs/checkbox-input/checkbox-input.component';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { CanDeactivateComponent } from '../../core/guards/unsaved-changes.guard';
 import { ModalService } from '../../shared/services/modal.service';
 import { UnsavedChangesModalComponent } from '../../shared/components/modals/unsaved-changes-modal/unsaved-changes-modal.component';
 import { ConfirmModalComponent } from '../../shared/components/modals/confirm-modal/confirm-modal.component';
+import { Router } from '@angular/router';
 
 interface GroupFormData {
   name: string;
@@ -30,7 +32,7 @@ interface FieldFormData {
 @Component({
   selector: 'app-custom-fields-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule, SelectInputComponent, TextInputComponent, NumberInputComponent, ButtonComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule, SelectInputComponent, TextInputComponent, NumberInputComponent, CheckboxInputComponent, ButtonComponent],
   templateUrl: './custom-fields-page.component.html',
   styleUrls: ['./custom-fields-page.component.css']
 })
@@ -39,6 +41,7 @@ export class CustomFieldsPageComponent implements OnInit, CanDeactivateComponent
   private enumService = inject(EnumService);
   private fb = inject(FormBuilder);
   private modalService = inject(ModalService);
+  private router = inject(Router);
 
   selectedModule = signal<ModuleType>(ModuleType.DRESS);
   groups = signal<CustomFieldGroup[]>([]);
@@ -150,7 +153,7 @@ export class CustomFieldsPageComponent implements OnInit, CanDeactivateComponent
     const formData = this.groupForm.value as GroupFormData;
 
     if (this.editingGroup()) {
-      this.customFieldService.updateGroup({
+      this.customFieldService.updateGroup(this.editingGroup()!.id, {
         id: this.editingGroup()!.id,
         name: formData.name,
         module: this.selectedModule(),
@@ -217,7 +220,7 @@ export class CustomFieldsPageComponent implements OnInit, CanDeactivateComponent
     };
 
     if (this.editingField()) {
-      this.customFieldService.updateDefinition({
+      this.customFieldService.updateDefinition(this.editingField()!.id, {
         id: this.editingField()!.id,
         groupId: this.selectedGroupId()!,
         label: formData.label,
@@ -276,15 +279,19 @@ export class CustomFieldsPageComponent implements OnInit, CanDeactivateComponent
 
   // Drag and Drop Methods
   onGroupDragStart(event: DragEvent, group: CustomFieldGroup) {
-    event.dataTransfer?.setData('text/plain', group.id.toString());
+    event.dataTransfer?.setData('groupId', group.id.toString());
     event.dataTransfer?.setData('type', 'group');
   }
 
   onGroupDrop(event: DragEvent, targetIndex: number) {
     event.preventDefault();
-    const groupId = parseInt(event.dataTransfer?.getData('text/plain') || '0');
+    const groupId = parseInt(event.dataTransfer?.getData('groupId') || '0');
     const type = event.dataTransfer?.getData('type');
-
+    if (type === 'field') {
+      const targetGroup = this.groups().at(targetIndex);
+      this.onFieldDrop(event, null, targetGroup?.id || 0);
+      return;
+    }
     if (type !== 'group' || !groupId) return;
 
     const currentGroups = [...this.groups()];
@@ -299,54 +306,67 @@ export class CustomFieldsPageComponent implements OnInit, CanDeactivateComponent
   }
 
   onFieldDragStart(event: DragEvent, field: CustomFieldDefinition, groupId: number) {
-    event.dataTransfer?.setData('text/plain', field.id.toString());
+    event.stopPropagation();
+    event.dataTransfer?.setData('fieldId', field.id.toString());
     event.dataTransfer?.setData('type', 'field');
     event.dataTransfer?.setData('groupId', groupId.toString());
   }
 
-  onFieldDrop(event: DragEvent, targetField: CustomFieldDefinition, groupId: number) {
+  onFieldDrop(event: DragEvent, targetField: CustomFieldDefinition | null, groupId: number) {
     event.preventDefault();
-    const fieldId = parseInt(event.dataTransfer?.getData('text/plain') || '0');
+    const fieldId = parseInt(event.dataTransfer?.getData('fieldId') || '0');
     const type = event.dataTransfer?.getData('type');
     const sourceGroupId = parseInt(event.dataTransfer?.getData('groupId') || '0');
 
-    if (type !== 'field' || !fieldId || sourceGroupId !== groupId) return;
-
+    if (type !== 'field' || !fieldId) return;
     const currentGroups = [...this.groups()];
-    const groupIndex = currentGroups.findIndex(g => g.id === groupId);
-    if (groupIndex === -1) return;
+    const sourceGroupIndex = currentGroups.findIndex(g => g.id === sourceGroupId);
+    const targetGroupIndex = currentGroups.findIndex(g => g.id === groupId);
+    if (sourceGroupIndex === -1 || targetGroupIndex === -1) return;
+    const sourceFields = [...currentGroups[sourceGroupIndex].definitions];
+    const targetFields = sourceGroupId === groupId ? sourceFields : [...currentGroups[targetGroupIndex].definitions];
+    const sourceIndex = sourceFields.findIndex(f => f.id === fieldId);
+    const targetIndex = targetField ? targetFields.findIndex(f => f.id === targetField.id) : -1;
+    if (sourceIndex === -1) return;
+    console.log(sourceGroupId, groupId)
+    if (sourceGroupId === groupId) {
+      if (targetIndex !== -1 && sourceIndex !== targetIndex) {
+        const [movedField] = sourceFields.splice(sourceIndex, 1);
+        
+        let finalTargetIndex = targetIndex;
+        if (sourceIndex < targetIndex) {
+          finalTargetIndex = targetIndex; 
+        }
 
-    const currentFields = [...currentGroups[groupIndex].definitions];
-    const sourceIndex = currentFields.findIndex(f => f.id === fieldId);
-    const targetIndex = currentFields.findIndex(f => f.id === targetField.id);
+        sourceFields.splice(finalTargetIndex, 0, movedField);
+        currentGroups[sourceGroupIndex] = { ...currentGroups[sourceGroupIndex], definitions: sourceFields };
+      }
+    } 
+    else {
+      const [movedField] = sourceFields.splice(sourceIndex, 1);
+      const updatedField = { ...movedField, groupId: groupId };
 
-    if (sourceIndex !== -1 && targetIndex !== -1 && sourceIndex !== targetIndex) {
-      const [movedField] = currentFields.splice(sourceIndex, 1);
-      currentFields.splice(targetIndex, 0, movedField);
-      currentGroups[groupIndex].definitions = currentFields;
-      this.groups.set(currentGroups);
-      this.hasUnsavedChanges.set(true);
+      if (targetIndex === -1) {
+        targetFields.push(updatedField);
+      } else {
+        targetFields.splice(targetIndex, 0, updatedField);
+      }
+      currentGroups[sourceGroupIndex] = { ...currentGroups[sourceGroupIndex], definitions: sourceFields };
+      currentGroups[targetGroupIndex] = { ...currentGroups[targetGroupIndex], definitions: targetFields };
     }
+    this.groups.set(currentGroups);
+    this.hasUnsavedChanges.set(true);
   }
-
   onDragOver(event: DragEvent) {
     event.preventDefault();
   }
 
   // Batch Save
   saveOrders() {
-    const groupOrders: OrderUpdateDTO[] = this.groups().map((group, index) => ({
-      id: group.id,
-      order: index
-    }));
-
-    const fieldOrders: OrderUpdateDTO[] = this.groups().flatMap(group =>
-      group.definitions.map((field, index) => ({
-        id: field.id,
-        order: index
-      }))
+    const groupOrders: number[] = this.groups().map(group => group.id);
+    const fieldOrders: { fieldId: number; groupId: number }[] = this.groups().flatMap(group =>
+      group.definitions.map(field => ({ fieldId: field.id, groupId: group.id }))
     );
-
     this.customFieldService.updateOrders(this.selectedModule(), {
       groupOrders,
       fieldOrders
@@ -394,6 +414,6 @@ export class CustomFieldsPageComponent implements OnInit, CanDeactivateComponent
   }
 
   canDeactivate(): boolean | Promise<boolean> {
-    return !this.hasUnsavedChanges();
+    return this.hasUnsavedChanges();
   }
 }

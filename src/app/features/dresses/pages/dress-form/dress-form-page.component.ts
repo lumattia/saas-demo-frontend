@@ -1,13 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { DressService } from '../../../../core/services/dress.service';
+import { CustomFieldService } from '../../../../core/services/custom-field.service';
 import { Dress } from '../../../../core/models/dress.model';
+import { ModuleType } from '../../../../core/models/tenant.model';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import { ColorInputComponent } from '../../../../shared/components/inputs/color-input/color-input.component';
 import { NumberInputComponent } from '../../../../shared/components/inputs/number-input/number-input.component';
+import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
+import { CollapsibleSectionComponent } from '../../../../shared/components/collapsible-section/collapsible-section.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
 
@@ -21,6 +25,8 @@ import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.
     TextInputComponent,
     ColorInputComponent,
     NumberInputComponent,
+    DynamicFormComponent,
+    CollapsibleSectionComponent,
     ButtonComponent,
   ],
   templateUrl: './dress-form-page.component.html',
@@ -28,6 +34,7 @@ import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.
 })
 export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
   private dressService = inject(DressService);
+  private customFieldService = inject(CustomFieldService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -39,48 +46,33 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
     color: new FormControl('#000000'),
     price: new FormControl(0, Validators.min(0))
   });
+  customFieldsForm = new FormGroup({});
+  editingSections = new Set<string>();
+  initialData!: Dress;
+  module = ModuleType.DRESS;
   isEditMode = false;
-  initialData: any = null;
+  sectionFields: Record<string, string[]> = {
+    basicInfo: ['title', 'sku', 'size'],
+    details: ['color', 'price']
+  };
 
   getControl(name: string): FormControl {
     return this.dressForm.get(name) as FormControl;
   }
 
-  ngOnInit() {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam && idParam !== 'new') {
-      this.id = +idParam;
-      this.isEditMode = false;
-      
-      this.route.queryParamMap.subscribe((params: ParamMap) => {
-        const editParam = params.get('edit');
-        if (editParam === 'true') {
-          this.isEditMode = true;
-        }
-      });
+  isSectionEditing(section: string): boolean {
+    return this.editingSections.has(section);
+  }
 
-      this.dressService.getById(this.id).subscribe(data => {
-        this.initialData = {
-          title: data.title,
-          sku: data.sku,
-          size: data.size,
-          color: data.color,
-          price: data.price
-        };
-        this.dressForm.patchValue({
-          title: data.title,
-          sku: data.sku,
-          size: data.size,
-          color: data.color,
-          price: data.price
-        });
-      });
+  toggleSectionEdit(section: string): void {
+    if (this.editingSections.has(section)) {
+      this.editingSections.delete(section);
     } else {
-      this.isEditMode = true;
+      this.editingSections.add(section);
     }
   }
 
-  save(): void {
+  saveAll(): void {
     const formValue = this.dressForm.value;
     const dress: Partial<Dress> = {
       title: formValue.title || '',
@@ -89,45 +81,108 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
       color: formValue.color || '#000000',
       price: formValue.price || 0
     };
-    if (this.id) {
-      this.dressService.update(this.id, dress).subscribe(() => {
-        this.router.navigate(['/dresses']);
-      });
-    } else {
-      this.dressService.create(dress).subscribe(() => {
-        this.router.navigate(['/dresses']);
-      });
-    }
-  }
 
-  exit(): void {
-    this.router.navigate(['/dresses']);
-  }
+    this.dressService.create(dress).subscribe({
+      next: (createdDress) => {
+        this.id = createdDress.id;
+        // Save custom fields if any
+        const customFields: Record<number, string> = {};
+        Object.keys(this.customFieldsForm.controls).forEach(key => {
+            customFields[parseInt(key)] = this.customFieldsForm.get(key)?.value || '';
+        });
 
-  enableEditMode(): void {
-    this.isEditMode = true;
-  }
-
-  cancelEdit(): void {
-    if (!this.id) {
-      this.router.navigate(['/dresses']);
-      return;
-    }
-    this.isEditMode = false;
-    if (this.initialData) {
-      this.dressForm.patchValue({
-        title: this.initialData.title,
-        sku: this.initialData.sku,
-        size: this.initialData.size,
-        color: this.initialData.color,
-        price: this.initialData.price
-      });
-    }
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { edit: null },
-      queryParamsHandling: 'merge'
+        if (Object.keys(customFields).length > 0) {
+          this.customFieldService.saveValues(this.module, this.id, { customFields }).subscribe({
+            next: () => {
+              this.router.navigate(['/dresses']);
+            },
+            error: (error) => {
+              console.error('Error saving custom fields:', error);
+              this.router.navigate(['/dresses']);
+            }
+          });
+        } else {
+          this.router.navigate(['/dresses']);
+        }
+      },
+      error: (error) => {
+        console.error('Error creating dress:', error);
+        alert('Error al crear el vestido. Por favor, revise los datos e inténtelo de nuevo.');
+      }
     });
+  }
+
+  isSectionValid(section: string): boolean {
+    const fields = this.sectionFields[section];
+    if (!fields) return true;
+    let isValid = true;
+    fields.forEach(f => {
+      const ctrl = this.dressForm.get(f);
+      if (ctrl?.invalid) isValid = false;
+    });
+    return isValid;
+  }
+  
+  saveSection(section: string): void {
+    if (!this.id) return;
+
+    const fields = this.sectionFields[section];
+    if (!fields) return;
+
+    const partialDress: Partial<Dress> = { ...this.initialData };
+    fields.forEach(f => {
+      partialDress[f as keyof Dress] = this.dressForm.get(f)?.value;
+    });
+    this.dressService.update(this.id, partialDress).subscribe({
+      next: () => {
+        fields.forEach(f => {
+          let control = this.dressForm.get(f);
+          if (control) {
+            this.initialData = partialDress as Dress;
+            control.markAsPristine();
+          }
+        });
+        this.editingSections.delete(section);
+      },
+      error: (error) => {
+        console.error('Error saving:', error);
+      }
+    });
+  }
+
+  resetSection(section: string): void {
+    const fields = this.sectionFields[section];
+    fields.forEach(f => {
+      const originalValue = this.initialData[f as keyof Dress];
+      this.dressForm.get(f)?.reset(originalValue);
+    });
+
+    this.editingSections.delete(section);
+  }
+
+  ngOnInit() {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam && idParam !== 'new') {
+      this.id = +idParam;
+      this.route.queryParamMap.subscribe((params: ParamMap) => {
+        const editParam = params.get('edit');
+        if (editParam === 'true') {
+          this.isEditMode = true;
+          this.editingSections.add('basicInfo');
+          this.editingSections.add('details');
+        }
+      });
+      this.dressService.getById(this.id).subscribe(data => {
+        this.initialData = data;
+        this.dressForm.patchValue({
+          title: data.title,
+          sku: data.sku,
+          size: data.size,
+          color: data.color,
+          price: data.price
+        });
+      });
+    }
   }
 
   canDeactivate(): boolean | Promise<boolean> {

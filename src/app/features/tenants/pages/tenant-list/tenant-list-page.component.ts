@@ -67,7 +67,7 @@ export class TenantListPageComponent implements OnInit {
   deleteTenant(id: string) {
     const modalRef = this.modalService.open(ConfirmModalComponent, {
       open: true,
-      title: 'tenants.form.delete',
+      title: 'shared.actions.delete',
       message: 'tenants.form.deleteConfirm'
     });
     
