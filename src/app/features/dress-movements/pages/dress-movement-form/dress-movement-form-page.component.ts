@@ -11,8 +11,6 @@ import { SelectInputComponent } from '../../../../shared/components/inputs/selec
 import { NumberInputComponent } from '../../../../shared/components/inputs/number-input/number-input.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
-import { ModalService } from '../../../../shared/services/modal.service';
-import { UnsavedChangesModalComponent } from '../../../../shared/components/modals/unsaved-changes-modal/unsaved-changes-modal.component';
 
 @Component({
   selector: 'app-dress-movement-form-page',
@@ -26,7 +24,6 @@ export class DressMovementFormPageComponent implements OnInit, CanDeactivateComp
   private dressService = inject(DressService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private modalService = inject(ModalService);
 
   id: number | null = null;
   dressMovementForm = new FormGroup({
@@ -115,14 +112,6 @@ export class DressMovementFormPageComponent implements OnInit, CanDeactivateComp
   }
 
   canDeactivate(): boolean | Promise<boolean> {
-    if (!this.dressMovementForm.dirty || !this.isEditMode) {
-      return true;
-    }
-    
-    const modalRef = this.modalService.open(UnsavedChangesModalComponent, {
-      open: true
-    });
-    
-    return modalRef.result;
+    return this.dressMovementForm.dirty || this.customFieldsForm.dirty;
   }
 }

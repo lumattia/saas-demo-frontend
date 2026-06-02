@@ -5,14 +5,12 @@ import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserService } from '../../../../core/services/user.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { User, UserCreateRequest, UserUpdateRequest } from '../../../../core/models/user.model';
+import { UserCreateRequest, UserUpdateRequest } from '../../../../core/models/user.model';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import { SelectInputComponent } from '../../../../shared/components/inputs/select-input/select-input.component';
 import { EnumService } from '../../../../core/services/enum.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
-import { ModalService } from '../../../../shared/services/modal.service';
-import { UnsavedChangesModalComponent } from '../../../../shared/components/modals/unsaved-changes-modal/unsaved-changes-modal.component';
 
 @Component({
   selector: 'app-user-form-page',
@@ -34,7 +32,6 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private modalService = inject(ModalService);
 
   id: number | null = null;
   userForm = new FormGroup({
@@ -155,14 +152,6 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
   }
 
   canDeactivate(): boolean | Promise<boolean> {
-    if (!this.userForm.dirty || !this.isEditMode) {
-      return true;
-    }
-    
-    const modalRef = this.modalService.open(UnsavedChangesModalComponent, {
-      open: true
-    });
-    
-    return modalRef.result;
+    return this.userForm.dirty;
   }
 }

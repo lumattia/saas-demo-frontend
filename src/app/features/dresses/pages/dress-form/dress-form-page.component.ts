@@ -10,8 +10,6 @@ import { ColorInputComponent } from '../../../../shared/components/inputs/color-
 import { NumberInputComponent } from '../../../../shared/components/inputs/number-input/number-input.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
-import { ModalService } from '../../../../shared/services/modal.service';
-import { UnsavedChangesModalComponent } from '../../../../shared/components/modals/unsaved-changes-modal/unsaved-changes-modal.component';
 
 @Component({
   selector: 'app-dress-form-page',
@@ -32,7 +30,6 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
   private dressService = inject(DressService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private modalService = inject(ModalService);
 
   id: number | null = null;
   dressForm = new FormGroup({
@@ -134,14 +131,6 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
   }
 
   canDeactivate(): boolean | Promise<boolean> {
-    if (!this.dressForm.dirty || !this.isEditMode) {
-      return true;
-    }
-    
-    const modalRef = this.modalService.open(UnsavedChangesModalComponent, {
-      open: true
-    });
-    
-    return modalRef.result;
+    return this.dressForm.dirty || this.customFieldsForm.dirty;
   }
 }

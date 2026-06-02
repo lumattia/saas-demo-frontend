@@ -394,14 +394,6 @@ export class CustomFieldsPageComponent implements OnInit, CanDeactivateComponent
   }
 
   canDeactivate(): boolean | Promise<boolean> {
-    if (!this.hasUnsavedChanges()) {
-      return true;
-    }
-    
-    const modalRef = this.modalService.open(UnsavedChangesModalComponent, {
-      open: true
-    });
-    
-    return modalRef.result;
+    return !this.hasUnsavedChanges();
   }
 }

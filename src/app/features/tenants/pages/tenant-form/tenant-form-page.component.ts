@@ -4,12 +4,10 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { TenantService } from '../../../../core/services/tenant.service';
-import { Tenant, TenantCreateRequest, TenantUpdateRequest, ModuleType } from '../../../../core/models/tenant.model';
+import { TenantCreateRequest, TenantUpdateRequest, ModuleType } from '../../../../core/models/tenant.model';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
-import { ModalService } from '../../../../shared/services/modal.service';
-import { UnsavedChangesModalComponent } from '../../../../shared/components/modals/unsaved-changes-modal/unsaved-changes-modal.component';
 
 @Component({
   selector: 'app-tenant-form-page',
@@ -28,7 +26,6 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
   private tenantService = inject(TenantService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private modalService = inject(ModalService);
 
   id: string | null = null;
   tenantForm = new FormGroup({
@@ -136,14 +133,6 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
   }
 
   canDeactivate(): boolean | Promise<boolean> {
-    if (!this.tenantForm.dirty || !this.isEditMode) {
-      return true;
-    }
-    
-    const modalRef = this.modalService.open(UnsavedChangesModalComponent, {
-      open: true
-    });
-    
-    return modalRef.result;
+    return this.tenantForm.dirty;
   }
 }
