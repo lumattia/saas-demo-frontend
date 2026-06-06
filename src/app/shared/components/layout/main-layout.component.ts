@@ -4,6 +4,7 @@ import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { ThemeService } from '../../../core/services/theme.service';
+import { ImpersonationService } from '../../../core/services/impersonation.service';
 import { SelectInputComponent } from '../inputs/select-input/select-input.component';
 
 @Component({
@@ -17,10 +18,12 @@ export class MainLayoutComponent {
   readonly auth = inject(AuthService);
   readonly theme = inject(ThemeService);
   readonly translate = inject(TranslateService);
+  readonly impersonationService = inject(ImpersonationService);
 
   sidenavCollapsed = signal(false);
   pageTitle = signal('nav.home');
   currentLang = signal('es');
+  impersonatingUserId = this.impersonationService.impersonatingUserId;
 
   availableLanguages = [
     { id: 'es', name: 'Español', flag: '🇪🇸' },
@@ -49,5 +52,13 @@ export class MainLayoutComponent {
 
   switchTenant(tenantId: string): void {
     this.auth.switchTenant(tenantId).subscribe();
+  }
+
+  stopImpersonation(): void {
+    this.impersonationService.stopImpersonation();
+  }
+
+  canImpersonate(): boolean {
+    return this.auth.isAtLeastAdmin();
   }
 }

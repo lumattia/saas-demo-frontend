@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
+import { ImpersonationService } from './core/services/impersonation.service';
 
 import { LoginPageComponent } from './features/auth/pages/login/login-page.component';
 
@@ -24,9 +25,11 @@ import { LoginPageComponent } from './features/auth/pages/login/login-page.compo
 })
 export class AppComponent implements OnInit {
   readonly auth = inject(AuthService);
+  readonly impersonationService = inject(ImpersonationService);
   readonly loading = signal(true);
 
   ngOnInit() {
+    this.impersonationService.loadFromStorage();
     this.auth.init().subscribe({
       next: () => this.loading.set(false),
       error: () => this.loading.set(false)

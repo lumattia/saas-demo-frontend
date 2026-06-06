@@ -101,6 +101,7 @@ export class AuthService {
   deleteLocalStorage() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
+    localStorage.removeItem('impersonatingUserId');
   }
 
   switchTenant(tenantId: string) {

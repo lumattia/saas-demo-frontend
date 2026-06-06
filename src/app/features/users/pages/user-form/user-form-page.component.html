@@ -34,6 +34,13 @@
     } @else {
       <!-- Edit mode: individual save buttons per section -->
       <div class="edit-mode-form">
+        @if (canImpersonate()) {
+          <div class="impersonation-section">
+            <button class="btn btn-impersonate" (click)="startImpersonation()">
+              🎭 {{ 'impersonation.impersonateUser' | translate }}
+            </button>
+          </div>
+        }
         <app-collapsible-section
           titleKey="users.sections.basicInfo"
           [isEditMode]="!isSectionEditing('basicInfo')"

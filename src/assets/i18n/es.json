@@ -119,6 +119,11 @@
     "createDemo": "Crear Demo (24h)",
     "login": "Iniciar sesión"
   },
+  "impersonation": {
+    "impersonateUser": "Impersonar Usuario",
+    "banner": "🎭 Impersonando Usuario ID: {{userId}}",
+    "stop": "Detener Impersonación"
+  },
   "tenants": {
     "title": "Gestión de Tenants",
     "list": {

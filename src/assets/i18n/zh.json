@@ -185,6 +185,11 @@
     "toggleTheme": "切换主题",
     "users": "用户"
   },
+  "impersonation": {
+    "impersonateUser": "模拟用户",
+    "banner": "🎭 模拟用户 ID: {{userId}}",
+    "stop": "停止模拟"
+  },
   "shared": {
     "actions": {
       "cancel": "取消",

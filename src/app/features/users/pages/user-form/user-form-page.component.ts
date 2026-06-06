@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserService } from '../../../../core/services/user.service';
 import { AuthService } from '../../../../core/services/auth.service';
+import { ImpersonationService } from '../../../../core/services/impersonation.service';
 import { UserCreateRequest, UserUpdateRequest } from '../../../../core/models/user.model';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import { SelectInputComponent } from '../../../../shared/components/inputs/select-input/select-input.component';
@@ -32,6 +33,7 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
   private userService = inject(UserService);
   private enumService = inject(EnumService);
   private authService = inject(AuthService);
+  private impersonationService = inject(ImpersonationService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -46,6 +48,7 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
   initialData: any = null;
   isEditable = true;
   editingSections = new Set<string>();
+  currentUserRole: string | null = null;
 
   get roleOptions() {
     return this.assignableRoles.map(role => ({
@@ -134,6 +137,7 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
           role: data.role,
           allowedTenantIds: data.allowedTenants?.map(t => t.id.toString()) || []
         };
+        this.currentUserRole = data.role;
         this.userForm.patchValue({
           username: data.username,
           role: data.role
@@ -213,5 +217,28 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
 
   canDeactivate(): boolean | Promise<boolean> {
     return this.userForm.dirty;
+  }
+
+  canImpersonate(): boolean {
+    const currentUser = this.authService.user();
+    if (!currentUser || !this.currentUserRole) return false;
+
+    const roleHierarchy: { [key: string]: number } = {
+      'SUPERADMIN': 4,
+      'RESELLER': 3,
+      'ADMIN': 2,
+      'USER': 1
+    };
+
+    const currentRoleLevel = roleHierarchy[currentUser.role] || 0;
+    const targetRoleLevel = roleHierarchy[this.currentUserRole] || 0;
+    if (currentRoleLevel < 3) return false;
+    return currentRoleLevel > targetRoleLevel;
+  }
+
+  startImpersonation(): void {
+    if (this.id) {
+      this.impersonationService.startImpersonation(this.id);
+    }
   }
 }

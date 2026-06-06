@@ -53,6 +53,14 @@
         <h1 class="page-title">{{ pageTitle() | translate }}</h1>
       </div>
       <div class="header-right">
+        @if (impersonatingUserId() != null) {
+          <div class="impersonation-banner">
+            <span class="impersonation-text">{{ 'impersonation.banner' | translate: {userId: impersonatingUserId()} }}</span>
+            <button class="btn btn-stop-impersonation" (click)="stopImpersonation()">
+              {{ 'impersonation.stop' | translate }}
+            </button>
+          </div>
+        }
          @if (auth.canSwitchTenant() && auth.user()?.allowedTenants && auth.user()!.allowedTenants!.length > 0) {
           <app-select-input 
             [value]="auth.user()?.tenant?.id"

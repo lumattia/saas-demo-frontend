@@ -56,3 +56,24 @@
 .btn:hover {
   background-color: #5a6268;
 }
+
+.impersonation-section {
+  margin-bottom: 1.5rem;
+}
+
+.btn-impersonate {
+  background-color: #ffc107;
+  color: #333;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-impersonate:hover {
+  background-color: #e0a800;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
