@@ -28,6 +28,7 @@
 
 .checkbox-input-field:disabled {
   cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .checkbox-input-field[readonly] {
@@ -36,24 +37,24 @@
 
 .checkbox-text {
   font-size: 0.875rem;
-  color: #374151;
+  color: var(--text);
 }
 
 .required-mark {
-  color: #ef4444;
+  color: var(--error);
   margin-left: 0.125rem;
 }
 
 .checkbox-input-error {
   font-size: 0.75rem;
-  color: #ef4444;
+  color: var(--error);
   margin-left: 1.5rem;
 }
 
 .checkbox-input-field.error {
-  border-color: #ef4444;
+  border-color: var(--error);
 }
 
 .checkbox-input-field.dirty {
-  border-color: #3b82f6;
+  border-color: var(--primary);
 }

@@ -1,75 +1,75 @@
 .tenant-form-container {
-  padding: 2rem;
+  padding: var(--spacing-2xl);
   max-width: 600px;
   margin: 0 auto;
 }
 
 .tenant-form-container h1 {
-  margin-bottom: 2rem;
-  color: #333;
+  margin-bottom: var(--spacing-2xl);
+  color: var(--text);
 }
 
 .tenant-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--spacing-xl);
 }
 
 .modules-section {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-sm);
 }
 
 .modules-section label {
   font-weight: 600;
-  color: #333;
+  color: var(--text);
 }
 
 .modules-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-sm);
 }
 
 .actions {
   display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-2xl);
 }
 
 .btn {
-  padding: 0.5rem 1rem;
+  padding: var(--spacing-sm) var(--spacing-md);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   transition: background-color 0.2s;
 }
 
 .btn-primary {
-  background-color: #007bff;
+  background-color: var(--primary);
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
+  opacity: 0.8;
 }
 
 .btn-danger {
-  background-color: #dc3545;
+  background-color: var(--error);
   color: white;
 }
 
 .btn-danger:hover {
-  background-color: #c82333;
+  opacity: 0.8;
 }
 
 .btn {
-  background-color: #6c757d;
+  background-color: var(--secondary);
   color: white;
 }
 
 .btn:hover {
-  background-color: #5a6268;
+  opacity: 0.8;
 }

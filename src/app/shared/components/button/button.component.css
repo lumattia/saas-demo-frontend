@@ -18,6 +18,18 @@
   cursor: not-allowed;
 }
 
+.button.primary:disabled {
+  background: var(--primary-disabled);
+}
+
+.button.danger:disabled {
+  background: var(--error-disabled);
+}
+
+.button.success:disabled {
+  background: var(--success-disabled);
+}
+
 /* Variants */
 .button.primary {
   background: var(--primary);
@@ -25,7 +37,7 @@
 }
 
 .button.primary:hover:not(:disabled) {
-  background: var(--primary-hover);
+  opacity: 0.8;
 }
 
 .button.secondary {
@@ -44,16 +56,16 @@
 }
 
 .button.danger:hover:not(:disabled) {
-  background: var(--error-dark);
+  opacity: 0.8;
 }
 
 .button.success {
-  background: #28a745;
+  background: var(--success);
   color: white;
 }
 
 .button.success:hover:not(:disabled) {
-  background: #218838;
+  opacity: 0.8;
 }
 
 /* Sizes */

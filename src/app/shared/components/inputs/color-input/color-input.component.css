@@ -37,7 +37,7 @@
 .color-input-field:focus {
   outline: none;
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
 }
 
 .color-input-field.invalid {
@@ -46,11 +46,10 @@
 
 .color-input-field.dirty {
   border-color: var(--warning);
-  background: rgba(255, 193, 7, 0.05);
 }
 
 .color-input-field.dirty:focus {
-  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+  box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.2);
 }
 
 .color-text-field {
@@ -68,7 +67,7 @@
 .color-text-field:focus {
   outline: none;
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
 }
 
 .color-text-field.invalid {
@@ -77,11 +76,10 @@
 
 .color-text-field.dirty {
   border-color: var(--warning);
-  background: rgba(255, 193, 7, 0.05);
 }
 
 .color-text-field.dirty:focus {
-  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+  box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.2);
 }
 
 .color-input-field[readonly] {

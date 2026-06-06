@@ -1,35 +1,35 @@
 .tenant-list-container {
-  padding: 2rem;
+  padding: var(--spacing-2xl);
 }
 
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: var(--spacing-2xl);
 }
 
 .page-header h1 {
   margin: 0;
-  font-size: 1.5rem;
-  color: #333;
+  font-size: var(--font-size-xl);
+  color: var(--text);
 }
 
 .btn {
-  padding: 0.5rem 1rem;
+  padding: var(--spacing-sm) var(--spacing-md);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   text-decoration: none;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   transition: background-color 0.2s;
 }
 
 .btn-primary {
-  background-color: #007bff;
+  background-color: var(--primary);
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
+  opacity: 0.8;
 }

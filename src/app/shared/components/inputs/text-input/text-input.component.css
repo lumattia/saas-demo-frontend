@@ -31,7 +31,7 @@
 .text-input-field:focus {
   outline: none;
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
 }
 
 .text-input-field:hover:not(:disabled) {
@@ -39,8 +39,9 @@
 }
 
 .text-input-field:disabled {
-  background: var(--bg-alt);
+  background: var(--background-disabled);
   color: var(--text-disabled);
+  border-color: var(--border-disabled);
   cursor: not-allowed;
 }
 
@@ -66,11 +67,10 @@
 
 .text-input-field.dirty {
   border-color: var(--warning);
-  background: rgba(255, 193, 7, 0.05);
 }
 
 .text-input-field.dirty:focus {
-  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+  box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.2);
 }
 
 .text-input-error {

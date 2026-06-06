@@ -45,7 +45,7 @@
   background: transparent;
   padding: 0;
   cursor: default;
-  color: var(--text);
+  color: var(--text-disabled);
 }
 
 .select-trigger.readonly {
@@ -90,11 +90,10 @@
 
 .select-trigger.dirty {
   border-color: var(--warning);
-  background: rgba(255, 193, 7, 0.05);
 }
 
 .select-trigger.dirty:focus {
-  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+  box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.2);
 }
 
 .select-trigger-text {
@@ -179,7 +178,7 @@
 }
 
 .select-option.selected {
-  background: var(--primary-light);
+  background: var(--background-alt);
   color: var(--primary);
   font-weight: 500;
 }

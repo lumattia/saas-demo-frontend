@@ -42,7 +42,7 @@
 }
 
 .toggle-filters-btn:hover {
-  background: var(--primary-hover);
+  opacity: 0.8;
 }
 
 .sorting-section {
@@ -90,7 +90,7 @@
 }
 
 .apply-filter-btn.filters-dirty:hover {
-  background: #e6a700;
+  opacity: 0.8;
 }
 
 .table-wrapper {
@@ -106,7 +106,7 @@
 }
 
 .pro-table thead {
-  background: var(--primary-light);
+  background: var(--background-alt);
 }
 
 .pro-table th {
@@ -132,7 +132,7 @@
 }
 
 .pro-table tbody tr.clickable:hover {
-  background: var(--primary-light);
+  background: var(--background-alt);
 }
 
 .actions-header {
@@ -163,13 +163,13 @@
 }
 
 .edit-btn:hover {
-  background: var(--primary-light);
+  background: var(--background-alt);
   border-color: var(--primary);
 }
 
 .delete-btn:hover {
-  background: var(--danger-light);
-  border-color: var(--danger);
+  background: var(--background-alt);
+  border-color: var(--error);
 }
 
 .pro-table tbody tr:last-child td {
@@ -215,7 +215,7 @@
 .pagination-input:focus {
   outline: none;
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 2px var(--primary-light);
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
 }
 
 .page-info {
@@ -244,7 +244,7 @@
 }
 
 .pagination-btn:hover:not(.disabled) {
-  background: var(--primary-light);
+  background: var(--background-alt);
   border-color: var(--primary);
   color: var(--primary);
 }
