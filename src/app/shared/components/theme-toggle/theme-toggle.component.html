@@ -1,0 +1,7 @@
+<button class="theme-toggle" (click)="toggle()" [title]="'Switch to ' + (theme.mode() === 'light' ? 'dark' : 'light') + ' mode'">
+  @if (theme.mode() === 'light') {
+    <span class="icon">🌙</span>
+  } @else {
+    <span class="icon">☀️</span>
+  }
+</button>

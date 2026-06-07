@@ -123,6 +123,16 @@
       "quantityPlaceholder": "Inserisci quantità"
     }
   },
+  "login": {
+    "title": "SaaS Demo",
+    "welcome": "Benvenuto alla demo del sistema di gestione multi-tenant.",
+    "loginWithAuth0": "Accedi con Auth0",
+    "or": "O",
+    "creating": "Creazione...",
+    "createDemo": "Crea La Mia Demo (24 ore)",
+    "footerText": "Creando una demo, verrà generato un account temporaneo reale in Auth0 e un ambiente privato per te.",
+    "demoPassword": "Password Demo:"
+  },
   "nav": {
     "home": "Home",
     "dresses": "Abiti",

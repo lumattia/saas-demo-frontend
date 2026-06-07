@@ -69,19 +69,8 @@
             [showClearButton]="false">
           </app-select-input>
           }
-        <button class="icon-btn theme-toggle" (click)="theme.toggle()" [title]="'nav.toggleTheme' | translate">
-          @if (theme.mode() === 'light') {
-            <img src="assets/icons/moon.svg" alt="Dark mode">
-          } @else {
-            <img src="assets/icons/sun.svg" alt="Light mode">
-          }
-        </button>
-        <app-select-input 
-          [value]="currentLang()"
-          [options]="availableLanguages"
-          (valueChange)="changeLanguage($event)"
-          [showClearButton]="false">
-        </app-select-input>
+        <app-theme-toggle [title]="'nav.toggleTheme' | translate"></app-theme-toggle>
+        <app-language-selector></app-language-selector>
         <div class="user-info">
           <span class="user-name">{{ auth.user()?.username }}</span>
           <span class="tenant-name">({{ auth.user()?.tenant?.name }})</span>

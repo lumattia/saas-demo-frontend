@@ -1,0 +1,29 @@
+<div class="login-container">
+  <div class="login-header">
+    <app-theme-toggle></app-theme-toggle>
+    <app-language-selector></app-language-selector>
+  </div>
+  
+  <div class="login-card">
+    <h1>{{ 'login.title' | translate }}</h1>
+    <p>{{ 'login.welcome' | translate }}</p>
+    <div class="actions">
+      <button (click)="auth.login()" class="btn btn-primary">
+        {{ 'login.loginWithAuth0' | translate }}
+      </button>
+      
+      <div class="divider">
+        <span>{{ 'login.or' | translate }}</span>
+      </div>
+      
+      <button (click)="createDemo()" class="btn btn-secondary" [disabled]="loading">
+        {{ loading ? ('login.creating' | translate) : ('login.createDemo' | translate) }}
+      </button>
+    </div>
+    
+    <p class="footer-text">
+      {{ 'login.footerText' | translate }}
+    </p>
+    <p class="demo-password">{{ 'login.demoPassword' | translate }} {{ password }}</p>
+  </div>
+</div>

@@ -123,6 +123,16 @@
       "quantityPlaceholder": "Introduce la cantidad"
     }
   },
+  "login": {
+    "title": "SaaS Demo",
+    "welcome": "Bienvenido a la demo del sistema de gestión multi-inquilino.",
+    "loginWithAuth0": "Iniciar Sesión con Auth0",
+    "or": "O",
+    "creating": "Creando...",
+    "createDemo": "Crear Mi Demo (24 horas)",
+    "footerText": "Al crear una demo, se generará una cuenta real temporal en Auth0 y un entorno privado para ti.",
+    "demoPassword": "Contraseña de la Demo:"
+  },
   "nav": {
     "home": "Inicio",
     "dresses": "Vestidos",

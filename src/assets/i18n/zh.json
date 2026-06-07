@@ -189,6 +189,16 @@
     },
     "title": "连衣裙管理"
   },
+  "login": {
+    "title": "SaaS Demo",
+    "welcome": "欢迎使用多租户管理系统演示。",
+    "loginWithAuth0": "使用 Auth0 登录",
+    "or": "或",
+    "creating": "创建中...",
+    "createDemo": "创建我的演示（24小时）",
+    "footerText": "创建演示后，将在 Auth0 中生成一个真实的临时账户和您的私有环境。",
+    "demoPassword": "演示密码："
+  },
   "nav": {
     "createDemo": "创建演示(24小时)",
     "customFields": "自定义字段",
