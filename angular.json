@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "warehouse-frontend": {
+    "saas-demo": {
       "projectType": "application",
       "root": "",
       "sourceRoot": "src",
@@ -12,7 +12,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/warehouse-frontend",
+            "outputPath": "dist/saas-demo",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -42,10 +42,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "warehouse-frontend:build:production"
+              "buildTarget": "saas-demo:build:production"
             },
             "development": {
-              "buildTarget": "warehouse-frontend:build:development"
+              "buildTarget": "saas-demo:build:development"
             }
           },
           "defaultConfiguration": "development"

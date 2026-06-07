@@ -10,9 +10,7 @@ import { ButtonComponent } from '../../button/button.component';
   templateUrl: './unsaved-changes-modal.component.html',
   styleUrls: ['./unsaved-changes-modal.component.css']
 })
-export class UnsavedChangesModalComponent {
-  @Input() open = false;
-  
+export class UnsavedChangesModalComponent {  
   // These will be injected by ModalService
   close?: (result?: any) => void;
   dismiss?: (reason?: any) => void;

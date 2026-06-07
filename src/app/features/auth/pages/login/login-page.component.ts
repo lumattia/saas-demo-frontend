@@ -14,8 +14,8 @@ import { ThemeService } from '../../../../core/services/theme.service';
         {{ theme.mode() === 'light' ? '🌙' : '☀️' }}
       </button>
       <div class="login-card">
-        <h1>Warehouse Demo</h1>
-        <p>Bienvenido a la demo del sistema de gestión de almacén.</p>
+        <h1>SaaS Demo</h1>
+        <p>Bienvenido a la demo del sistema de gestión multi-inquilino.</p>
         <div class="actions">
           <button (click)="auth.login()" class="btn btn-primary">
             Iniciar Sesión con Auth0

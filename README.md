@@ -1,9 +1,9 @@
-# 📦 Warehouse Frontend (SaaS Demo)
+# 📦 SaaS Demo
 [![Angular](https://img.shields.io/badge/Angular-20-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev/)
 [![Node](https://img.shields.io/badge/Node-24-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
 
 ## 📖 Introducción
-Interfaz de usuario moderna y reactiva para la gestión de almacenes multi-inquilino. Este frontend actúa como el centro de control para los clientes del ecosistema [Warehouse API (Java 26)](https://github.com/lumattia/warehouse-backend).
+Interfaz de usuario moderna y reactiva para la gestión multi-inquilino. Este frontend actúa como el centro de control para los clientes del ecosistema SaaS Demo.
 
 > **🚧 Proyecto en Desarrollo:** Esta demo técnica se encuentra en fase inicial. El enfoque actual es la implementación de componentes core y lógica de control de estado.
 
