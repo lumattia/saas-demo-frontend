@@ -107,7 +107,6 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
       },
       error: (error) => {
         console.error('Error creating dress:', error);
-        alert('Error al crear el vestido. Por favor, revise los datos e inténtelo de nuevo.');
       }
     });
   }

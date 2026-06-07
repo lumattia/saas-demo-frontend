@@ -139,7 +139,6 @@ export class LoginPageComponent {
       error: (err) => {
         this.loading = false;
         console.error('Error creating demo:', err);
-        alert('There was an error connecting to the server. Please make sure the backend is running at http://localhost:8080');
       }
     });
   }
