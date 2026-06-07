@@ -21,6 +21,18 @@
   overflow-y: auto;
 }
 
+.modal-content.type-error {
+  border: 2px solid var(--error);
+}
+
+.modal-content.type-warning {
+  border: 2px solid var(--warning);
+}
+
+.modal-content.type-info {
+  border: 2px solid var(--info);
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -33,6 +45,18 @@
 .modal-header h2 {
   margin: 0;
   font-size: var(--font-size-2xl);
+}
+
+.modal-content.type-error .modal-header h2 {
+  color: var(--error);
+}
+
+.modal-content.type-warning .modal-header h2 {
+  color: var(--warning);
+}
+
+.modal-content.type-info .modal-header h2 {
+  color: var(--info);
 }
 
 .close-btn {
@@ -59,7 +83,18 @@
 
 .error-message {
   margin: 0 0 var(--spacing-sm) 0;
+}
+
+.modal-content.type-error .error-message {
   color: var(--error);
+}
+
+.modal-content.type-warning .error-message {
+  color: var(--warning);
+}
+
+.modal-content.type-info .error-message {
+  color: var(--info);
 }
 
 .modal-footer {

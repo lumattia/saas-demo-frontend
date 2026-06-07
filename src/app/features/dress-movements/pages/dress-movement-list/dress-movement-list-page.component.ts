@@ -10,11 +10,13 @@ import { TextInputComponent } from '../../../../shared/components/inputs/text-in
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
 import { ModalService } from '../../../../shared/services/modal.service';
 import { ConfirmModalComponent } from '../../../../shared/components/modals/confirm-modal/confirm-modal.component';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { GenericErrorModalComponent } from '../../../../shared/components/modals/generic-error-modal/generic-error-modal.component';
 
 @Component({
   selector: 'app-dress-movement-list-page',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent],
+  imports: [CommonModule, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent, LoadingComponent],
   templateUrl: './dress-movement-list-page.component.html',
   styleUrls: ['./dress-movement-list-page.component.css'],
 })
@@ -24,6 +26,7 @@ export class DressMovementListPageComponent implements OnInit {
   private modalService = inject(ModalService);
 
   dressMovement = signal<DressMovement[]>([]);
+  loading = signal<boolean>(true);
   filter: DressMovementFilter = { dressTitle: '', sku: '', color: '', size: '', minQuantity: undefined, maxQuantity: undefined };
   filterForm = new FormGroup({
     dressTitle: new FormControl(''),
@@ -83,16 +86,29 @@ export class DressMovementListPageComponent implements OnInit {
   }
 
   loadDressMovement() {
+    this.loading.set(true);
     this.filter.dressTitle = this.filterForm.value.dressTitle || '';
     this.filter.sku = this.filterForm.value.sku || '';
     this.filter.color = this.filterForm.value.color || '';
     this.filter.size = this.filterForm.value.size || '';
     this.filter.minQuantity = this.filterForm.value.minQuantity ? Number(this.filterForm.value.minQuantity) : undefined;
     this.filter.maxQuantity = this.filterForm.value.maxQuantity ? Number(this.filterForm.value.maxQuantity) : undefined;
-    this.dressMovementService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
-      this.dressMovement.set(data.content);
-      this.totalItems.set(data.totalElements);
-      this.pageNumber.set(data.number);
+    this.dressMovementService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe({
+      next: (data) => {
+        this.dressMovement.set(data.content);
+        this.totalItems.set(data.totalElements);
+        this.pageNumber.set(data.number);
+        this.loading.set(false);
+      },
+      error: (error) => {
+        this.loading.set(false);
+        this.modalService.open(GenericErrorModalComponent, {
+          title: 'dressMovements.error.title',
+          message: 'dressMovements.error.loadFailed',
+          type: 'error'
+        });
+        console.error('Error loading dress movements:', error);
+      }
     });
   }
 
@@ -121,7 +137,17 @@ export class DressMovementListPageComponent implements OnInit {
     });
     modalRef.result.then((confirmed) => {
       if (confirmed) {
-        this.dressMovementService.delete(id).subscribe(() => this.loadDressMovement());
+        this.dressMovementService.delete(id).subscribe({
+          next: () => this.loadDressMovement(),
+          error: (error) => {
+            this.modalService.open(GenericErrorModalComponent, {
+              title: 'dressMovements.error.title',
+              message: 'dressMovements.error.deleteFailed',
+              type: 'error'
+            });
+            console.error('Error deleting dress movement:', error);
+          }
+        });
       }
     })
   }

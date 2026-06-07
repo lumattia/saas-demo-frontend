@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,6 +14,9 @@ import { DynamicFormComponent } from '../../../../shared/components/dynamic-form
 import { CollapsibleSectionComponent } from '../../../../shared/components/collapsible-section/collapsible-section.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { ModalService } from '../../../../shared/services/modal.service';
+import { GenericErrorModalComponent } from '../../../../shared/components/modals/generic-error-modal/generic-error-modal.component';
 
 @Component({
   selector: 'app-dress-form-page',
@@ -28,6 +31,7 @@ import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.
     DynamicFormComponent,
     CollapsibleSectionComponent,
     ButtonComponent,
+    LoadingComponent,
   ],
   templateUrl: './dress-form-page.component.html',
   styleUrls: ['./dress-form-page.component.css'],
@@ -37,6 +41,7 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
   private customFieldService = inject(CustomFieldService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private modalService = inject(ModalService);
 
   id: number | null = null;
   dressForm = new FormGroup({
@@ -55,6 +60,7 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
     basicInfo: ['title', 'sku', 'size'],
     details: ['color', 'price']
   };
+  loading = signal<boolean>(false);
 
   getControl(name: string): FormControl {
     return this.dressForm.get(name) as FormControl;
@@ -73,6 +79,7 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
   }
 
   saveAll(): void {
+    this.loading.set(true);
     const formValue = this.dressForm.value;
     const dress: Partial<Dress> = {
       title: formValue.title || '',
@@ -94,18 +101,31 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
         if (Object.keys(customFields).length > 0) {
           this.customFieldService.saveValues(this.module, this.id, { customFields }).subscribe({
             next: () => {
+              this.loading.set(false);
               this.router.navigate(['/dresses']);
             },
             error: (error) => {
+              this.loading.set(false);
+              this.modalService.open(GenericErrorModalComponent, {
+                title: 'dresses.error.title',
+                message: 'dresses.error.customFieldsSaveFailed',
+                type: 'error'
+              });
               console.error('Error saving custom fields:', error);
-              this.router.navigate(['/dresses']);
             }
           });
         } else {
+          this.loading.set(false);
           this.router.navigate(['/dresses']);
         }
       },
       error: (error) => {
+        this.loading.set(false);
+        this.modalService.open(GenericErrorModalComponent, {
+          title: 'dresses.error.title',
+          message: 'dresses.error.createFailed',
+          type: 'error'
+        });
         console.error('Error creating dress:', error);
       }
     });
@@ -121,10 +141,11 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
     });
     return isValid;
   }
-  
+
   saveSection(section: string): void {
     if (!this.id) return;
 
+    this.loading.set(true);
     const fields = this.sectionFields[section];
     if (!fields) return;
 
@@ -134,6 +155,7 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
     });
     this.dressService.update(this.id, partialDress).subscribe({
       next: () => {
+        this.loading.set(false);
         fields.forEach(f => {
           let control = this.dressForm.get(f);
           if (control) {
@@ -144,6 +166,12 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
         this.editingSections.delete(section);
       },
       error: (error) => {
+        this.loading.set(false);
+        this.modalService.open(GenericErrorModalComponent, {
+          title: 'dresses.error.title',
+          message: 'dresses.error.saveFailed',
+          type: 'error'
+        });
         console.error('Error saving:', error);
       }
     });
@@ -171,7 +199,9 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
           this.editingSections.add('details');
         }
       });
+      this.loading.set(true);
       this.dressService.getById(this.id).subscribe(data => {
+        this.loading.set(false);
         this.initialData = data;
         this.dressForm.patchValue({
           title: data.title,
@@ -180,6 +210,14 @@ export class DressFormPageComponent implements OnInit, CanDeactivateComponent {
           color: data.color,
           price: data.price
         });
+      }, error => {
+        this.loading.set(false);
+        this.modalService.open(GenericErrorModalComponent, {
+          title: 'dresses.error.title',
+          message: 'dresses.error.loadFailed',
+          type: 'error'
+        });
+        console.error('Error loading dress:', error);
       });
     }
   }

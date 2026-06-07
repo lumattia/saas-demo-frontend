@@ -1,6 +1,14 @@
 {
   "dresses": {
     "title": "Gestión de Vestidos",
+    "error": {
+      "title": "Error",
+      "loadFailed": "Error al cargar los vestidos",
+      "saveFailed": "Error al guardar el vestido",
+      "deleteFailed": "Error al eliminar el vestido",
+      "createFailed": "Error al crear el vestido",
+      "customFieldsSaveFailed": "Error al guardar los campos personalizados"
+    },
     "list": {
       "title": "Listado de Vestidos",
       "add": "Añadir Vestido",
@@ -61,6 +69,14 @@
   },
   "dressMovements": {
     "title": "Gestión de Movimientos de Vestidos",
+    "error": {
+      "title": "Error",
+      "loadFailed": "Error al cargar los movimientos de vestidos",
+      "saveFailed": "Error al guardar el movimiento",
+      "deleteFailed": "Error al eliminar el movimiento",
+      "createFailed": "Error al crear el movimiento",
+      "customFieldsSaveFailed": "Error al guardar los campos personalizados"
+    },
     "list": {
       "title": "Movimientos de Vestidos",
       "add": "Añadir Movimiento",
@@ -126,6 +142,13 @@
   },
   "tenants": {
     "title": "Gestión de Tenants",
+    "error": {
+      "title": "Error",
+      "loadFailed": "Error al cargar los tenants",
+      "saveFailed": "Error al guardar el tenant",
+      "deleteFailed": "Error al eliminar el tenant",
+      "createFailed": "Error al crear el tenant"
+    },
     "list": {
       "title": "Listado de Tenants",
       "add": "Añadir Tenant",
@@ -159,6 +182,13 @@
   },
   "users": {
     "title": "Gestión de Usuarios",
+    "error": {
+      "title": "Error",
+      "loadFailed": "Error al cargar los usuarios",
+      "saveFailed": "Error al guardar el usuario",
+      "deleteFailed": "Error al eliminar el usuario",
+      "createFailed": "Error al crear el usuario"
+    },
     "list": {
       "title": "Listado de Usuarios",
       "add": "Añadir Usuario",

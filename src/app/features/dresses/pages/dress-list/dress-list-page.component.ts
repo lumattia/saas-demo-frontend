@@ -12,11 +12,13 @@ import { NumberInputComponent } from '../../../../shared/components/inputs/numbe
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
 import { ModalService } from '../../../../shared/services/modal.service';
 import { ConfirmModalComponent } from '../../../../shared/components/modals/confirm-modal/confirm-modal.component';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { GenericErrorModalComponent } from '../../../../shared/components/modals/generic-error-modal/generic-error-modal.component';
 
 @Component({
   selector: 'app-dress-list-page',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent, ColorInputComponent, NumberInputComponent],
+  imports: [CommonModule, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent, ColorInputComponent, NumberInputComponent, LoadingComponent],
   templateUrl: './dress-list-page.component.html',
   styleUrls: ['./dress-list-page.component.css'],
 })
@@ -26,6 +28,7 @@ export class DressListPageComponent implements OnInit {
   private modalService = inject(ModalService);
 
   dresses = signal<Dress[]>([]);
+  loading = signal<boolean>(true);
   filter: DressFilter = { title: '', sku: '', size: '', color: '', minStock: undefined, maxStock: undefined, minPrice: undefined, maxPrice: undefined };
   filterForm = new FormGroup({
     title: new FormControl(''),
@@ -70,6 +73,7 @@ export class DressListPageComponent implements OnInit {
   }
 
   loadDresses() {
+    this.loading.set(true);
     this.filter.title = this.filterForm.value.title || '';
     this.filter.sku = this.filterForm.value.sku || '';
     this.filter.size = this.filterForm.value.size || '';
@@ -78,10 +82,22 @@ export class DressListPageComponent implements OnInit {
     this.filter.maxStock = this.filterForm.value.maxStock ? Number(this.filterForm.value.maxStock) : undefined;
     this.filter.minPrice = this.filterForm.value.minPrice ? Number(this.filterForm.value.minPrice) : undefined;
     this.filter.maxPrice = this.filterForm.value.maxPrice ? Number(this.filterForm.value.maxPrice) : undefined;
-    this.dressService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
-      this.dresses.set(data.content);
-      this.totalItems.set(data.totalElements);
-      this.pageNumber.set(data.number);
+    this.dressService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe({
+      next: (data) => {
+        this.dresses.set(data.content);
+        this.totalItems.set(data.totalElements);
+        this.pageNumber.set(data.number);
+        this.loading.set(false);
+      },
+      error: (error) => {
+        this.loading.set(false);
+        this.modalService.open(GenericErrorModalComponent, {
+          title: 'dresses.error.title',
+          message: 'dresses.error.loadFailed',
+          type: 'error'
+        });
+        console.error('Error loading dresses:', error);
+      }
     });
   }
 
@@ -110,7 +126,17 @@ export class DressListPageComponent implements OnInit {
     });
     modalRef.result.then((confirmed) => {
       if (confirmed) {
-        this.dressService.delete(id).subscribe(() => this.loadDresses());
+        this.dressService.delete(id).subscribe({
+          next: () => this.loadDresses(),
+          error: (error) => {
+            this.modalService.open(GenericErrorModalComponent, {
+              title: 'dresses.error.title',
+              message: 'dresses.error.deleteFailed',
+              type: 'error'
+            });
+            console.error('Error deleting dress:', error);
+          }
+        });
       }
     })
   }

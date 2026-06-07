@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
@@ -15,11 +15,14 @@ import { DynamicFormComponent } from '../../../../shared/components/dynamic-form
 import { CollapsibleSectionComponent } from '../../../../shared/components/collapsible-section/collapsible-section.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { ModalService } from '../../../../shared/services/modal.service';
+import { GenericErrorModalComponent } from '../../../../shared/components/modals/generic-error-modal/generic-error-modal.component';
 
 @Component({
   selector: 'app-dress-movement-form-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule, SelectInputComponent, NumberInputComponent, DynamicFormComponent, CollapsibleSectionComponent, ButtonComponent],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule, SelectInputComponent, NumberInputComponent, DynamicFormComponent, CollapsibleSectionComponent, ButtonComponent, LoadingComponent],
   templateUrl: './dress-movement-form-page.component.html',
   styleUrls: ['./dress-movement-form-page.component.css'],
 })
@@ -30,6 +33,7 @@ export class DressMovementFormPageComponent implements OnInit, CanDeactivateComp
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private modalService = inject(ModalService);
 
   id: number | null = null;
   dressMovementForm = new FormGroup({
@@ -42,6 +46,7 @@ export class DressMovementFormPageComponent implements OnInit, CanDeactivateComp
   initialData: any = null;
   module = ModuleType.DRESS_MOVEMENT;
   isEditMode = false;
+  loading = signal<boolean>(false);
 
   sectionFields: Record<string, string[]> = {
     basicInfo: ['dressId', 'quantity']
@@ -75,6 +80,7 @@ export class DressMovementFormPageComponent implements OnInit, CanDeactivateComp
   }
 
   saveAll(): void {
+    this.loading.set(true);
     const formValue = this.dressMovementForm.value;
     const item: Partial<DressMovement> = {
       dressId: formValue.dressId ? Number(formValue.dressId) : 0,
@@ -93,23 +99,32 @@ export class DressMovementFormPageComponent implements OnInit, CanDeactivateComp
         if (Object.keys(customFields).length > 0) {
           this.customFieldService.saveValues(this.module, this.id, { customFields }).subscribe({
             next: () => {
-              alert('Movimiento creado correctamente.');
+              this.loading.set(false);
               this.router.navigate(['/dress-movements']);
             },
             error: (error) => {
+              this.loading.set(false);
+              this.modalService.open(GenericErrorModalComponent, {
+                title: 'dressMovements.error.title',
+                message: 'dressMovements.error.customFieldsSaveFailed',
+                type: 'error'
+              });
               console.error('Error saving custom fields:', error);
-              alert('Error al guardar los campos personalizados. El movimiento se creó pero sin campos personalizados.');
-              this.router.navigate(['/dress-movements']);
             }
           });
         } else {
-          alert('Movimiento creado correctamente.');
+          this.loading.set(false);
           this.router.navigate(['/dress-movements']);
         }
       },
       error: (error) => {
+        this.loading.set(false);
+        this.modalService.open(GenericErrorModalComponent, {
+          title: 'dressMovements.error.title',
+          message: 'dressMovements.error.createFailed',
+          type: 'error'
+        });
         console.error('Error creating dress movement:', error);
-        alert('Error al crear el movimiento. Por favor, revise los datos e inténtelo de nuevo.');
       }
     });
   }
@@ -117,6 +132,7 @@ export class DressMovementFormPageComponent implements OnInit, CanDeactivateComp
   saveSection(section: string): void {
     if (!this.id) return;
 
+    this.loading.set(true);
     const fields = this.sectionFields[section];
     if (!fields) return;
 
@@ -134,22 +150,27 @@ export class DressMovementFormPageComponent implements OnInit, CanDeactivateComp
     });
 
     if (Object.keys(item).length === 0) {
-      alert('No hay cambios para guardar.');
+      this.loading.set(false);
       return;
     }
 
     this.dressMovementService.update(this.id, item as Partial<DressMovement>).subscribe({
       next: () => {
+        this.loading.set(false);
         Object.keys(item).forEach(key => {
           (this.initialData as any)[key] = (item as any)[key];
         });
         this.editingSections.delete(section);
         this.cdr.detectChanges();
-        alert('Información guardada correctamente.');
       },
       error: (error) => {
+        this.loading.set(false);
+        this.modalService.open(GenericErrorModalComponent, {
+          title: 'dressMovements.error.title',
+          message: 'dressMovements.error.saveFailed',
+          type: 'error'
+        });
         console.error('Error saving:', error);
-        alert('Error al guardar. Por favor, revise los datos e inténtelo de nuevo.');
       }
     });
   }
@@ -172,8 +193,9 @@ export class DressMovementFormPageComponent implements OnInit, CanDeactivateComp
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam && idParam !== 'new') {
       this.id = +idParam;
-
+      this.loading.set(true);
       this.dressMovementService.getById(this.id).subscribe((data: DressMovement) => {
+        this.loading.set(false);
         this.initialData = {
           dressId: data.dress.id.toString(),
           quantity: data.quantity.toString(),
@@ -184,6 +206,14 @@ export class DressMovementFormPageComponent implements OnInit, CanDeactivateComp
           quantity: data.quantity.toString()
         });
         this.cdr.detectChanges();
+      }, error => {
+        this.loading.set(false);
+        this.modalService.open(GenericErrorModalComponent, {
+          title: 'dressMovements.error.title',
+          message: 'dressMovements.error.loadFailed',
+          type: 'error'
+        });
+        console.error('Error loading movement:', error);
       });
     }
     this.dressService.list().subscribe(data => this.dresses = data);

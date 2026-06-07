@@ -11,7 +11,6 @@ import { ButtonComponent } from '../../button/button.component';
   styleUrls: ['./confirm-modal.component.css']
 })
 export class ConfirmModalComponent {
-  @Input() open = false;
   @Input() title = 'Confirmar';
   @Input() message = '¿Deseas continuar?';
   @Input() messageParams: any = {};

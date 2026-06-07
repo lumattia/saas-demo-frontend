@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -10,6 +10,9 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { CollapsibleSectionComponent } from '../../../../shared/components/collapsible-section/collapsible-section.component';
 import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
 import { CheckboxInputComponent } from '../../../../shared/components/inputs/checkbox-input/checkbox-input.component';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { ModalService } from '../../../../shared/services/modal.service';
+import { GenericErrorModalComponent } from '../../../../shared/components/modals/generic-error-modal/generic-error-modal.component';
 
 @Component({
   selector: 'app-tenant-form-page',
@@ -22,6 +25,7 @@ import { CheckboxInputComponent } from '../../../../shared/components/inputs/che
     ButtonComponent,
     CollapsibleSectionComponent,
     CheckboxInputComponent,
+    LoadingComponent,
   ],
   templateUrl: './tenant-form-page.component.html',
   styleUrls: ['./tenant-form-page.component.css'],
@@ -30,6 +34,7 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
   private tenantService = inject(TenantService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private modalService = inject(ModalService);
 
   id: string | null = null;
   tenantForm = new FormGroup({
@@ -43,6 +48,7 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
   isEditMode = false;
   initialData: any = null;
   editingSections = new Set<string>();
+  loading = signal<boolean>(false);
 
   getControl(name: string): FormControl {
     return this.tenantForm.get(name) as FormControl;
@@ -74,6 +80,8 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
   saveSection(section: string): void {
     if (!this.isSectionValid(section)) return;
 
+    this.loading.set(true);
+
     if (section === 'basicInfo') {
       const formValue = this.tenantForm.value;
       if (this.id) {
@@ -82,15 +90,27 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
           name: formValue.name || '',
           modules: this.modules || [],
         };
-        this.tenantService.update(this.id, updateRequest).subscribe(() => {
-          this.editingSections.delete(section);
-          if (this.id) {
-            this.tenantService.getById(this.id).subscribe(data => {
-              this.initialData = {
-                name: data.name,
-                modules: data.modules || []
-              };
+        this.tenantService.update(this.id, updateRequest).subscribe({
+          next: () => {
+            this.loading.set(false);
+            this.editingSections.delete(section);
+            if (this.id) {
+              this.tenantService.getById(this.id).subscribe(data => {
+                this.initialData = {
+                  name: data.name,
+                  modules: data.modules || []
+                };
+              });
+            }
+          },
+          error: (error) => {
+            this.loading.set(false);
+            this.modalService.open(GenericErrorModalComponent, {
+              title: 'tenants.error.title',
+              message: 'tenants.error.saveFailed',
+              type: 'error'
             });
+            console.error('Error saving:', error);
           }
         });
       }
@@ -101,15 +121,27 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
           name: this.tenantForm.value.name || '',
           modules: this.modules || [],
         };
-        this.tenantService.update(this.id, updateRequest).subscribe(() => {
-          this.editingSections.delete(section);
-          if (this.id) {
-            this.tenantService.getById(this.id).subscribe(data => {
-              this.initialData = {
-                name: data.name,
-                modules: data.modules || []
-              };
+        this.tenantService.update(this.id, updateRequest).subscribe({
+          next: () => {
+            this.loading.set(false);
+            this.editingSections.delete(section);
+            if (this.id) {
+              this.tenantService.getById(this.id).subscribe(data => {
+                this.initialData = {
+                  name: data.name,
+                  modules: data.modules || []
+                };
+              });
+            }
+          },
+          error: (error) => {
+            this.loading.set(false);
+            this.modalService.open(GenericErrorModalComponent, {
+              title: 'tenants.error.title',
+              message: 'tenants.error.saveFailed',
+              type: 'error'
             });
+            console.error('Error saving:', error);
           }
         });
       }
@@ -134,7 +166,8 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
     if (idParam && idParam !== 'new') {
       this.id = idParam;
       this.isEditMode = false;
-      
+      this.loading.set(true);
+
       this.route.queryParamMap.subscribe((params: ParamMap) => {
         const editParam = params.get('edit');
         if (editParam === 'true') {
@@ -143,6 +176,7 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
       });
 
       this.tenantService.getById(this.id).subscribe(data => {
+        this.loading.set(false);
         this.initialData = {
           name: data.name,
           modules: data.modules || []
@@ -151,6 +185,14 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
           name: data.name
         });
         this.modules = data.modules || [];
+      }, error => {
+        this.loading.set(false);
+        this.modalService.open(GenericErrorModalComponent, {
+          title: 'tenants.error.title',
+          message: 'tenants.error.loadFailed',
+          type: 'error'
+        });
+        console.error('Error loading tenant:', error);
       });
     } else {
       this.isEditMode = true;
@@ -158,6 +200,7 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
   }
 
   save(): void {
+    this.loading.set(true);
     const formValue = this.tenantForm.value;
     if (this.id) {
       const updateRequest: TenantUpdateRequest = {
@@ -165,15 +208,40 @@ export class TenantFormPageComponent implements OnInit, CanDeactivateComponent {
         name: formValue.name || '',
         modules: this.modules || [],
       };
-      this.tenantService.update(this.id, updateRequest).subscribe(() => {
+      this.tenantService.update(this.id, updateRequest).subscribe({
+        next: () => {
+          this.loading.set(false);
+          this.router.navigate(['/tenants']);
+        },
+        error: (error) => {
+          this.loading.set(false);
+          this.modalService.open(GenericErrorModalComponent, {
+            title: 'tenants.error.title',
+            message: 'tenants.error.saveFailed',
+            type: 'error'
+          });
+          console.error('Error saving:', error);
+        }
       });
     } else {
       const createRequest: TenantCreateRequest = {
         name: formValue.name || '',
         modules: this.modules || [],
       };
-      this.tenantService.create(createRequest).subscribe(() => {
-        this.router.navigate(['/tenants']);
+      this.tenantService.create(createRequest).subscribe({
+        next: () => {
+          this.loading.set(false);
+          this.router.navigate(['/tenants']);
+        },
+        error: (error) => {
+          this.loading.set(false);
+          this.modalService.open(GenericErrorModalComponent, {
+            title: 'tenants.error.title',
+            message: 'tenants.error.createFailed',
+            type: 'error'
+          });
+          console.error('Error creating tenant:', error);
+        }
       });
     }
   }

@@ -10,11 +10,13 @@ import { TextInputComponent } from '../../../../shared/components/inputs/text-in
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
 import { ModalService } from '../../../../shared/services/modal.service';
 import { ConfirmModalComponent } from '../../../../shared/components/modals/confirm-modal/confirm-modal.component';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { GenericErrorModalComponent } from '../../../../shared/components/modals/generic-error-modal/generic-error-modal.component';
 
 @Component({
   selector: 'app-user-list-page',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent],
+  imports: [CommonModule, TranslateModule, ReactiveFormsModule, ProTableComponent, TextInputComponent, LoadingComponent],
   templateUrl: './user-list-page.component.html',
   styleUrls: ['./user-list-page.component.css'],
 })
@@ -24,6 +26,7 @@ export class UserListPageComponent implements OnInit {
   private modalService = inject(ModalService);
 
   users = signal<User[]>([]);
+  loading = signal<boolean>(true);
   filter: UserFilter = { username: '', role: undefined };
   filterForm = new FormGroup({
     username: new FormControl('')
@@ -53,11 +56,24 @@ export class UserListPageComponent implements OnInit {
   }
 
   loadUsers() {
+    this.loading.set(true);
     this.filter.username = this.filterForm.value.username || '';
-    this.userService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
-      this.users.set(data.content);
-      this.totalItems.set(data.totalElements);
-      this.pageNumber.set(data.number);
+    this.userService.getAll(this.filter, this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe({
+      next: (data) => {
+        this.users.set(data.content);
+        this.totalItems.set(data.totalElements);
+        this.pageNumber.set(data.number);
+        this.loading.set(false);
+      },
+      error: (error) => {
+        this.loading.set(false);
+        this.modalService.open(GenericErrorModalComponent, {
+          title: 'users.error.title',
+          message: 'users.error.loadFailed',
+          type: 'error'
+        });
+        console.error('Error loading users:', error);
+      }
     });
   }
 
@@ -87,8 +103,16 @@ export class UserListPageComponent implements OnInit {
     
     modalRef.result.then((confirmed) => {
       if (confirmed) {
-        this.userService.delete(id).subscribe(() => {
-          this.loadUsers();
+        this.userService.delete(id).subscribe({
+          next: () => this.loadUsers(),
+          error: (error) => {
+            this.modalService.open(GenericErrorModalComponent, {
+              title: 'users.error.title',
+              message: 'users.error.deleteFailed',
+              type: 'error'
+            });
+            console.error('Error deleting user:', error);
+          }
         });
       }
     })

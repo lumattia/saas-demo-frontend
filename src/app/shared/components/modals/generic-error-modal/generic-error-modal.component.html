@@ -1,18 +1,14 @@
-@if (show()) {
-  <div class="modal-overlay" (click)="close?.()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>{{ config()?.title }}</h2>
-        <button class="close-btn" (click)="close?.()">&times;</button>
-      </div>
-      <div class="modal-body">
-        @for (message of config()?.messages || []; track $index) {
-          <p class="error-message">{{ message }}</p>
-        }
-      </div>
-      <div class="modal-footer">
-        <app-button (click)="onConfirm()">OK</app-button>
-      </div>
+<div class="modal-overlay" (click)="close?.()">
+  <div class="modal-content" [class]="'type-' + type">
+    <div class="modal-header">
+      <h2>{{ title | translate }}</h2>
+      <button class="close-btn" (click)="close?.()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <p class="error-message">{{ message | translate }}</p>
+    </div>
+    <div class="modal-footer">
+      <app-button (click)="onConfirm()">OK</app-button>
     </div>
   </div>
-}
+</div>

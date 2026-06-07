@@ -66,6 +66,14 @@
     "title": "自定义字段配置"
   },
   "dressMovements": {
+    "error": {
+      "title": "错误",
+      "loadFailed": "加载变动失败",
+      "saveFailed": "保存变动失败",
+      "deleteFailed": "删除变动失败",
+      "createFailed": "创建变动失败",
+      "customFieldsSaveFailed": "保存自定义字段失败"
+    },
     "edit": "编辑变动",
     "form": {
       "dress": "连衣裙",
@@ -114,6 +122,14 @@
     "title": "连衣裙变动管理"
   },
   "dresses": {
+    "error": {
+      "title": "错误",
+      "loadFailed": "加载连衣裙失败",
+      "saveFailed": "保存连衣裙失败",
+      "deleteFailed": "删除连衣裙失败",
+      "createFailed": "创建连衣裙失败",
+      "customFieldsSaveFailed": "保存自定义字段失败"
+    },
     "edit": "编辑连衣裙",
     "form": {
       "color": "颜色",
@@ -233,6 +249,13 @@
     }
   },
   "tenants": {
+    "error": {
+      "title": "错误",
+      "loadFailed": "加载租户失败",
+      "saveFailed": "保存租户失败",
+      "deleteFailed": "删除租户失败",
+      "createFailed": "创建租户失败"
+    },
     "edit": "编辑租户",
     "form": {
       "deleteConfirm": "确定要删除这个租户吗？",
@@ -272,6 +295,13 @@
     "title": "未保存的更改"
   },
   "users": {
+    "error": {
+      "title": "错误",
+      "loadFailed": "加载用户失败",
+      "saveFailed": "保存用户失败",
+      "deleteFailed": "删除用户失败",
+      "createFailed": "创建用户失败"
+    },
     "edit": "编辑用户",
     "form": {
       "deleteConfirm": "确定要删除这个用户吗？",

@@ -112,9 +112,7 @@ export class CustomFieldsPageComponent implements OnInit, CanDeactivateComponent
 
   async onModuleChange(module: string) {
     if (this.hasUnsavedChanges()) {
-      const modalRef = this.modalService.open(UnsavedChangesModalComponent, {
-        open: true
-      });
+      const modalRef = this.modalService.open(UnsavedChangesModalComponent);
       
       try {
         const shouldContinue = await modalRef.result;

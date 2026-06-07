@@ -1,34 +1,29 @@
-import { Component, signal } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../button/button.component';
-
-export interface ErrorModalConfig {
-  title: string;
-  messages: string[];
-  type?: 'error' | 'warning' | 'info';
-}
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-generic-error-modal',
   standalone: true,
-  imports: [CommonModule, ButtonComponent],
+  imports: [CommonModule, ButtonComponent, TranslateModule],
   templateUrl: './generic-error-modal.component.html',
   styleUrls: ['./generic-error-modal.component.css']
 })
 export class GenericErrorModalComponent {
-  show = signal(false);
-  config = signal<ErrorModalConfig | null>(null);
+  @Input() title = 'Confirmar';
+  @Input() message = '¿Deseas continuar?';
+  @Input() type: 'error' | 'warning' | 'info' = 'error';
   
   // These will be injected by ModalService
   close?: (result?: any) => void;
   dismiss?: (reason?: any) => void;
 
-  open(config: ErrorModalConfig): void {
-    this.config.set(config);
-    this.show.set(true);
+  onConfirm(): void {
+    this.close?.(true);
   }
 
-  onConfirm(): void {
-    this.close?.();
+  onCancel(): void {
+    this.dismiss?.(false);
   }
 }

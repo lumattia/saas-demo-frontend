@@ -8,11 +8,13 @@ import { ProTableComponent } from '../../../../shared/components/table/pro-table
 import { IdName, PaginationState, SortState } from '../../../../core/models/common.models';
 import { ModalService } from '../../../../shared/services/modal.service';
 import { ConfirmModalComponent } from '../../../../shared/components/modals/confirm-modal/confirm-modal.component';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { GenericErrorModalComponent } from '../../../../shared/components/modals/generic-error-modal/generic-error-modal.component';
 
 @Component({
   selector: 'app-tenant-list-page',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ProTableComponent],
+  imports: [CommonModule, TranslateModule, ProTableComponent, LoadingComponent],
   templateUrl: './tenant-list-page.component.html',
   styleUrls: ['./tenant-list-page.component.css'],
 })
@@ -22,6 +24,7 @@ export class TenantListPageComponent implements OnInit {
   private modalService = inject(ModalService);
 
   tenants = signal<Tenant[]>([]);
+  loading = signal<boolean>(true);
   sort = signal<string>('id');
   order = signal<'asc' | 'desc'>('asc');
   pageNumber = signal<number>(0);
@@ -45,10 +48,23 @@ export class TenantListPageComponent implements OnInit {
   }
 
   loadTenants() {
-    this.tenantService.getAll(this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe(data => {
-      this.tenants.set(data.content);
-      this.totalItems.set(data.totalElements);
-      this.pageNumber.set(data.number);
+    this.loading.set(true);
+    this.tenantService.getAll(this.pageNumber(), this.pageSize(), this.sort(), this.order()).subscribe({
+      next: (data) => {
+        this.tenants.set(data.content);
+        this.totalItems.set(data.totalElements);
+        this.pageNumber.set(data.number);
+        this.loading.set(false);
+      },
+      error: (error) => {
+        this.loading.set(false);
+        this.modalService.open(GenericErrorModalComponent, {
+          title: 'tenants.error.title',
+          message: 'tenants.error.loadFailed',
+          type: 'error'
+        });
+        console.error('Error loading tenants:', error);
+      }
     });
   }
 
@@ -73,8 +89,16 @@ export class TenantListPageComponent implements OnInit {
     
     modalRef.result.then((confirmed) => {
       if (confirmed) {
-        this.tenantService.delete(id).subscribe(() => {
-          this.loadTenants();
+        this.tenantService.delete(id).subscribe({
+          next: () => this.loadTenants(),
+          error: (error) => {
+            this.modalService.open(GenericErrorModalComponent, {
+              title: 'tenants.error.title',
+              message: 'tenants.error.deleteFailed',
+              type: 'error'
+            });
+            console.error('Error deleting tenant:', error);
+          }
         });
       }
     })

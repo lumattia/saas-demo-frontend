@@ -1,17 +1,21 @@
 <main class="tenant-list-container">
-  <app-pro-table
-    [columns]="columns"
-    [data]="tenants()"
-    [sortOptions]="sortOptions"
-    [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
-    [titleKey]="'tenants.list.title'"
-    [addLink]="'/tenants/new'"
-    [addLabelKey]="'tenants.list.add'"
-    (sortChange)="onSortChange($event)"
-    (paginationChange)="onPaginationChange($event)"
-    (rowClick)="onRowClick($event)"
-    (editClick)="onEditClick($event)"
-    (deleteClick)="deleteTenant($event.id)"
-  >
-  </app-pro-table>
+  @if (loading()) {
+    <app-loading text="Loading tenants..." />
+  } @else {
+    <app-pro-table
+      [columns]="columns"
+      [data]="tenants()"
+      [sortOptions]="sortOptions"
+      [pagination]="{ pageSize: pageSize(), pageNumber: pageNumber(), totalItems: totalItems() }"
+      [titleKey]="'tenants.list.title'"
+      [addLink]="'/tenants/new'"
+      [addLabelKey]="'tenants.list.add'"
+      (sortChange)="onSortChange($event)"
+      (paginationChange)="onPaginationChange($event)"
+      (rowClick)="onRowClick($event)"
+      (editClick)="onEditClick($event)"
+      (deleteClick)="deleteTenant($event.id)"
+    >
+    </app-pro-table>
+  }
 </main>

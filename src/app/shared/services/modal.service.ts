@@ -67,9 +67,6 @@ export class ModalService {
       }
     }
     
-    // Set open to true explicitly
-    instance.open = true;
-    
     // Enable pointer events on container when modal is open
     if (this.modalContainer) {
       this.modalContainer.style.pointerEvents = 'auto';

@@ -1,6 +1,14 @@
 {
   "dresses": {
     "title": "Dress Management",
+    "error": {
+      "title": "Error",
+      "loadFailed": "Error loading dresses",
+      "saveFailed": "Error saving dress",
+      "deleteFailed": "Error deleting dress",
+      "createFailed": "Error creating dress",
+      "customFieldsSaveFailed": "Error saving custom fields"
+    },
     "list": {
       "title": "Dress List",
       "add": "Add Dress",
@@ -61,6 +69,14 @@
   },
   "dressMovements": {
     "title": "Dress Movement Management",
+    "error": {
+      "title": "Error",
+      "loadFailed": "Error loading dress movements",
+      "saveFailed": "Error saving movement",
+      "deleteFailed": "Error deleting movement",
+      "createFailed": "Error creating movement",
+      "customFieldsSaveFailed": "Error saving custom fields"
+    },
     "list": {
       "title": "Dress Movements",
       "add": "Add Movement",
@@ -126,6 +142,13 @@
   },
   "tenants": {
     "title": "Tenant Management",
+    "error": {
+      "title": "Error",
+      "loadFailed": "Error loading tenants",
+      "saveFailed": "Error saving tenant",
+      "deleteFailed": "Error deleting tenant",
+      "createFailed": "Error creating tenant"
+    },
     "list": {
       "title": "Tenant List",
       "add": "Add Tenant",
@@ -159,6 +182,13 @@
   },
   "users": {
     "title": "User Management",
+    "error": {
+      "title": "Error",
+      "loadFailed": "Error loading users",
+      "saveFailed": "Error saving user",
+      "deleteFailed": "Error deleting user",
+      "createFailed": "Error creating user"
+    },
     "list": {
       "title": "User List",
       "add": "Add User",

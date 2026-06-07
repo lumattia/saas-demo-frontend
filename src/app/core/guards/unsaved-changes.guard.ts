@@ -20,9 +20,7 @@ export class UnsavedChangesGuard implements CanDeactivate<CanDeactivateComponent
     currentState: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     if (component.canDeactivate && component.canDeactivate()) {
-      const modalRef = this.modalService.open(UnsavedChangesModalComponent, {
-        open: true
-      });
+      const modalRef = this.modalService.open(UnsavedChangesModalComponent);
       
       return modalRef.result;
     }

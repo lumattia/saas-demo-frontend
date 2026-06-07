@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -13,6 +13,9 @@ import { EnumService } from '../../../../core/services/enum.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { CollapsibleSectionComponent } from '../../../../shared/components/collapsible-section/collapsible-section.component';
 import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.guard';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { ModalService } from '../../../../shared/services/modal.service';
+import { GenericErrorModalComponent } from '../../../../shared/components/modals/generic-error-modal/generic-error-modal.component';
 
 @Component({
   selector: 'app-user-form-page',
@@ -25,6 +28,7 @@ import { CanDeactivateComponent } from '../../../../core/guards/unsaved-changes.
     SelectInputComponent,
     ButtonComponent,
     CollapsibleSectionComponent,
+    LoadingComponent,
   ],
   templateUrl: './user-form-page.component.html',
   styleUrls: ['./user-form-page.component.css'],
@@ -36,6 +40,7 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
   private impersonationService = inject(ImpersonationService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private modalService = inject(ModalService);
 
   id: number | null = null;
   userForm = new FormGroup({
@@ -49,6 +54,7 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
   isEditable = true;
   editingSections = new Set<string>();
   currentUserRole: string | null = null;
+  loading = signal<boolean>(false);
 
   get roleOptions() {
     return this.assignableRoles.map(role => ({
@@ -85,6 +91,8 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
   saveSection(section: string): void {
     if (!this.isSectionValid(section)) return;
 
+    this.loading.set(true);
+
     const formValue = this.userForm.value;
     if (this.id) {
       const updateRequest: UserUpdateRequest = {
@@ -93,16 +101,28 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
         role: (formValue.role || 'USER') as 'USER' | 'ADMIN' | 'SUPERADMIN',
         allowedTenantIds: this.allowedTenantIds,
       };
-      this.userService.update(this.id, updateRequest).subscribe(() => {
-        this.editingSections.delete(section);
-        if (this.id) {
-          this.userService.getById(this.id).subscribe(data => {
-            this.initialData = {
-              username: data.username,
-              role: data.role,
-              allowedTenantIds: data.allowedTenants?.map(t => t.id.toString()) || []
-            };
+      this.userService.update(this.id, updateRequest).subscribe({
+        next: () => {
+          this.loading.set(false);
+          this.editingSections.delete(section);
+          if (this.id) {
+            this.userService.getById(this.id).subscribe(data => {
+              this.initialData = {
+                username: data.username,
+                role: data.role,
+                allowedTenantIds: data.allowedTenants?.map(t => t.id.toString()) || []
+              };
+            });
+          }
+        },
+        error: (error) => {
+          this.loading.set(false);
+          this.modalService.open(GenericErrorModalComponent, {
+            title: 'users.error.title',
+            message: 'users.error.saveFailed',
+            type: 'error'
           });
+          console.error('Error saving:', error);
         }
       });
     }
@@ -123,7 +143,8 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
     if (idParam && idParam !== 'new') {
       this.id = +idParam;
       this.isEditMode = false;
-      
+      this.loading.set(true);
+
       this.route.queryParamMap.subscribe((params: ParamMap) => {
         const editParam = params.get('edit');
         if (editParam === 'true') {
@@ -132,6 +153,7 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
       });
 
       this.userService.getById(this.id).subscribe(data => {
+        this.loading.set(false);
         this.initialData = {
           username: data.username,
           role: data.role,
@@ -144,16 +166,24 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
         });
         this.allowedTenantIds = data.allowedTenants?.map(t => t.id.toString()) || [];
         this.isEditable = data.isEditable !== false;
-        
+
         this.enumService.getAssignableRoles().subscribe(roles => {
           this.assignableRoles = roles;
-          
+
           // If editing own profile and current role not in assignable roles, add it manually
           const currentUser = this.authService.user();
           if (currentUser && this.id === currentUser.id && !roles.includes(currentUser.role)) {
             this.assignableRoles = [...roles, currentUser.role];
           }
         });
+      }, error => {
+        this.loading.set(false);
+        this.modalService.open(GenericErrorModalComponent, {
+          title: 'users.error.title',
+          message: 'users.error.loadFailed',
+          type: 'error'
+        });
+        console.error('Error loading user:', error);
       });
     } else {
       this.isEditMode = true;
@@ -164,6 +194,7 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
   }
 
   save(): void {
+    this.loading.set(true);
     const formValue = this.userForm.value;
     if (this.id) {
       const updateRequest: UserUpdateRequest = {
@@ -172,8 +203,20 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
         role: (formValue.role || 'USER') as 'USER' | 'ADMIN' | 'SUPERADMIN',
         allowedTenantIds: this.allowedTenantIds,
       };
-      this.userService.update(this.id, updateRequest).subscribe(() => {
-        this.router.navigate(['/users']);
+      this.userService.update(this.id, updateRequest).subscribe({
+        next: () => {
+          this.loading.set(false);
+          this.router.navigate(['/users']);
+        },
+        error: (error) => {
+          this.loading.set(false);
+          this.modalService.open(GenericErrorModalComponent, {
+            title: 'users.error.title',
+            message: 'users.error.saveFailed',
+            type: 'error'
+          });
+          console.error('Error saving:', error);
+        }
       });
     } else {
       const createRequest: UserCreateRequest = {
@@ -181,8 +224,20 @@ export class UserFormPageComponent implements OnInit, CanDeactivateComponent {
         role: (formValue.role || 'USER') as 'USER' | 'ADMIN' | 'SUPERADMIN',
         allowedTenantIds: this.allowedTenantIds,
       };
-      this.userService.create(createRequest).subscribe(() => {
-        this.router.navigate(['/users']);
+      this.userService.create(createRequest).subscribe({
+        next: () => {
+          this.loading.set(false);
+          this.router.navigate(['/users']);
+        },
+        error: (error) => {
+          this.loading.set(false);
+          this.modalService.open(GenericErrorModalComponent, {
+            title: 'users.error.title',
+            message: 'users.error.createFailed',
+            type: 'error'
+          });
+          console.error('Error creating user:', error);
+        }
       });
     }
   }
