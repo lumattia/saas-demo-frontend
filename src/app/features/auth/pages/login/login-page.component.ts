@@ -19,7 +19,6 @@ export class LoginPageComponent {
   readonly theme = inject(ThemeService);
   private router = inject(Router);
   loading = false;
-  password='';
 
   ngOnInit(){
     if(this.auth.isAuthenticated()){
@@ -43,8 +42,7 @@ export class LoginPageComponent {
     this.loading = true;
     this.auth.createDemoAccount().subscribe({
       next: (res) => {
-        this.loading = false,
-        this.password=res.password;
+        this.loading = false;
       },
       error: (err) => {
         this.loading = false;

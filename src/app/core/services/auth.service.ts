@@ -5,6 +5,8 @@ import { environment } from '../../../environments/environment';
 import { tap, switchMap, of } from 'rxjs';
 import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 import { TenantService } from './tenant.service';
+import { ModalService } from '../../shared/services/modal.service';
+import { GenericErrorModalComponent } from '../../shared/components/modals/generic-error-modal/generic-error-modal.component';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,7 @@ export class AuthService {
   private auth0 = inject(Auth0Service);
   private userSignal = signal<User | null>(null);
   private tenantService = inject(TenantService);
+  private modalService = inject(ModalService);
 
   user = this.userSignal.asReadonly();
   isAuthenticated = computed(() => !!this.userSignal());
@@ -77,16 +80,29 @@ export class AuthService {
   createDemoAccount() {
     return this.http.post<any>(`${environment.apiUrl}/users/demo`, {}).pipe(
       tap(res => {
-        this.auth0.loginWithPopup({
-          authorizationParams: {
-            login_hint: res.email,
-          }
-        }).subscribe(() => {
-          this.init();
+        const modalRef = this.modalService.open(GenericErrorModalComponent, { 
+          type: 'info', 
+          title: 'login.modalTitle',
+          message: 'login.demoCreated',
+          translateParams: { email: res.email, password: res.password }
         });
-        return res;
+        modalRef.close =() => {
+          navigator.clipboard.writeText(res.password).then(() => {
+            this.auth0.loginWithRedirect({ authorizationParams: { login_hint: res.email } });
+          }).catch(err => {
+            console.error('Auto-copy failed:', err);
+            const fallbackModal = this.modalService.open(GenericErrorModalComponent, {
+              type: 'warning',
+              message: 'login.copyFallback',
+              translateParams: { password: res.password }
+            });
+            fallbackModal.close(() => {
+              this.auth0.loginWithRedirect({ authorizationParams: { login_hint: res.email } });
+            });
+          });
+        };
       })
-    );
+    )
   }
 
   login() {

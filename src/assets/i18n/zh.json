@@ -197,7 +197,9 @@
     "creating": "创建中...",
     "createDemo": "创建我的演示（24小时）",
     "footerText": "创建演示后，将在 Auth0 中生成一个真实的临时账户和您的私有环境。",
-    "demoPassword": "演示密码："
+    "modalTitle": "演示",
+    "demoCreated": "您的演示账户已创建。\n\n邮箱: {{email}}\n密码: {{password}}\n\n点击确定复制密码并继续登录。",
+    "copyFallback": "我们无法自动复制密码。\n\n请手动复制:\n\n👉 密码: {{password}}"
   },
   "nav": {
     "createDemo": "创建演示(24小时)",

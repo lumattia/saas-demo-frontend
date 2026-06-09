@@ -131,7 +131,9 @@
     "creating": "Creating...",
     "createDemo": "Create My Demo (24 hours)",
     "footerText": "By creating a demo, a real temporary account will be generated in Auth0 and a private environment for you.",
-    "demoPassword": "Demo Password:"
+    "modalTitle": "Demo",
+    "demoCreated": "Your demo account has been created.\n\nEmail: {{email}}\nPassword: {{password}}\n\nClick OK to copy your password and proceed to login.",
+    "copyFallback": "We couldn't copy the password automatically.\n\nPlease COPY IT MANUALLY before continuing:\n\n👉 Password: {{password}}"
   },
   "nav": {
     "home": "Home",

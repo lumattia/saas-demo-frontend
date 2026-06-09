@@ -13,6 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class GenericErrorModalComponent {
   @Input() title = 'Confirmar';
   @Input() message = '¿Deseas continuar?';
+  @Input() translateParams: any = {};
   @Input() type: 'error' | 'warning' | 'info' = 'error';
   
   // These will be injected by ModalService
