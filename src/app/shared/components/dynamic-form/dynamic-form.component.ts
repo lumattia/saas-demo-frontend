@@ -138,6 +138,7 @@ export class DynamicFormComponent implements OnInit {
       const control = this.form.get(`${field.id}`);
       if (control) {
         customFields[field.id] = control.value || '';
+        control.markAsPristine();
       }
     });
 
